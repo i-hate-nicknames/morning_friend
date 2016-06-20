@@ -1,5 +1,7 @@
 package com.domain.nvm.morningfriend;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Date;
 
 public class AlarmFragment extends Fragment {
 
@@ -17,9 +22,17 @@ public class AlarmFragment extends Fragment {
     private CheckBox mEnabledCheckBox;
 
     private static final String TAG = "AlarmFragment";
+    private static final int REQ_TIME = 0;
+    private static final String EXTRA_TIME = "time";
 
     public static AlarmFragment createFragment() {
         return new AlarmFragment();
+    }
+
+    public static Intent makeTimeIntent(Date time) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_TIME, time);
+        return intent;
     }
 
     @Nullable
@@ -43,7 +56,8 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager mgr = getFragmentManager();
-                TimePickerFragment dialog = new TimePickerFragment();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(new Date());
+                dialog.setTargetFragment(AlarmFragment.this, REQ_TIME);
                 dialog.show(mgr, TAG);
             }
         });
@@ -51,6 +65,14 @@ public class AlarmFragment extends Fragment {
         updateUI();
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQ_TIME && resultCode == Activity.RESULT_OK) {
+            Date time = (Date) data.getSerializableExtra(EXTRA_TIME);
+            Toast.makeText(getActivity(), time.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateUI() {

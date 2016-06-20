@@ -30,5 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="36sp"
+        android:text="00:00"
         tools:text="06:30"/>
 </LinearLayout>

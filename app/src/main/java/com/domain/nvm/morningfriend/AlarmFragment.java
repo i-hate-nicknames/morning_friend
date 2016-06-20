@@ -1,9 +1,9 @@
 package com.domain.nvm.morningfriend;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,8 @@ public class AlarmFragment extends Fragment {
 
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
+
+    private static final String TAG = "AlarmFragment";
 
     public static AlarmFragment createFragment() {
         return new AlarmFragment();
@@ -34,6 +36,15 @@ public class AlarmFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AlarmPreferences.setEnabled(getActivity(), isChecked);
                 updateUI();
+            }
+        });
+
+        mTimeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager mgr = getFragmentManager();
+                TimePickerFragment dialog = new TimePickerFragment();
+                dialog.show(mgr, TAG);
             }
         });
 

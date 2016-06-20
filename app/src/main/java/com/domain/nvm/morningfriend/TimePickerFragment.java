@@ -68,7 +68,7 @@ public class TimePickerFragment extends DialogFragment {
             minute = mTimePicker.getMinute();
         }
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         Date resultTime = calendar.getTime();
         Intent intent = AlarmFragment.makeTimeIntent(resultTime);
@@ -80,7 +80,7 @@ public class TimePickerFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
 
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
         if (Build.VERSION.SDK_INT < 23) {

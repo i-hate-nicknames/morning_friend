@@ -56,7 +56,8 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager mgr = getFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(new Date());
+                long time = AlarmPreferences.getAlarmTime(getActivity());
+                TimePickerFragment dialog = TimePickerFragment.newInstance(new Date(time));
                 dialog.setTargetFragment(AlarmFragment.this, REQ_TIME);
                 dialog.show(mgr, TAG);
             }
@@ -71,11 +72,14 @@ public class AlarmFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_TIME && resultCode == Activity.RESULT_OK) {
             Date time = (Date) data.getSerializableExtra(EXTRA_TIME);
-            Toast.makeText(getActivity(), time.toString(), Toast.LENGTH_SHORT).show();
+            AlarmPreferences.setAlarmTime(getActivity(), time.getTime());
+            updateUI();
         }
     }
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(AlarmPreferences.isEnabled(getActivity()));
+        long time = AlarmPreferences.getAlarmTime(getActivity());
+        mTimeTextView.setText(new Date(time).toString());
     }
 }

@@ -26,6 +26,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/alarm_time_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="36sp"

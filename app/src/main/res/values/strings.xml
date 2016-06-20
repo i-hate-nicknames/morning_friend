@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MorningFriend</string>
+
+    <string name="alarm_enabled_caption">Enabled</string>
 </resources>

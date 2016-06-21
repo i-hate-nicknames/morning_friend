@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AlarmFragment extends Fragment {
@@ -79,7 +80,8 @@ public class AlarmFragment extends Fragment {
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(AlarmPreferences.isEnabled(getActivity()));
-        long time = AlarmPreferences.getAlarmTime(getActivity());
-        mTimeTextView.setText(new Date(time).toString());
+        Date time = new Date(AlarmPreferences.getAlarmTime(getActivity()));
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
+        mTimeTextView.setText(format.format(time));
     }
 }

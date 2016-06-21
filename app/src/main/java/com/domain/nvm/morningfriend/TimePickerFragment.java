@@ -71,7 +71,7 @@ public class TimePickerFragment extends DialogFragment {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         Date resultTime = calendar.getTime();
-        Intent intent = AlarmFragment.makeTimeIntent(resultTime);
+        Intent intent = AlarmSettingsFragment.makeTimeIntent(resultTime);
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
     }

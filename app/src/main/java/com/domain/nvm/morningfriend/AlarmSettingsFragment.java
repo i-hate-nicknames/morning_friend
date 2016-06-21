@@ -12,22 +12,21 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AlarmFragment extends Fragment {
+public class AlarmSettingsFragment extends Fragment {
 
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
 
-    private static final String TAG = "AlarmFragment";
+    private static final String TAG = "AlarmSettingsFragment";
     private static final int REQ_TIME = 0;
     private static final String EXTRA_TIME = "time";
 
-    public static AlarmFragment createFragment() {
-        return new AlarmFragment();
+    public static AlarmSettingsFragment createFragment() {
+        return new AlarmSettingsFragment();
     }
 
     public static Intent makeTimeIntent(Date time) {
@@ -40,7 +39,7 @@ public class AlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_alarm, container, false);
+        View v = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
 
         mTimeTextView = (TextView) v.findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) v.findViewById(R.id.alarm_enabled_check_box);
@@ -59,7 +58,7 @@ public class AlarmFragment extends Fragment {
                 FragmentManager mgr = getFragmentManager();
                 long time = AlarmPreferences.getAlarmTime(getActivity());
                 TimePickerFragment dialog = TimePickerFragment.newInstance(new Date(time));
-                dialog.setTargetFragment(AlarmFragment.this, REQ_TIME);
+                dialog.setTargetFragment(AlarmSettingsFragment.this, REQ_TIME);
                 dialog.show(mgr, TAG);
             }
         });

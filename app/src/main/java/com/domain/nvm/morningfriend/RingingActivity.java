@@ -1,5 +1,7 @@
 package com.domain.nvm.morningfriend;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import java.util.Date;
 
 
 public class RingingActivity extends AppCompatActivity {
@@ -64,6 +68,20 @@ public class RingingActivity extends AppCompatActivity {
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
+        }
+    }
+
+    public static void setRingingAlarm(Context context, Date time, boolean isOn) {
+        Intent i = new Intent(context, RingingActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        if (isOn) {
+            am.set(AlarmManager.RTC_WAKEUP, time.getTime(), pi);
+        }
+        else {
+            am.cancel(pi);
+            pi.cancel();
         }
     }
 }

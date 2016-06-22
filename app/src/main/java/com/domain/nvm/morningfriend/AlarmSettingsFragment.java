@@ -66,6 +66,7 @@ public class AlarmSettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AlarmPreferences.setEnabled(getActivity(), isChecked);
+                RingingActivity.setRingingAlarm(getActivity(), mAlarmTime, isChecked);
                 updateUI();
             }
         });

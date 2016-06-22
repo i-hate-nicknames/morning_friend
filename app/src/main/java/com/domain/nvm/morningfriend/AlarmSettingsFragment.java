@@ -21,7 +21,6 @@ public class AlarmSettingsFragment extends Fragment {
 
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
-    private Button mStartRinging;
 
     private Date mAlarmTime;
 
@@ -53,14 +52,6 @@ public class AlarmSettingsFragment extends Fragment {
 
         mTimeTextView = (TextView) v.findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) v.findViewById(R.id.alarm_enabled_check_box);
-        mStartRinging = (Button) v.findViewById(R.id.button_open_ringing);
-
-        mStartRinging.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), RingingActivity.class));
-            }
-        });
 
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

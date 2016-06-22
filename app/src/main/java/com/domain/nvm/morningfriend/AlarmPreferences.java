@@ -24,21 +24,23 @@ public class AlarmPreferences {
                 .apply();
     }
 
-    public static long getAlarmTime(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
+    public static Date getAlarmTime(Context context) {
+        long timeMillis = PreferenceManager.getDefaultSharedPreferences(context)
                 .getLong(ALARM_TIME, 0);
+        return new Date(timeMillis);
     }
 
-    public static void setAlarmTime(Context context, long alarmTime) {
-        if (alarmTime < System.currentTimeMillis()) {
+    public static void setAlarmTime(Context context, Date alarmTime) {
+        long timeMillis = alarmTime.getTime();
+        if (timeMillis < System.currentTimeMillis()) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date(alarmTime));
+            calendar.setTime(alarmTime);
             calendar.add(Calendar.DATE, 1);
-            alarmTime = calendar.getTime().getTime();
+            timeMillis = calendar.getTime().getTime();
         }
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putLong(ALARM_TIME, alarmTime)
+                .putLong(ALARM_TIME, timeMillis)
                 .apply();
     }
 

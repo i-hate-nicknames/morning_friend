@@ -23,6 +23,8 @@ public class AlarmSettingsFragment extends Fragment {
     private CheckBox mEnabledCheckBox;
     private Button mStartRinging;
 
+    private Date mAlarmTime;
+
     private static final String TAG = "AlarmSettingsFragment";
     private static final int REQ_TIME = 0;
     private static final String EXTRA_TIME = "time";
@@ -35,6 +37,12 @@ public class AlarmSettingsFragment extends Fragment {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TIME, time);
         return intent;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAlarmTime = AlarmPreferences.getAlarmTime(getActivity());
     }
 
     @Nullable
@@ -66,8 +74,7 @@ public class AlarmSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager mgr = getFragmentManager();
-                long time = AlarmPreferences.getAlarmTime(getActivity());
-                TimePickerFragment dialog = TimePickerFragment.newInstance(new Date(time));
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mAlarmTime);
                 dialog.setTargetFragment(AlarmSettingsFragment.this, REQ_TIME);
                 dialog.show(mgr, TAG);
             }
@@ -81,16 +88,15 @@ public class AlarmSettingsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_TIME && resultCode == Activity.RESULT_OK) {
-            Date time = (Date) data.getSerializableExtra(EXTRA_TIME);
-            AlarmPreferences.setAlarmTime(getActivity(), time.getTime());
+            mAlarmTime = (Date) data.getSerializableExtra(EXTRA_TIME);
+            AlarmPreferences.setAlarmTime(getActivity(), mAlarmTime);
             updateUI();
         }
     }
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(AlarmPreferences.isEnabled(getActivity()));
-        Date time = new Date(AlarmPreferences.getAlarmTime(getActivity()));
         SimpleDateFormat format = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
-        mTimeTextView.setText(format.format(time));
+        mTimeTextView.setText(format.format(mAlarmTime));
     }
 }

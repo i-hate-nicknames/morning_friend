@@ -80,15 +80,17 @@ public class AlarmSettingsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_TIME && resultCode == Activity.RESULT_OK) {
-            mAlarmTime = (Date) data.getSerializableExtra(EXTRA_TIME);
-            AlarmPreferences.setAlarmTime(getActivity(), mAlarmTime);
+            Date resultTime = (Date) data.getSerializableExtra(EXTRA_TIME);
+            AlarmPreferences.setAlarmTime(getActivity(), resultTime);
+            mAlarmTime = AlarmPreferences.getAlarmTime(getActivity());
             updateUI();
         }
     }
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(AlarmPreferences.isEnabled(getActivity()));
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
+        SimpleDateFormat format =
+                new SimpleDateFormat("HH:mm, dd.MM", java.util.Locale.getDefault());
         mTimeTextView.setText(format.format(mAlarmTime));
     }
 }

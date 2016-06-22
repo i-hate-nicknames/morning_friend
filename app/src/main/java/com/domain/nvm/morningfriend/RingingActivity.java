@@ -19,10 +19,11 @@ import java.util.Date;
 public class RingingActivity extends AppCompatActivity {
 
     private Button mStopButton;
+    private Button mSnoozeButton;
     private RingingService mService;
     private boolean mBound = false;
 
-
+    private static final long SNOOZE_TIME = 1 * 60 * 1000;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -44,11 +45,23 @@ public class RingingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ringing);
 
         mStopButton = (Button) findViewById(R.id.button_ringing_stop);
+        mSnoozeButton = (Button) findViewById(R.id.button_ringing_snooze);
 
         mStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mService.stopPlaying();
+                finish();
+            }
+        });
+
+        mSnoozeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mService.stopPlaying();
+                long fiveMinLater = System.currentTimeMillis() + SNOOZE_TIME;
+                setRingingAlarm(getApplicationContext(), new Date(fiveMinLater), true);
+                finish();
             }
         });
     }

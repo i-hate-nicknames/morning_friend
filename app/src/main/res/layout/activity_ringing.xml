@@ -5,8 +5,8 @@
               android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_ringing_start"
-        android:text="Start"
+        android:id="@+id/button_ringing_snooze"
+        android:text="Snooze"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

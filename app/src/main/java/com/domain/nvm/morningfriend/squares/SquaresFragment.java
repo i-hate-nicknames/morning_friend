@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.RingingControls;
 
@@ -29,6 +30,14 @@ public class SquaresFragment extends Fragment {
             public void onClick(View v) {
                 mControls.stopRinging();
                 getActivity().finish();
+            }
+        });
+        mView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mView.initSquares();
+                mView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         return mView;

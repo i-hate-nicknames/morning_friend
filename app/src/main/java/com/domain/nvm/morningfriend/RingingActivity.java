@@ -9,6 +9,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 
+import com.domain.nvm.morningfriend.squares.SquaresFragment;
+
 import java.util.Date;
 
 
@@ -33,7 +35,7 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
 
     @Override
     public Fragment getFragment() {
-        return new StopSnoozeFragment();
+        return new SquaresFragment();
     }
 
     @Override

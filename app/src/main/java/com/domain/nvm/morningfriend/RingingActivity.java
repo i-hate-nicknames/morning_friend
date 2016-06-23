@@ -7,23 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v4.app.Fragment;
 
 import java.util.Date;
 
 
-public class RingingActivity extends AppCompatActivity {
+public class RingingActivity extends SingleFragmentActivity implements RingingControls {
 
-    private Button mStopButton;
-    private Button mSnoozeButton;
     private RingingService mService;
     private boolean mBound = false;
-
-    private static final long SNOOZE_TIME = 1 * 60 * 1000;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -40,30 +32,8 @@ public class RingingActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ringing);
-
-        mStopButton = (Button) findViewById(R.id.button_ringing_stop);
-        mSnoozeButton = (Button) findViewById(R.id.button_ringing_snooze);
-
-        mStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mService.stopPlaying();
-                finish();
-            }
-        });
-
-        mSnoozeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mService.stopPlaying();
-                long fiveMinLater = System.currentTimeMillis() + SNOOZE_TIME;
-                setRingingAlarm(getApplicationContext(), new Date(fiveMinLater), true);
-                finish();
-            }
-        });
+    public Fragment getFragment() {
+        return new StopSnoozeFragment();
     }
 
     @Override
@@ -96,5 +66,10 @@ public class RingingActivity extends AppCompatActivity {
             am.cancel(pi);
             pi.cancel();
         }
+    }
+
+    @Override
+    public void stopRinging() {
+        mService.stopPlaying();
     }
 }

@@ -71,5 +71,15 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
     @Override
     public void stopRinging() {
         mService.stopPlaying();
+        // todo: add setting "recurrent alarm" and check if it's true here
+        AlarmPreferences.revalidateAlarmTime(this);
+        Date nextAlarm = AlarmPreferences.getAlarmTime(this);
+        setRingingAlarm(this, nextAlarm, true);
+    }
+
+    @Override
+    public void stopAndRestartRinging(Date restartTime) {
+        mService.stopPlaying();
+        setRingingAlarm(this, restartTime, true);
     }
 }

@@ -24,11 +24,18 @@ public class AlarmPreferences {
                 .apply();
     }
 
+    /**
+     * Get time at which next alarm should occur
+     * if there is no setting saved, return next day 00:00:00
+     * @param context
+     * @return time for the next alarm
+     */
     public static Date getAlarmTime(Context context) {
         long timeMillis = PreferenceManager.getDefaultSharedPreferences(context)
                 .getLong(ALARM_TIME, 0);
         if (timeMillis == 0) {
             Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, 1);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
@@ -41,13 +48,29 @@ public class AlarmPreferences {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(alarmTime);
         calendar.set(Calendar.SECOND, 0);
-        if (alarmTime.getTime() < System.currentTimeMillis()) {
-            calendar.add(Calendar.DATE, 1);
-        }
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putLong(ALARM_TIME, calendar.getTime().getTime())
                 .apply();
+        revalidateAlarmTime(context);
+    }
+
+    /**
+     * revalidate currently stored setting, updating it to be the same time next day in case time
+     * has already passed today
+     * @param context
+     */
+    public static void revalidateAlarmTime(Context context) {
+        Date storedTime = getAlarmTime(context);
+        if (storedTime.getTime() < System.currentTimeMillis()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(storedTime);
+            calendar.add(Calendar.DATE, 1);
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putLong(ALARM_TIME, calendar.getTime().getTime())
+                    .apply();
+        }
     }
 
 }

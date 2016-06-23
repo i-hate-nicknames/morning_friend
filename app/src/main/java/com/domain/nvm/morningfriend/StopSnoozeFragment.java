@@ -42,9 +42,8 @@ public class StopSnoozeFragment extends Fragment {
         mSnoozeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mControls.stopRinging();
                 long fiveMinLater = System.currentTimeMillis() + SNOOZE_TIME;
-                RingingActivity.setRingingAlarm(getActivity(), new Date(fiveMinLater), true);
+                mControls.stopAndRestartRinging(new Date(fiveMinLater));
                 getActivity().finish();
             }
         });

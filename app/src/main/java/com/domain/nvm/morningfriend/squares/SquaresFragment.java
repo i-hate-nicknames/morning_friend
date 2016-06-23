@@ -10,7 +10,9 @@ import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.RingingControls;
 
-public class SquaresFragment extends Fragment {
+import java.util.Date;
+
+public class SquaresFragment extends Fragment implements SquaresView.SquareClickedListener {
 
     private SquaresView mView;
     private RingingControls mControls;
@@ -25,13 +27,7 @@ public class SquaresFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = new SquaresView(getActivity());
-        mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mControls.stopRinging();
-                getActivity().finish();
-            }
-        });
+        mView.setCallback(this);
         mView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -41,5 +37,18 @@ public class SquaresFragment extends Fragment {
             }
         });
         return mView;
+    }
+
+    @Override
+    public void onRedClicked() {
+        mControls.stopRinging();
+        getActivity().finish();
+    }
+
+    @Override
+    public void onGreenClicked() {
+        long nextStart = System.currentTimeMillis() + 5 * 1000;
+        mControls.stopAndRestartRinging(new Date(nextStart));
+        getActivity().finish();
     }
 }

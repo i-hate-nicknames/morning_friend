@@ -55,6 +55,7 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
             c.setOnTouchListener(this);
             mField.addCircle(c);
         }
+        mField.setCircles(mCircles);
 
     }
 

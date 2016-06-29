@@ -27,6 +27,14 @@ public class Circle extends View {
         this.position = position;
     }
 
+    public float getCenterX() {
+        return position.x + RADIUS;
+    }
+
+    public float getCenterY() {
+        return position.y + RADIUS;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, RADIUS, mPaint);

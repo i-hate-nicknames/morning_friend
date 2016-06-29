@@ -36,8 +36,10 @@ public class UntangleField extends FrameLayout {
 
     public void updateCirclePosition(Circle c, int offsetX, int offsetY) {
         PointF pos = c.getPosition();
-        int x = (int) pos.x + (offsetX - SIZE/2);
-        int y = (int) pos.y + (offsetY - SIZE/2);
+        // center the circle at current touch point
+        // when clicked in the center of circle, offsetX and offsetY are equal to radius
+        int x = (int) pos.x + (offsetX - Circle.RADIUS);
+        int y = (int) pos.y + (offsetY - Circle.RADIUS);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) c.getLayoutParams();
         params.setMargins(x, y, 0, 0);
         updateViewLayout(c, params);
@@ -49,9 +51,7 @@ public class UntangleField extends FrameLayout {
         super.onDraw(canvas);
         Circle c1 = mCircles.get(0);
         Circle c2 = mCircles.get(1);
-        float x1 = c1.getPosition().x + Circle.RADIUS, y1 = c1.getPosition().y + Circle.RADIUS;
-        float x2 = c2.getPosition().x + Circle.RADIUS, y2 = c2.getPosition().y + Circle.RADIUS;
-
-        canvas.drawLine(x1, y1, x2, y2, mLinePaint);
+        canvas.drawLine(c1.getCenterX(), c1.getCenterY(),
+                c2.getCenterX(), c2.getCenterY(), mLinePaint);
     }
 }

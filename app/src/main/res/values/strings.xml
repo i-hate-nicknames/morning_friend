@@ -2,4 +2,9 @@
     <string name="app_name">MorningFriend</string>
 
     <string name="alarm_enabled_caption">Enabled</string>
+
+
+
+    <string name="menu_settings_run_demo">Run demo</string>
+
 </resources>

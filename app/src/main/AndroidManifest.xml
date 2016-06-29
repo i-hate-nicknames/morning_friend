@@ -17,8 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RingingActivity">
-        </activity>
+        <activity android:name=".RingingActivity" />
+
+        <activity android:name=".DemoActivity" />
 
         <service
             android:name=".RingingService"

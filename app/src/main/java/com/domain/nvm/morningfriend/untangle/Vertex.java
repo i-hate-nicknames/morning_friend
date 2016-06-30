@@ -11,6 +11,8 @@ public class Vertex extends View {
     public static final int RADIUS = 35;
 
     private PointF position;
+    private int mNum;
+
     private static Paint sPaint;
 
     static {
@@ -18,8 +20,9 @@ public class Vertex extends View {
         sPaint.setColor(0xffff0000);
     }
 
-    public Vertex(Context context) {
+    public Vertex(int num, Context context) {
         super(context);
+        this.mNum = num;
     }
 
     public PointF getPosition() {
@@ -28,6 +31,10 @@ public class Vertex extends View {
 
     public void setPosition(PointF position) {
         this.position = position;
+    }
+
+    public int getNum() {
+        return mNum;
     }
 
     public float getCenterX() {

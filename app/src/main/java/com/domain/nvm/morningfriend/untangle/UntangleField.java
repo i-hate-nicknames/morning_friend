@@ -12,7 +12,7 @@ import java.util.List;
 public class UntangleField extends FrameLayout {
 
     private static final int SIZE = Vertex.RADIUS * 2;
-    private List<Vertex> mVertices;
+    private Graph mGraph;
     private Paint mLinePaint;
 
     public UntangleField(Context context) {
@@ -23,8 +23,8 @@ public class UntangleField extends FrameLayout {
         this.setWillNotDraw(false);
     }
 
-    public void setVertices(List<Vertex> vertices) {
-        this.mVertices = vertices;
+    public void setGraph(Graph graph) {
+        this.mGraph = graph;
     }
 
     public void addVertex(Vertex v) {
@@ -49,9 +49,12 @@ public class UntangleField extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Vertex c1 = mVertices.get(0);
-        Vertex c2 = mVertices.get(1);
-        canvas.drawLine(c1.getCenterX(), c1.getCenterY(),
-                c2.getCenterX(), c2.getCenterY(), mLinePaint);
+        for (Graph.Edge e: mGraph.getEdges()) {
+            Vertex v1 = e.getFirst();
+            Vertex v2 = e.getSecond();
+            canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
+                    v2.getCenterX(), v2.getCenterY(), mLinePaint);
+        }
+
     }
 }

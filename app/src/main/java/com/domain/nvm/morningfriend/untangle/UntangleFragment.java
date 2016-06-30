@@ -18,13 +18,14 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
     private static final String TAG = "DragDemo";
     private UntangleField mField;
     private List<Vertex> mVertices;
+    private Graph mGraph;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mField = new UntangleField(getActivity());
-        generateCircles();
+        generateGraph();
         return mField;
     }
 
@@ -41,21 +42,27 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
     }
 
 
-    private void generateCircles() {
+    private void generateGraph() {
+        mGraph = new Graph();
         mVertices = new ArrayList<>();
-        Vertex v1 = new Vertex(getActivity());
-        v1.setPosition(new PointF(100, 100));
-        mVertices.add(v1);
+        Vertex bottom = new Vertex(0, getActivity());
+        bottom.setPosition(new PointF(300, 500));
+        mVertices.add(bottom);
+        mGraph.addVertex(bottom);
+        for (int i = 1; i < 6; i++) {
+            Vertex v = new Vertex(i, getActivity());
+            v.setPosition(new PointF(100+i*50, 100));
+            mVertices.add(v);
+            mGraph.addVertex(v);
+            mGraph.connect(v, bottom);
+        }
 
-        Vertex v2 = new Vertex(getActivity());
-        v2.setPosition(new PointF(200, 200));
-        mVertices.add(v2);
 
         for (Vertex v: mVertices) {
             v.setOnTouchListener(this);
             mField.addVertex(v);
         }
-        mField.setVertices(mVertices);
+        mField.setGraph(mGraph);
 
     }
 

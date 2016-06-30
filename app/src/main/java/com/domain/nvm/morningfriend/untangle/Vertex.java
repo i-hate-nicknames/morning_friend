@@ -11,12 +11,15 @@ public class Vertex extends View {
     public static final int RADIUS = 35;
 
     private PointF position;
-    private Paint mPaint;
+    private static Paint sPaint;
+
+    static {
+        sPaint = new Paint();
+        sPaint.setColor(0xffff0000);
+    }
 
     public Vertex(Context context) {
         super(context);
-        mPaint = new Paint();
-        mPaint.setColor(0xffff0000);
     }
 
     public PointF getPosition() {
@@ -37,6 +40,6 @@ public class Vertex extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, RADIUS, mPaint);
+        canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, RADIUS, sPaint);
     }
 }

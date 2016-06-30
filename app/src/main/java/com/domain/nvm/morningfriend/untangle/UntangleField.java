@@ -11,8 +11,8 @@ import java.util.List;
 
 public class UntangleField extends FrameLayout {
 
-    private static final int SIZE = Circle.RADIUS * 2;
-    private List<Circle> mCircles;
+    private static final int SIZE = Vertex.RADIUS * 2;
+    private List<Vertex> mVertices;
     private Paint mLinePaint;
 
     public UntangleField(Context context) {
@@ -23,34 +23,34 @@ public class UntangleField extends FrameLayout {
         this.setWillNotDraw(false);
     }
 
-    public void setCircles(List<Circle> circles) {
-        this.mCircles = circles;
+    public void setVertices(List<Vertex> vertices) {
+        this.mVertices = vertices;
     }
 
-    public void addCircle(Circle c) {
+    public void addVertex(Vertex v) {
         FrameLayout.LayoutParams params =
                 new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.LEFT | Gravity.TOP);
-        params.setMargins((int) c.getPosition().x, (int) c.getPosition().y, 0, 0);
-        addView(c, params);
+        params.setMargins((int) v.getPosition().x, (int) v.getPosition().y, 0, 0);
+        addView(v, params);
     }
 
-    public void updateCirclePosition(Circle c, int offsetX, int offsetY) {
-        PointF pos = c.getPosition();
+    public void updateCirclePosition(Vertex v, int offsetX, int offsetY) {
+        PointF pos = v.getPosition();
         // center the circle at current touch point
         // when clicked in the center of circle, offsetX and offsetY are equal to radius
-        int x = (int) pos.x + (offsetX - Circle.RADIUS);
-        int y = (int) pos.y + (offsetY - Circle.RADIUS);
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) c.getLayoutParams();
+        int x = (int) pos.x + (offsetX - Vertex.RADIUS);
+        int y = (int) pos.y + (offsetY - Vertex.RADIUS);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
         params.setMargins(x, y, 0, 0);
-        updateViewLayout(c, params);
-        c.setPosition(new PointF(x, y));
+        updateViewLayout(v, params);
+        v.setPosition(new PointF(x, y));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Circle c1 = mCircles.get(0);
-        Circle c2 = mCircles.get(1);
+        Vertex c1 = mVertices.get(0);
+        Vertex c2 = mVertices.get(1);
         canvas.drawLine(c1.getCenterX(), c1.getCenterY(),
                 c2.getCenterX(), c2.getCenterY(), mLinePaint);
     }

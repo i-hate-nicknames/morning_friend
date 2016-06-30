@@ -6,14 +6,14 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.View;
 
-public class Circle extends View {
+public class Vertex extends View {
 
     public static final int RADIUS = 35;
 
     private PointF position;
     private Paint mPaint;
 
-    public Circle(Context context) {
+    public Vertex(Context context) {
         super(context);
         mPaint = new Paint();
         mPaint.setColor(0xffff0000);

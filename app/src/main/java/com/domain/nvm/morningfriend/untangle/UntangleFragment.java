@@ -17,7 +17,7 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
 
     private static final String TAG = "DragDemo";
     private UntangleField mField;
-    private List<Circle> mCircles;
+    private List<Vertex> mVertices;
 
     @Nullable
     @Override
@@ -35,27 +35,27 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
                 int y = (int) event.getY();
                 int x = (int) event.getX();
                 Log.i(TAG, "X: " + x + " Y: " + y);
-                mField.updateCirclePosition((Circle) v, x, y);
+                mField.updateCirclePosition((Vertex) v, x, y);
         }
         return true;
     }
 
 
     private void generateCircles() {
-        mCircles = new ArrayList<>();
-        Circle c1 = new Circle(getActivity());
-        c1.setPosition(new PointF(100, 100));
-        mCircles.add(c1);
+        mVertices = new ArrayList<>();
+        Vertex v1 = new Vertex(getActivity());
+        v1.setPosition(new PointF(100, 100));
+        mVertices.add(v1);
 
-        Circle c2 = new Circle(getActivity());
-        c2.setPosition(new PointF(200, 200));
-        mCircles.add(c2);
+        Vertex v2 = new Vertex(getActivity());
+        v2.setPosition(new PointF(200, 200));
+        mVertices.add(v2);
 
-        for (Circle c: mCircles) {
-            c.setOnTouchListener(this);
-            mField.addCircle(c);
+        for (Vertex v: mVertices) {
+            v.setOnTouchListener(this);
+            mField.addVertex(v);
         }
-        mField.setCircles(mCircles);
+        mField.setVertices(mVertices);
 
     }
 

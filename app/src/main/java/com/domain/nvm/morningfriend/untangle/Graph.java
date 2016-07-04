@@ -1,5 +1,6 @@
 package com.domain.nvm.morningfriend.untangle;
 
+import android.graphics.PointF;
 import android.util.Pair;
 
 import java.util.HashMap;
@@ -75,7 +76,15 @@ public class Graph {
 
         public boolean intersects(Edge other) {
             // TODO: implement
-            return false;
+            if (this == other) {
+                return false;
+            }
+            PointF a, b, c, d;
+            a = vertices.first.getPosition();
+            b = vertices.second.getPosition();
+            c = other.vertices.first.getPosition();
+            d = other.vertices.second.getPosition();
+            return Utils.intersects(a, b, c, d);
         }
 
         public Vertex getFirst() {
@@ -95,6 +104,11 @@ public class Graph {
                 return true;
             }
             return ((Edge) that).vertices.equals(this.vertices);
+        }
+
+        @Override
+        public int hashCode() {
+            return vertices.hashCode();
         }
     }
 }

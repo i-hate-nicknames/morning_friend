@@ -56,6 +56,7 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
             mGraph.addVertex(v);
             mGraph.connect(v, bottom);
         }
+        mGraph.connect(mVertices.get(1), mVertices.get(2));
 
 
         for (Vertex v: mVertices) {

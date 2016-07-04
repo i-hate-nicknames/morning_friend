@@ -7,19 +7,21 @@ import android.graphics.PointF;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 
-import java.util.List;
-
 public class UntangleField extends FrameLayout {
 
     private static final int SIZE = Vertex.RADIUS * 2;
     private Graph mGraph;
     private Paint mLinePaint;
+    private Paint mIntersectingLinePaint;
 
     public UntangleField(Context context) {
         super(context);
         mLinePaint = new Paint();
         mLinePaint.setColor(0xff222222);
         mLinePaint.setStrokeWidth(4);
+        mIntersectingLinePaint = new Paint();
+        mIntersectingLinePaint.setColor(0xffff0000);
+        mIntersectingLinePaint.setStrokeWidth(4);
         this.setWillNotDraw(false);
     }
 
@@ -52,8 +54,21 @@ public class UntangleField extends FrameLayout {
         for (Graph.Edge e: mGraph.getEdges()) {
             Vertex v1 = e.getFirst();
             Vertex v2 = e.getSecond();
-            canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
-                    v2.getCenterX(), v2.getCenterY(), mLinePaint);
+            boolean intersects = false;
+            for (Graph.Edge r: mGraph.getEdges()) {
+                if (r.intersects(e)) {
+                    intersects = true;
+                    break;
+                }
+            }
+            if (intersects) {
+                canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
+                        v2.getCenterX(), v2.getCenterY(), mIntersectingLinePaint);
+            }
+            else {
+                canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
+                        v2.getCenterX(), v2.getCenterY(), mLinePaint);
+            }
         }
 
     }

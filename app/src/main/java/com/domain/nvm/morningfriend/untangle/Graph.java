@@ -8,6 +8,8 @@ import java.util.HashSet;
 
 public class Graph {
 
+    public static final int MAX_ITEMS = 25;
+
     private HashMap<Vertex, HashSet<Vertex>> mNeighbors;
 
     public Graph() {
@@ -55,6 +57,10 @@ public class Graph {
     }
 
     private void validateVertex(Vertex v, boolean shouldExist) {
+        if (v.getNum() > MAX_ITEMS-1) {
+            throw new IllegalArgumentException(String.format("Vertex number should " +
+                    "be >= %d, was = %d", MAX_ITEMS-1, v.getNum()));
+        }
         if (mNeighbors.containsKey(v) != shouldExist) {
             throw new IllegalArgumentException("Invalid Vertex: vertex number = " + v.getNum());
         }

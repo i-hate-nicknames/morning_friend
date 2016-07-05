@@ -17,7 +17,6 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
 
     private static final String TAG = "DragDemo";
     private UntangleField mField;
-    private List<Vertex> mVertices;
     private Graph mGraph;
 
     @Nullable
@@ -36,7 +35,7 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
                 int y = (int) event.getY();
                 int x = (int) event.getX();
                 Log.i(TAG, "X: " + x + " Y: " + y);
-                mField.updateCirclePosition((Vertex) v, x, y);
+                mField.updateCirclePosition((VertexView) v, x, y);
         }
         return true;
     }
@@ -44,24 +43,22 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
 
     private void generateGraph() {
         mGraph = new Graph();
-        mVertices = new ArrayList<>();
-        Vertex bottom = new Vertex(0, getActivity());
-        bottom.setPosition(new PointF(300, 500));
-        mVertices.add(bottom);
+        List<VertexView> vertexViews = new ArrayList<>();
+        Vertex bottom = new Vertex(0, new PointF(300, 500));
+        vertexViews.add(new VertexView(bottom, getActivity()));
         mGraph.addVertex(bottom);
         for (int i = 1; i < 6; i++) {
-            Vertex v = new Vertex(i, getActivity());
-            v.setPosition(new PointF(100+i*50, 100));
-            mVertices.add(v);
+            Vertex v = new Vertex(i, new PointF(100+i*50, 100));
             mGraph.addVertex(v);
             mGraph.connect(v, bottom);
+            vertexViews.add(new VertexView(v, getActivity()));
         }
-        mGraph.connect(mVertices.get(1), mVertices.get(2));
+        mGraph.connect(vertexViews.get(1).getVertex(), vertexViews.get(2).getVertex());
 
 
-        for (Vertex v: mVertices) {
-            v.setOnTouchListener(this);
-            mField.addVertex(v);
+        for (VertexView vView: vertexViews) {
+            vView.setOnTouchListener(this);
+            mField.addVertexView(vView);
         }
         mField.setGraph(mGraph);
 

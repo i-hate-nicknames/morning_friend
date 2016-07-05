@@ -9,13 +9,18 @@ import android.widget.FrameLayout;
 
 public class UntangleField extends FrameLayout {
 
-    private static final int SIZE = Vertex.RADIUS * 2;
+    private static final int SIZE = VertexView.RADIUS * 2;
     private Graph mGraph;
     private Paint mLinePaint;
     private Paint mIntersectingLinePaint;
+    private VertexView[] mVertexViews;
 
     public UntangleField(Context context) {
         super(context);
+        mVertexViews = new VertexView[Graph.MAX_ITEMS];
+        for (int i = 0; i < mVertexViews.length; i++) {
+            mVertexViews[i] = null;
+        }
         mLinePaint = new Paint();
         mLinePaint.setColor(0xff222222);
         mLinePaint.setStrokeWidth(4);
@@ -29,31 +34,32 @@ public class UntangleField extends FrameLayout {
         this.mGraph = graph;
     }
 
-    public void addVertex(Vertex v) {
+    public void addVertexView(VertexView vView) {
         FrameLayout.LayoutParams params =
                 new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.LEFT | Gravity.TOP);
-        params.setMargins((int) v.getPosition().x, (int) v.getPosition().y, 0, 0);
-        addView(v, params);
+        params.setMargins(vView.getVertexX(), vView.getVertexY(), 0, 0);
+        addView(vView, params);
+        mVertexViews[vView.getVertex().getNum()] = vView;
     }
 
-    public void updateCirclePosition(Vertex v, int offsetX, int offsetY) {
-        PointF pos = v.getPosition();
+    public void updateCirclePosition(VertexView vView, int offsetX, int offsetY) {
+        PointF pos = vView.getVertex().getPosition();
         // center the circle at current touch point
         // when clicked in the center of circle, offsetX and offsetY are equal to radius
-        int x = (int) pos.x + (offsetX - Vertex.RADIUS);
-        int y = (int) pos.y + (offsetY - Vertex.RADIUS);
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
+        int x = (int) pos.x + (offsetX - VertexView.RADIUS);
+        int y = (int) pos.y + (offsetY - VertexView.RADIUS);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) vView.getLayoutParams();
         params.setMargins(x, y, 0, 0);
-        updateViewLayout(v, params);
-        v.setPosition(new PointF(x, y));
+        updateViewLayout(vView, params);
+        vView.getVertex().setPosition(new PointF(x, y));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (Graph.Edge e: mGraph.getEdges()) {
-            Vertex v1 = e.getFirst();
-            Vertex v2 = e.getSecond();
+            Vertex u = e.getFirst();
+            Vertex v = e.getSecond();
             boolean intersects = false;
             for (Graph.Edge r: mGraph.getEdges()) {
                 if (r.intersects(e)) {
@@ -61,15 +67,22 @@ public class UntangleField extends FrameLayout {
                     break;
                 }
             }
-            if (intersects) {
-                canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
-                        v2.getCenterX(), v2.getCenterY(), mIntersectingLinePaint);
-            }
-            else {
-                canvas.drawLine(v1.getCenterX(), v1.getCenterY(),
-                        v2.getCenterX(), v2.getCenterY(), mLinePaint);
-            }
+            drawEdge(canvas, u, v, intersects);
         }
 
+    }
+
+    private void drawEdge(Canvas c, Vertex u, Vertex v, boolean intersect) {
+        VertexView uView = mVertexViews[u.getNum()];
+        VertexView vView = mVertexViews[v.getNum()];
+        Paint paint;
+        if (intersect) {
+            paint = mIntersectingLinePaint;
+        }
+        else {
+            paint = mLinePaint;
+        }
+        c.drawLine(uView.getCenterX(), uView.getCenterY(),
+                vView.getCenterX(), vView.getCenterY(), paint);
     }
 }

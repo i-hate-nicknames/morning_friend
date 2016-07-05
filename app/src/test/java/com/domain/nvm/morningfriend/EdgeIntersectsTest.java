@@ -11,20 +11,12 @@ import static org.junit.Assert.*;
 
 public class EdgeIntersectsTest {
 
-    private class MockVertex extends Vertex {
-
-        public MockVertex(int num) {
-            super(num, null);
-        }
-    }
-
     @Test
     public void lineTest() {
         Graph g = new Graph();
         Vertex[] vs = new Vertex[3];
         for (int i = 0; i < 3; i++) {
-            Vertex v = new MockVertex(0);
-            v.setPosition(new PointF(100*i, 200*i));
+            Vertex v = new Vertex(0, new PointF(100*i, 200*i));
             g.addVertex(v);
             vs[i] = v;
         }

@@ -46,7 +46,13 @@ public class Utils {
     }
 
     public static boolean segmentsOverlap(float a1, float a2, float b1, float b2) {
-        return liesWithin(a1, b1, b2) || liesWithin(a2, b1, b2);
+        if (Math.abs(a1-a2) > Math.abs(b1-b2)) {
+            return liesWithin(b1, a1, a2) || liesWithin(b2, a1, a2);
+        }
+        else {
+            return liesWithin(a1, b1, b2) || liesWithin(a2, b1, b2);
+        }
+
     }
 
     public static boolean intersects(PointF a1, PointF a2, PointF b1, PointF b2) {

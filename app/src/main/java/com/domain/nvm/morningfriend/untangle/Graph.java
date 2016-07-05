@@ -75,7 +75,6 @@ public class Graph {
         }
 
         public boolean intersects(Edge other) {
-            // TODO: implement
             if (this == other) {
                 return false;
             }
@@ -84,7 +83,7 @@ public class Graph {
             b = vertices.second.getPosition();
             c = other.vertices.first.getPosition();
             d = other.vertices.second.getPosition();
-            return Utils.intersects(a, b, c, d);
+            return !Utils.linesTouch(a, b, c, d) && Utils.intersects(a, b, c, d);
         }
 
         public Vertex getFirst() {

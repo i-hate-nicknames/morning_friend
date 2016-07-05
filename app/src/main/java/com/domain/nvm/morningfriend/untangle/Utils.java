@@ -59,6 +59,10 @@ public class Utils {
         return intersects(a1.x, a1.y, a2.x, a2.y, b1.x, b1.y, b2.x, b2.y);
     }
 
+    public static boolean linesTouch(PointF a1, PointF a2, PointF b1, PointF b2) {
+        return a1 == b1 || a1 == b2 || a2 == b1 || a2 == b2;
+    }
+
     public static boolean intersects(float a1x, float a1y, float a2x, float a2y,
                                      float b1x, float b1y, float b2x, float b2y) {
         float slopeA = slope(a1x, a1y, a2x, a2y);

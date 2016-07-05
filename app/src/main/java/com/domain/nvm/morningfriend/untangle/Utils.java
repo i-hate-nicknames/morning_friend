@@ -87,7 +87,7 @@ public class Utils {
             // lines overlap and have same intercept
             return almostEqual(interA, interB) && segmentsOverlap(a1x, a2x, b1x, b2x);
         }
-        float sectX = -(interA-interB)/slopeA-slopeB;
+        float sectX = -(interA-interB)/(slopeA-slopeB);
         return liesWithin(sectX, a1x, a2x) && liesWithin(sectX, b1x, b2x);
 
     }

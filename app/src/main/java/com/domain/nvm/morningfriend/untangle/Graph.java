@@ -10,6 +10,7 @@ public class Graph {
     public static final int MAX_ITEMS = 25;
 
     private HashMap<Vertex, HashSet<Vertex>> mNeighbors;
+    private HashSet<Edge> mAllEdges;
 
     public Graph() {
         mNeighbors = new HashMap<>();
@@ -18,6 +19,7 @@ public class Graph {
     public void addVertex(Vertex v) {
         validateVertex(v, false);
         mNeighbors.put(v, new HashSet<Vertex>());
+        mAllEdges = null;
     }
 
     public boolean connected(Vertex v1, Vertex v2) {
@@ -39,11 +41,13 @@ public class Graph {
     }
 
     public HashSet<Edge> getEdges() {
-        HashSet<Edge> set = new HashSet<>();
-        for (Vertex v: mNeighbors.keySet()) {
-            set.addAll(getEdges(v));
+        if (mAllEdges == null) {
+            mAllEdges = new HashSet<>();
+            for (Vertex v: mNeighbors.keySet()) {
+                mAllEdges.addAll(getEdges(v));
+            }
         }
-        return set;
+        return mAllEdges;
     }
 
     public HashSet<Edge> getEdges(Vertex v) {

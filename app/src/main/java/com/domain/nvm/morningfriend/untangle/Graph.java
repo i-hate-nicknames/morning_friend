@@ -1,7 +1,6 @@
 package com.domain.nvm.morningfriend.untangle;
 
 import android.graphics.PointF;
-import android.util.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,15 +67,16 @@ public class Graph {
 
     public class Edge {
 
-        private Pair<Vertex, Vertex> vertices;
+        private Vertex u, v;
 
         public Edge(Vertex v1, Vertex v2) {
-            // ensure uniqueness of all pairs
             if (v1.getNum() < v2.getNum()) {
-                vertices = new Pair<>(v1, v2);
+                u = v1;
+                v = v2;
             }
             else {
-                vertices = new Pair<>(v2, v1);
+                u = v2;
+                v = v1;
             }
         }
 
@@ -85,35 +85,37 @@ public class Graph {
                 return false;
             }
             PointF a, b, c, d;
-            a = vertices.first.getPosition();
-            b = vertices.second.getPosition();
-            c = other.vertices.first.getPosition();
-            d = other.vertices.second.getPosition();
+            a = u.getPosition();
+            b = v.getPosition();
+            c = other.getFirst().getPosition();
+            d = other.getSecond().getPosition();
             return !Utils.linesTouch(a, b, c, d) && Utils.intersects(a, b, c, d);
         }
 
         public Vertex getFirst() {
-            return vertices.first;
+            return u;
         }
 
         public Vertex getSecond() {
-            return vertices.second;
+            return v;
         }
 
         @Override
-        public boolean equals(Object that) {
-            if (!(that instanceof Edge)) {
+        public boolean equals(Object obj) {
+            if (!(obj instanceof Edge)) {
                 return false;
             }
+            Edge that = (Edge) obj;
             if (that == this) {
                 return true;
             }
-            return ((Edge) that).vertices.equals(this.vertices);
+            return that.hashCode() == hashCode();
         }
 
         @Override
         public int hashCode() {
-            return vertices.hashCode();
+            // every edge with the same (u, v) will get same hash
+            return u.getNum() * MAX_ITEMS + v.getNum();
         }
     }
 }

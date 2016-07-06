@@ -34,7 +34,6 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 int y = (int) event.getY();
                 int x = (int) event.getX();
-                Log.i(TAG, "X: " + x + " Y: " + y);
                 mField.updateCirclePosition((VertexView) v, x, y);
         }
         return true;

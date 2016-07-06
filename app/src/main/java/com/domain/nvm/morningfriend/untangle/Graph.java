@@ -10,27 +10,16 @@ public class Graph {
     public static final int MAX_ITEMS = 25;
 
     private HashMap<Vertex, HashSet<Vertex>> mNeighbors;
-    private HashSet<Edge> mAllEdges;
+    private HashSet<Edge> mEdges;
 
     public Graph() {
         mNeighbors = new HashMap<>();
+        mEdges = new HashSet<>();
     }
 
     public void addVertex(Vertex v) {
         validateVertex(v, false);
         mNeighbors.put(v, new HashSet<Vertex>());
-        mAllEdges = null;
-    }
-
-    public boolean connected(Vertex v1, Vertex v2) {
-        validateVertex(v1, true);
-        validateVertex(v2, true);
-        for (Vertex neighbor: mNeighbors.get(v1)) {
-            if (neighbor.getNum() == v2.getNum()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void connect(Vertex v1, Vertex v2) {
@@ -38,25 +27,11 @@ public class Graph {
         validateVertex(v2, true);
         mNeighbors.get(v1).add(v2);
         mNeighbors.get(v2).add(v1);
+        mEdges.add(new Edge(v1, v2));
     }
 
     public HashSet<Edge> getEdges() {
-        if (mAllEdges == null) {
-            mAllEdges = new HashSet<>();
-            for (Vertex v: mNeighbors.keySet()) {
-                mAllEdges.addAll(getEdges(v));
-            }
-        }
-        return mAllEdges;
-    }
-
-    public HashSet<Edge> getEdges(Vertex v) {
-        validateVertex(v, true);
-        HashSet<Edge> set = new HashSet<>();
-        for (Vertex neighbor: mNeighbors.get(v)) {
-            set.add(new Edge(v, neighbor));
-        }
-        return set;
+        return mEdges;
     }
 
     private void validateVertex(Vertex v, boolean shouldExist) {

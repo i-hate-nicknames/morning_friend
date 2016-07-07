@@ -2,8 +2,10 @@ package com.domain.nvm.morningfriend.untangle;
 
 import android.graphics.PointF;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Graph {
 
@@ -28,6 +30,23 @@ public class Graph {
         mNeighbors.get(v1).add(v2);
         mNeighbors.get(v2).add(v1);
         mEdges.add(new Edge(v1, v2));
+    }
+
+    // TODO: implement proper way of storing vertices with O(1) retrieval
+    public Vertex getVertex(int num) {
+        for (Vertex v: mNeighbors.keySet()) {
+            if (v.getNum() == num) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    // TODO: implement proper way of storing vertices
+    public List<Vertex> getVertices() {
+        ArrayList<Vertex> vs = new ArrayList();
+        vs.addAll(mNeighbors.keySet());
+        return vs;
     }
 
     public HashSet<Edge> getEdges() {

@@ -33,7 +33,7 @@ public class GraphReader {
         String graphString = null;
         Graph graph = null;
         try {
-            graphString = readGraph(context, R.raw.graph);
+            graphString = readGraph(context, R.raw.graph7_12);
         }
         catch (IOException ioe) {
             Log.e(TAG, "Error while reading graph file", ioe);

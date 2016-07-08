@@ -36,6 +36,18 @@ public class Vertex {
         setPosition(new PointF(position.x, y));
     }
 
+    public void swapX(Vertex other) {
+        float tmp = getX();
+        setX(other.getX());
+        other.setX(tmp);
+    }
+
+    public void swapY(Vertex other) {
+        float tmp = getY();
+        setY(other.getY());
+        other.setY(tmp);
+    }
+
     public void setPosition(PointF position) {
         this.position = position;
     }

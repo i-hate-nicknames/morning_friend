@@ -47,6 +47,7 @@ public class UntangleFragment extends Fragment implements View.OnTouchListener {
 
     private void generateGraph() {
         mGraph = GraphReader.getGraph(getActivity());
+        mGraph.shufflePositions();
         mGraph.scaleVertexPositions(mField.getWidth()*0.8f, mField.getHeight()*0.8f);
         mGraph.moveVertexPositions(mField.getWidth()*0.05f, mField.getHeight()*0.05f);
         for (Vertex v: mGraph.getVertices()) {

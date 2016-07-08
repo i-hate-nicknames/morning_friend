@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 public class Graph {
 
@@ -64,6 +65,29 @@ public class Graph {
     public void moveVertexPositions(float moveX, float moveY) {
         for (Vertex v: getVertices()) {
             v.setPosition(v.getX() + moveX, v.getY() + moveY);
+        }
+    }
+
+    public void shufflePositions() {
+        int lastIdx = 0;
+        Random rand = new Random();
+        while (mVertices[lastIdx+1] != null) {
+            lastIdx++;
+        }
+        for (int i = 0; i < lastIdx * 2; i++) {
+            int uIdx = rand.nextInt(lastIdx+1), vIdx = rand.nextInt(lastIdx+1);
+            Vertex u = mVertices[uIdx], v = mVertices[vIdx];
+            // the more vertices, the higher chance to swap them rather than change coordinate
+            if (Math.random() > 1.0 / lastIdx) {
+                u.swapX(v);
+                u.swapY(v);
+            }
+            else {
+                float x = 1.0f / (rand.nextInt(5)+1);
+                float y = 1.0f / (rand.nextInt(5)+1);
+                u.setX(x);
+                u.setY(y);
+            }
         }
     }
 

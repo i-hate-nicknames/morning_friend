@@ -46,7 +46,6 @@ public class Graph {
         return mVertices[num];
     }
 
-    // TODO: implement proper way of storing vertices
     public List<Vertex> getVertices() {
         ArrayList<Vertex> vs = new ArrayList<>();
         int i = 0;
@@ -55,6 +54,22 @@ public class Graph {
             i++;
         }
         return vs;
+    }
+
+    public void scaleVertexPositions(float scaleX, float scaleY) {
+        for (Vertex v: getVertices()) {
+            float x = v.getPosition().x;
+            float y = v.getPosition().y;
+            v.setPosition(new PointF(x * scaleX, y * scaleY));
+        }
+    }
+
+    public void moveVertexPositions(float moveX, float moveY) {
+        for (Vertex v: getVertices()) {
+            float x = v.getPosition().x;
+            float y = v.getPosition().y;
+            v.setPosition(new PointF(x + moveX, y + moveY));
+        }
     }
 
     public HashSet<Edge> getEdges() {

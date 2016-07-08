@@ -51,7 +51,7 @@ public class UntangleField extends FrameLayout {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) vView.getLayoutParams();
         params.setMargins(x, y, 0, 0);
         updateViewLayout(vView, params);
-        vView.getVertex().setPosition(new PointF(x, y));
+        vView.getVertex().setPosition(x, y);
     }
 
     @Override

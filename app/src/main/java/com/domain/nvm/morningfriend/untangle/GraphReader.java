@@ -21,7 +21,7 @@ import java.io.Writer;
 
 public class GraphReader {
 
-    private static final String TAG = "GraphGeneratorLog";
+    private static final String TAG = "GraphReaderLog";
 
     private static final String VERTICES = "vertices";
     private static final String EDGES = "edges";
@@ -45,10 +45,6 @@ public class GraphReader {
             Log.e(TAG, "Error while parsing graph string", je);
         }
         return graph;
-
-    }
-
-    private static void swapVertices(Graph graph) {
 
     }
 

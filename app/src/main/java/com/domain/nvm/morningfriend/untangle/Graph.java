@@ -3,7 +3,6 @@ package com.domain.nvm.morningfriend.untangle;
 import android.graphics.PointF;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,17 +57,13 @@ public class Graph {
 
     public void scaleVertexPositions(float scaleX, float scaleY) {
         for (Vertex v: getVertices()) {
-            float x = v.getPosition().x;
-            float y = v.getPosition().y;
-            v.setPosition(new PointF(x * scaleX, y * scaleY));
+            v.setPosition(v.getX() * scaleX, v.getY() * scaleY);
         }
     }
 
     public void moveVertexPositions(float moveX, float moveY) {
         for (Vertex v: getVertices()) {
-            float x = v.getPosition().x;
-            float y = v.getPosition().y;
-            v.setPosition(new PointF(x + moveX, y + moveY));
+            v.setPosition(v.getX() + moveX, v.getY() + moveY);
         }
     }
 

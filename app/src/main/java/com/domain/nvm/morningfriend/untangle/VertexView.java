@@ -39,11 +39,11 @@ public class VertexView extends View {
     }
 
     public int getVertexX() {
-        return (int) mVertex.getPosition().x;
+        return (int) mVertex.getX();
     }
 
     public int getVertexY() {
-        return (int) mVertex.getPosition().y;
+        return (int) mVertex.getY();
     }
 
     @Override

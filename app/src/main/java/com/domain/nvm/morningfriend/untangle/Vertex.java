@@ -16,6 +16,26 @@ public class Vertex {
         return position;
     }
 
+    public float getX() {
+        return position.x;
+    }
+
+    public float getY() {
+        return position.y;
+    }
+
+    public void setPosition(float x, float y) {
+        setPosition(new PointF(x, y));
+    }
+
+    public void setX(float x) {
+        setPosition(new PointF(x, position.y));
+    }
+
+    public void setY(float y) {
+        setPosition(new PointF(position.x, y));
+    }
+
     public void setPosition(PointF position) {
         this.position = position;
     }

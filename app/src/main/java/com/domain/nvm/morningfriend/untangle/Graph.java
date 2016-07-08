@@ -3,6 +3,7 @@ package com.domain.nvm.morningfriend.untangle;
 import android.graphics.PointF;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,17 +12,23 @@ public class Graph {
 
     public static final int MAX_ITEMS = 25;
 
+    private Vertex[] mVertices;
     private HashMap<Vertex, HashSet<Vertex>> mNeighbors;
     private HashSet<Edge> mEdges;
 
     public Graph() {
         mNeighbors = new HashMap<>();
         mEdges = new HashSet<>();
+        mVertices = new Vertex[MAX_ITEMS];
+        for (int i = 0; i < MAX_ITEMS; i++) {
+            mVertices[i] = null;
+        }
     }
 
     public void addVertex(Vertex v) {
         validateVertex(v, false);
         mNeighbors.put(v, new HashSet<Vertex>());
+        mVertices[v.getNum()] = v;
     }
 
     public void connect(Vertex v1, Vertex v2) {
@@ -32,20 +39,21 @@ public class Graph {
         mEdges.add(new Edge(v1, v2));
     }
 
-    // TODO: implement proper way of storing vertices with O(1) retrieval
     public Vertex getVertex(int num) {
-        for (Vertex v: mNeighbors.keySet()) {
-            if (v.getNum() == num) {
-                return v;
-            }
+        if (num >= MAX_ITEMS) {
+            throw new IllegalArgumentException("Invalid Vertex number: " + num);
         }
-        return null;
+        return mVertices[num];
     }
 
     // TODO: implement proper way of storing vertices
     public List<Vertex> getVertices() {
-        ArrayList<Vertex> vs = new ArrayList();
-        vs.addAll(mNeighbors.keySet());
+        ArrayList<Vertex> vs = new ArrayList<>();
+        int i = 0;
+        while (mVertices[i] != null) {
+            vs.add(mVertices[i]);
+            i++;
+        }
         return vs;
     }
 

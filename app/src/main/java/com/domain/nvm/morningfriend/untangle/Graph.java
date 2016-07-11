@@ -89,6 +89,9 @@ public class Graph {
                 u.setY(y);
             }
         }
+        if (isSolved()) {
+            shufflePositions();
+        }
     }
 
     public HashSet<Edge> getEdges() {

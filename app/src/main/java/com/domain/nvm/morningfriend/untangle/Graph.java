@@ -95,6 +95,30 @@ public class Graph {
         return mEdges;
     }
 
+    public HashSet<Edge> getIntersectingEdges() {
+        HashSet<Edge> intersecting = new HashSet<>();
+        // not optimal but meh the number of edges will never get high
+        for (Edge e: getEdges()) {
+            for (Edge r: getEdges()) {
+                if (e.intersects(r)) {
+                    intersecting.add(e);
+                    break;
+                }
+            }
+        }
+        return intersecting;
+    }
+
+    public HashSet<Edge> getNonIntersectingEdges() {
+        HashSet<Edge> nonIntersecting = new HashSet<>(mEdges);
+        nonIntersecting.removeAll(getIntersectingEdges());
+        return nonIntersecting;
+    }
+
+    public boolean isSolved() {
+        return getIntersectingEdges().size() == 0;
+    }
+
     private void validateVertex(Vertex v, boolean shouldExist) {
         if (v.getNum() > MAX_ITEMS-1) {
             throw new IllegalArgumentException(String.format("Vertex number should " +

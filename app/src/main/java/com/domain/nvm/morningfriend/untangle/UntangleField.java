@@ -57,22 +57,18 @@ public class UntangleField extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (Graph.Edge e: mGraph.getEdges()) {
-            Vertex u = e.getFirst();
-            Vertex v = e.getSecond();
-            boolean intersects = false;
-            for (Graph.Edge r: mGraph.getEdges()) {
-                if (r.intersects(e)) {
-                    intersects = true;
-                    break;
-                }
-            }
-            drawEdge(canvas, u, v, intersects);
+        for (Graph.Edge e: mGraph.getIntersectingEdges()) {
+            drawEdge(canvas, e, true);
+        }
+        for (Graph.Edge e: mGraph.getNonIntersectingEdges()) {
+            drawEdge(canvas, e, false);
         }
 
     }
 
-    private void drawEdge(Canvas c, Vertex u, Vertex v, boolean intersect) {
+    private void drawEdge(Canvas c, Graph.Edge e, boolean intersect) {
+        Vertex u = e.getFirst();
+        Vertex v = e.getSecond();
         VertexView uView = mVertexViews[u.getNum()];
         VertexView vView = mVertexViews[v.getNum()];
         Paint paint;

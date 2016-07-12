@@ -4,39 +4,58 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.domain.nvm.morningfriend.R;
+
 public class UntangleField extends FrameLayout implements View.OnTouchListener {
 
-    private static final int SIZE = VertexView.RADIUS * 2;
+    private static final int VERTEX_VIEW_SIZE = VertexView.RADIUS * 2;
+    private static final int EDGE_WIDTH = 4;
+    private static final int EDGE_COLOR = 0xff222222;
+    private static final int CROSS_EDGE_COLOR = 0xffff0000;
+    private static final float MARGIN_PERCENTAGE = .2f;
+    private static final float VERTEX_SCALE_PERCENTAGE = 1 - MARGIN_PERCENTAGE;
+    private static final float VERTEX_OFFSET = MARGIN_PERCENTAGE / 4;
+
     private Graph mGraph;
     private Paint mLinePaint;
     private Paint mIntersectingLinePaint;
     private VertexView[] mVertexViews;
+    private int mVertexColor;
 
-    public UntangleField(Context context) {
-        super(context);
+    public UntangleField(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(attrs);
+    }
+
+    public void init(AttributeSet attrs) {
         mVertexViews = new VertexView[Graph.MAX_ITEMS];
         for (int i = 0; i < mVertexViews.length; i++) {
             mVertexViews[i] = null;
         }
+        mVertexColor = attrs.getAttributeIntValue(R.attr.vertexColor, VertexView.VERTEX_COLOR);
+        int edgeColor = attrs.getAttributeIntValue(R.attr.edgeColor, EDGE_COLOR);
+        int crossEdgeColor = attrs.getAttributeIntValue(R.attr.crossEdgeColor, CROSS_EDGE_COLOR);
         mLinePaint = new Paint();
-        mLinePaint.setColor(0xff222222);
-        mLinePaint.setStrokeWidth(4);
+        mLinePaint.setColor(edgeColor);
+        mLinePaint.setStrokeWidth(EDGE_WIDTH);
         mIntersectingLinePaint = new Paint();
-        mIntersectingLinePaint.setColor(0xffff0000);
-        mIntersectingLinePaint.setStrokeWidth(4);
+        mIntersectingLinePaint.setColor(crossEdgeColor);
+        mIntersectingLinePaint.setStrokeWidth(EDGE_WIDTH);
         this.setWillNotDraw(false);
     }
 
     public void generateGraph() {
         mGraph = GraphReader.getGraph(getContext());
         mGraph.shufflePositions();
-        mGraph.scaleVertexPositions(getWidth()*0.8f, getHeight()*0.8f);
-        mGraph.moveVertexPositions(getWidth()*0.05f, getHeight()*0.05f);
+        mGraph.scaleVertexPositions(getWidth()*VERTEX_SCALE_PERCENTAGE,
+                getHeight()*VERTEX_SCALE_PERCENTAGE);
+        mGraph.moveVertexPositions(getWidth()*VERTEX_OFFSET, getHeight()*VERTEX_OFFSET);
         for (Vertex v: mGraph.getVertices()) {
             addVertex(v);
         }
@@ -66,9 +85,10 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
 
     private void addVertex(Vertex v) {
         VertexView vView = new VertexView(v, getContext());
+        vView.setColor(mVertexColor);
         vView.setOnTouchListener(this);
         FrameLayout.LayoutParams params =
-                new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.LEFT | Gravity.TOP);
+                new FrameLayout.LayoutParams(VERTEX_VIEW_SIZE, VERTEX_VIEW_SIZE, Gravity.LEFT | Gravity.TOP);
         params.setMargins(vView.getVertexX(), vView.getVertexY(), 0, 0);
         addView(vView, params);
         mVertexViews[vView.getVertex().getNum()] = vView;

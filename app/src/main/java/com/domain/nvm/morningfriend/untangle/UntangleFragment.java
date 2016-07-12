@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.domain.nvm.morningfriend.R;
 
 
 public class UntangleFragment extends Fragment {
@@ -18,7 +19,8 @@ public class UntangleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mField = new UntangleField(getActivity());
+        View v = inflater.inflate(R.layout.fragment_untangle_field, container, false);
+        mField = (UntangleField) v.findViewById(R.id.untangle_field);
         mField.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -27,7 +29,7 @@ public class UntangleFragment extends Fragment {
                 mField.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        return mField;
+        return v;
     }
 
 

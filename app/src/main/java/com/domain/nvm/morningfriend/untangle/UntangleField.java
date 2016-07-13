@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -82,8 +83,10 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
                 int y = (int) event.getY();
                 int x = (int) event.getX();
                 updateCirclePosition((VertexView) v, x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                checkSolution();
         }
-        checkSolution();
         return true;
     }
 

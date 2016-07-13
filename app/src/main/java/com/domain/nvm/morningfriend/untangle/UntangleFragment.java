@@ -8,18 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.RingingControls;
 
 
 public class UntangleFragment extends Fragment implements UntangleField.Callbacks {
 
     private UntangleField mField;
+    private RingingControls mControls;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mControls = (RingingControls) getActivity();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mField = new UntangleField(getActivity());
-        mField.setCallback(this);
+        View v = inflater.inflate(R.layout.fragment_untangle_field, container, false);
+        mField = (UntangleField) v.findViewById(R.id.untangle_field);
+        mField.setCallbacks(this);
         mField.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -28,16 +38,16 @@ public class UntangleFragment extends Fragment implements UntangleField.Callback
                 mField.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        return mField;
+        return v;
     }
 
     @Override
-    public void onGraphUntangled() {
-
+    public void onGraphSolved() {
+        mControls.stopRinging();
     }
 
     @Override
-    public void onGraphTangled() {
-
+    public void onSolutionBroken() {
+        // TODO: restart ringing
     }
 }

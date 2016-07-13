@@ -9,11 +9,19 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.RingingControls;
 
 
-public class UntangleFragment extends Fragment {
+public class UntangleFragment extends Fragment implements UntangleField.Callbacks {
 
     private UntangleField mField;
+    private RingingControls mControls;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mControls = (RingingControls) getActivity();
+    }
 
     @Nullable
     @Override
@@ -21,6 +29,7 @@ public class UntangleFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_untangle_field, container, false);
         mField = (UntangleField) v.findViewById(R.id.untangle_field);
+        mField.setCallbacks(this);
         mField.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -32,11 +41,13 @@ public class UntangleFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onGraphSolved() {
+        mControls.stopRinging();
+    }
 
-
-
-
-
-
-
+    @Override
+    public void onSolutionBroken() {
+        // TODO: restart ringing
+    }
 }

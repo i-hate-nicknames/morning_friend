@@ -28,6 +28,13 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
     private Paint mIntersectingLinePaint;
     private VertexView[] mVertexViews;
     private int mVertexColor;
+    private Callbacks mCallbacks;
+    private boolean notificationSolvedSent;
+
+    public interface Callbacks {
+        void onGraphSolved();
+        void onSolutionBroken();
+    }
 
     public UntangleField(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -53,6 +60,10 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         a.recycle();
     }
 
+    public void setCallbacks(Callbacks callbacks) {
+        mCallbacks = callbacks;
+    }
+
     public void generateGraph() {
         mGraph = GraphReader.getGraph(getContext());
         mGraph.shufflePositions();
@@ -72,6 +83,7 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
                 int x = (int) event.getX();
                 updateCirclePosition((VertexView) v, x, y);
         }
+        checkSolution();
         return true;
     }
 
@@ -83,6 +95,19 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         }
         for (Graph.Edge e: mGraph.getNonIntersectingEdges()) {
             drawEdge(canvas, e, false);
+        }
+    }
+
+    private void checkSolution() {
+        if (mCallbacks == null)
+            return;
+        if (!notificationSolvedSent && mGraph.isSolved()) {
+            mCallbacks.onGraphSolved();
+            notificationSolvedSent = true;
+        }
+        else if (notificationSolvedSent && !mGraph.isSolved()) {
+            mCallbacks.onSolutionBroken();
+            notificationSolvedSent = false;
         }
     }
 

@@ -7,9 +7,9 @@
 
     <com.domain.nvm.morningfriend.untangle.UntangleField
         android:id="@+id/untangle_field"
-        app:vertexColor="#ffff0000"
-        app:edgeColor="#ff222222"
-        app:crossEdgeColor="#ffff0000"
+        app:vertexColor="#383838"
+        app:edgeColor="#383838"
+        app:crossEdgeColor="#ef3d30"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

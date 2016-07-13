@@ -1,6 +1,7 @@
 package com.domain.nvm.morningfriend.untangle;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
@@ -30,17 +31,18 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
 
     public UntangleField(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init(context, attrs);
     }
 
-    public void init(AttributeSet attrs) {
+    public void init(Context context, AttributeSet attrs) {
         mVertexViews = new VertexView[Graph.MAX_ITEMS];
         for (int i = 0; i < mVertexViews.length; i++) {
             mVertexViews[i] = null;
         }
-        mVertexColor = attrs.getAttributeIntValue(R.attr.vertexColor, VertexView.VERTEX_COLOR);
-        int edgeColor = attrs.getAttributeIntValue(R.attr.edgeColor, EDGE_COLOR);
-        int crossEdgeColor = attrs.getAttributeIntValue(R.attr.crossEdgeColor, CROSS_EDGE_COLOR);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UntangleField);
+        mVertexColor = a.getColor(R.styleable.UntangleField_vertexColor, VertexView.VERTEX_COLOR);
+        int edgeColor = a.getColor(R.styleable.UntangleField_edgeColor, EDGE_COLOR);
+        int crossEdgeColor = a.getColor(R.styleable.UntangleField_crossEdgeColor, CROSS_EDGE_COLOR);
         mLinePaint = new Paint();
         mLinePaint.setColor(edgeColor);
         mLinePaint.setStrokeWidth(EDGE_WIDTH);
@@ -48,6 +50,7 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         mIntersectingLinePaint.setColor(crossEdgeColor);
         mIntersectingLinePaint.setStrokeWidth(EDGE_WIDTH);
         this.setWillNotDraw(false);
+        a.recycle();
     }
 
     public void generateGraph() {

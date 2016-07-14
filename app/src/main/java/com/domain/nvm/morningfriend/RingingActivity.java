@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 
 import com.domain.nvm.morningfriend.squares.SquaresFragment;
+import com.domain.nvm.morningfriend.untangle.UntangleFragment;
 
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
 
     @Override
     public Fragment getFragment() {
-        return new SquaresFragment();
+        return new UntangleFragment();
     }
 
     @Override

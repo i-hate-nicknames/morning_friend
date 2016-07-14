@@ -90,7 +90,7 @@ public class AlarmSettingsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_demo:
-                Intent i = new Intent(getActivity(), DemoActivity.class);
+                Intent i = new Intent(getActivity(), RingingActivity.class);
                 startActivity(i);
                 return true;
             default:

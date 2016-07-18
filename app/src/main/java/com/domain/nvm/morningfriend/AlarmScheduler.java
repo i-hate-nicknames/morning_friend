@@ -1,13 +1,16 @@
 package com.domain.nvm.morningfriend;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class AlarmPreferences {
+public class AlarmScheduler {
 
     private static final String IS_ENABLED = "isAlarmEnabled";
     private static final String ALARM_TIME = "alarmTime";
@@ -70,6 +73,20 @@ public class AlarmPreferences {
                     .edit()
                     .putLong(ALARM_TIME, calendar.getTime().getTime())
                     .apply();
+        }
+    }
+
+    public static void setRingingAlarm(Context context, Date time, boolean isOn) {
+        Intent i = new Intent(context, RingingActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (isOn) {
+            am.set(AlarmManager.RTC_WAKEUP, time.getTime(), pi);
+        }
+        else {
+            am.cancel(pi);
+            pi.cancel();
         }
     }
 

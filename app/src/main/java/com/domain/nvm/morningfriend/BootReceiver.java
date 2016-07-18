@@ -10,8 +10,8 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        boolean isOn = AlarmPreferences.isEnabled(context);
-        Date time = AlarmPreferences.getAlarmTime(context);
-        RingingActivity.setRingingAlarm(context, time, isOn);
+        boolean isOn = AlarmScheduler.isEnabled(context);
+        Date time = AlarmScheduler.getAlarmTime(context);
+        AlarmScheduler.setRingingAlarm(context, time, isOn);
     }
 }

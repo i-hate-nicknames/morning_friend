@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -44,7 +43,7 @@ public class AlarmSettingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAlarmTime = AlarmPreferences.getAlarmTime(getActivity());
+        mAlarmTime = AlarmScheduler.getAlarmTime(getActivity());
         setHasOptionsMenu(true);
     }
 
@@ -60,8 +59,8 @@ public class AlarmSettingsFragment extends Fragment {
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlarmPreferences.setEnabled(getActivity(), isChecked);
-                RingingActivity.setRingingAlarm(getActivity(), mAlarmTime, isChecked);
+                AlarmScheduler.setEnabled(getActivity(), isChecked);
+                AlarmScheduler.setRingingAlarm(getActivity(), mAlarmTime, isChecked);
                 updateUI();
             }
         });
@@ -102,14 +101,14 @@ public class AlarmSettingsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_TIME && resultCode == Activity.RESULT_OK) {
             Date resultTime = (Date) data.getSerializableExtra(EXTRA_TIME);
-            AlarmPreferences.setAlarmTime(getActivity(), resultTime);
-            mAlarmTime = AlarmPreferences.getAlarmTime(getActivity());
+            AlarmScheduler.setAlarmTime(getActivity(), resultTime);
+            mAlarmTime = AlarmScheduler.getAlarmTime(getActivity());
             updateUI();
         }
     }
 
     private void updateUI() {
-        mEnabledCheckBox.setChecked(AlarmPreferences.isEnabled(getActivity()));
+        mEnabledCheckBox.setChecked(AlarmScheduler.isEnabled(getActivity()));
         SimpleDateFormat format =
                 new SimpleDateFormat("HH:mm, dd.MM", java.util.Locale.getDefault());
         mTimeTextView.setText(format.format(mAlarmTime));

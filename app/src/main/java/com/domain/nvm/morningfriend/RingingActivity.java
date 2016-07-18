@@ -9,7 +9,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 
-import com.domain.nvm.morningfriend.squares.SquaresFragment;
 import com.domain.nvm.morningfriend.untangle.UntangleFragment;
 
 import java.util.Date;
@@ -57,32 +56,20 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
         }
     }
 
-    public static void setRingingAlarm(Context context, Date time, boolean isOn) {
-        Intent i = new Intent(context, RingingActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        if (isOn) {
-            am.set(AlarmManager.RTC_WAKEUP, time.getTime(), pi);
-        }
-        else {
-            am.cancel(pi);
-            pi.cancel();
-        }
-    }
 
     @Override
     public void stopRinging() {
         mService.stopPlaying();
         // todo: add setting "recurrent alarm" and check if it's true here
-        AlarmPreferences.revalidateAlarmTime(this);
-        Date nextAlarm = AlarmPreferences.getAlarmTime(this);
-        setRingingAlarm(this, nextAlarm, true);
+        AlarmScheduler.revalidateAlarmTime(this);
+        Date nextAlarm = AlarmScheduler.getAlarmTime(this);
+        AlarmScheduler.setRingingAlarm(this, nextAlarm, true);
     }
 
     @Override
     public void stopAndRestartRinging(Date restartTime) {
         mService.stopPlaying();
-        setRingingAlarm(this, restartTime, true);
+        AlarmScheduler.setRingingAlarm(this, restartTime, true);
     }
 }

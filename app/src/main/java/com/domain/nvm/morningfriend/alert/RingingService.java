@@ -56,5 +56,6 @@ public class RingingService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mp.release();
+        AlarmWakeLock.releaseLock();
     }
 }

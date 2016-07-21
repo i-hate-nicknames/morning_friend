@@ -5,8 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
-import com.domain.nvm.morningfriend.alert.RingingActivity;
+import com.domain.nvm.morningfriend.alert.AlertReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -78,8 +79,9 @@ public class AlarmScheduler {
     }
 
     public static void setRingingAlarm(Context context, Date time, boolean isOn) {
-        Intent i = new Intent(context, RingingActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+        Intent i = new Intent(context, AlertReceiver.class);
+        PendingIntent pi =
+                PendingIntent.getBroadcast(context, 0, i, 0);
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (isOn) {

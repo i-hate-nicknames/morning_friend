@@ -4,10 +4,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.domain.nvm.morningfriend.SingleFragmentActivity;
+import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresFragment;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleFragment;
 
@@ -35,7 +40,18 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
 
     @Override
     public Fragment getFragment() {
-        return new UntangleFragment();
+        return new SquaresFragment();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Window win = getWindow();
+        win.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     @Override

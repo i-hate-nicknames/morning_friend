@@ -1,9 +1,10 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.alert;
 
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.domain.nvm.morningfriend.untangle.UntangleFragment;
+import com.domain.nvm.morningfriend.SingleFragmentActivity;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleFragment;
 
 import java.util.Date;
 

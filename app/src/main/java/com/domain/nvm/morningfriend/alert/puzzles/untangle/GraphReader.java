@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.untangle;
+package com.domain.nvm.morningfriend.alert.puzzles.untangle;
 
 import android.content.Context;
 import android.graphics.PointF;

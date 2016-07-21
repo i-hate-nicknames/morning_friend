@@ -1,10 +1,14 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.settings;
 
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import com.domain.nvm.morningfriend.alert.RingingActivity;
+import com.domain.nvm.morningfriend.alert.RingingService;
+import com.domain.nvm.morningfriend.SingleFragmentActivity;
 
 public class AlarmSettingsActivity extends SingleFragmentActivity {
 

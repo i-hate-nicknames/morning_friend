@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.alert;
 
 import java.util.Date;
 

@@ -1,7 +1,7 @@
 package com.domain.nvm.morningfriend;
 
 
-import com.domain.nvm.morningfriend.untangle.Utils;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.Utils;
 
 import org.junit.Test;
 

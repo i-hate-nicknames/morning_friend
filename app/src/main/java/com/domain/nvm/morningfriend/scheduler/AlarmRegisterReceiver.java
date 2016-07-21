@@ -1,10 +1,8 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.scheduler;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import java.util.Date;
 
 public class AlarmRegisterReceiver extends BroadcastReceiver {
 

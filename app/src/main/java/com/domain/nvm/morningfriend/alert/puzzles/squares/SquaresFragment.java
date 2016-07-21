@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.squares;
+package com.domain.nvm.morningfriend.alert.puzzles.squares;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.domain.nvm.morningfriend.RingingControls;
+import com.domain.nvm.morningfriend.alert.RingingControls;
 
 import java.util.Date;
 

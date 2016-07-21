@@ -1,8 +1,10 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.scheduler;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import java.util.Date;
 

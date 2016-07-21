@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.settings;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.alert.RingingActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

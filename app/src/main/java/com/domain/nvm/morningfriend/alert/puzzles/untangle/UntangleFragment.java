@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.untangle;
+package com.domain.nvm.morningfriend.alert.puzzles.untangle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.RingingControls;
+import com.domain.nvm.morningfriend.alert.RingingControls;
 
 
 public class UntangleFragment extends Fragment implements UntangleField.Callbacks {

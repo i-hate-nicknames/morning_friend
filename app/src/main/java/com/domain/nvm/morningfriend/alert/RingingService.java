@@ -1,11 +1,12 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.alert;
 
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
+
+import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {
 

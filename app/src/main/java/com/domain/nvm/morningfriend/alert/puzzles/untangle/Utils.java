@@ -1,7 +1,6 @@
-package com.domain.nvm.morningfriend.untangle;
+package com.domain.nvm.morningfriend.alert.puzzles.untangle;
 
 import android.graphics.PointF;
-import android.util.Log;
 
 public class Utils {
 

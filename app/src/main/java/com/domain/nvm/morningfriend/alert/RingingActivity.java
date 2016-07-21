@@ -1,7 +1,5 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.alert;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +7,9 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 
-import com.domain.nvm.morningfriend.untangle.UntangleFragment;
+import com.domain.nvm.morningfriend.SingleFragmentActivity;
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleFragment;
 
 import java.util.Date;
 

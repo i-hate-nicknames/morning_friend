@@ -7,19 +7,16 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.domain.nvm.morningfriend.SingleFragmentActivity;
-import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresFragment;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
-import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleFragment;
 
 import java.util.Date;
 
 
-public class RingingActivity extends SingleFragmentActivity implements RingingControls {
+public abstract class PuzzleActivity extends AppCompatActivity {
 
     private RingingService mService;
     private boolean mBound = false;
@@ -37,11 +34,6 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
             mBound = false;
         }
     };
-
-    @Override
-    public Fragment getFragment() {
-        return new SquaresFragment();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,8 +65,6 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
     }
 
 
-
-    @Override
     public void stopRinging() {
         mService.stopPlaying();
         // todo: add setting "recurrent alarm" and check if it's true here
@@ -83,7 +73,6 @@ public class RingingActivity extends SingleFragmentActivity implements RingingCo
         AlarmScheduler.setRingingAlarm(this, nextAlarm, true);
     }
 
-    @Override
     public void stopAndRestartRinging(Date restartTime) {
         mService.stopPlaying();
         AlarmScheduler.setRingingAlarm(this, restartTime, true);

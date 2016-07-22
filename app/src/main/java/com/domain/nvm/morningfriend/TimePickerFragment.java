@@ -1,10 +1,8 @@
-package com.domain.nvm.morningfriend.settings;
+package com.domain.nvm.morningfriend;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
 
-import com.domain.nvm.morningfriend.R;
-
 import java.util.Calendar;
 import java.util.Date;
 
 public class TimePickerFragment extends DialogFragment {
+
+    public interface TimePickerResultListener {
+        void onTimePickerResult(Date time);
+    }
 
     private TimePicker mTimePicker;
 
@@ -35,7 +35,6 @@ public class TimePickerFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Date time = (Date) getArguments().getSerializable(ARG_TIME);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -57,9 +56,10 @@ public class TimePickerFragment extends DialogFragment {
     }
 
     public void sendResult() {
-        if (getTargetFragment() == null) {
+        if (!(getActivity() instanceof TimePickerResultListener)) {
             return;
         }
+        TimePickerResultListener activity = (TimePickerResultListener) getActivity();
         int hour, minute;
         if (Build.VERSION.SDK_INT < 23) {
             hour = mTimePicker.getCurrentHour();
@@ -73,9 +73,7 @@ public class TimePickerFragment extends DialogFragment {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         Date resultTime = calendar.getTime();
-        Intent intent = AlarmSettingsFragment.makeTimeIntent(resultTime);
-        getTargetFragment()
-                .onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+        activity.onTimePickerResult(resultTime);
     }
 
     private void setTimePickerValue(Date time) {

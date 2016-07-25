@@ -6,6 +6,7 @@ import android.support.annotation.RawRes;
 import android.util.Log;
 
 import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +33,20 @@ public class GraphReader {
     public static Graph getGraph(Context context) {
         String graphString = null;
         Graph graph = null;
+        @RawRes int graphRes;
+        switch (AlarmSettings.getDifficulty(context)) {
+            case MEDIUM:
+                graphRes = R.raw.graph7_12;
+                break;
+            case HARD:
+                graphRes = R.raw.graph8_17;
+                break;
+            case EASY:
+            default:
+                graphRes = R.raw.graph6_10;
+        }
         try {
-            graphString = readGraph(context, R.raw.graph6_10);
+            graphString = readGraph(context, graphRes);
         }
         catch (IOException ioe) {
             Log.e(TAG, "Error while reading graph file", ioe);

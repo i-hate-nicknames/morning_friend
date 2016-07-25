@@ -12,10 +12,15 @@ import com.domain.nvm.morningfriend.alert.AlertReceiver;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AlarmScheduler {
+public class AlarmSettings {
+
+    private static final String TAG = "AlarmSettings";
 
     private static final String IS_ENABLED = "isAlarmEnabled";
     private static final String ALARM_TIME = "alarmTime";
+    private static final String DIFFICULTY = "difficulty";
+
+    public enum Difficulty {EASY, MEDIUM, HARD}
 
     public static boolean isEnabled(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -27,6 +32,29 @@ public class AlarmScheduler {
                 .edit()
                 .putBoolean(IS_ENABLED, isEnabled)
                 .apply();
+    }
+
+    public static int getDifficultyIndex(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(DIFFICULTY, 0);
+    }
+
+    public static Difficulty getDifficulty(Context context) {
+        int d = getDifficultyIndex(context);
+        return Difficulty.values()[d];
+    }
+
+    public static void setDifficulty(Context context, int difficulty) {
+        try {
+            Difficulty d = Difficulty.values()[difficulty];
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putInt(DIFFICULTY, difficulty)
+                    .apply();
+        }
+        catch (ArrayIndexOutOfBoundsException ex) {
+            Log.e(TAG, "Invalid difficulty code" + difficulty);
+        }
     }
 
     /**

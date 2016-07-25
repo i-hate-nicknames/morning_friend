@@ -8,4 +8,10 @@
         <item>@string/prefs_puzzle_squares_value</item>
         <item>@string/prefs_puzzle_untangle_value</item>
     </string-array>
+
+    <string-array name="pref_difficulty">
+        <item>@string/prefs_difficulty_easy</item>
+        <item>@string/prefs_difficulty_medium</item>
+        <item>@string/prefs_difficulty_hard</item>
+    </string-array>
 </resources>

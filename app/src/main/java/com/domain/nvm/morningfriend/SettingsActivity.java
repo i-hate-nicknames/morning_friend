@@ -10,13 +10,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 import com.domain.nvm.morningfriend.alert.RingingService;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
+import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity
 
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
+    private Spinner mDifficulty;
 
     private Date mAlarmTime;
 
@@ -42,16 +47,22 @@ public class SettingsActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_alarm_settings);
 
-        mAlarmTime = AlarmScheduler.getAlarmTime(this);
+        mAlarmTime = AlarmSettings.getAlarmTime(this);
 
         mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
+        mDifficulty = (Spinner) findViewById(R.id.settings_spinner_difficulty);
+
+        String[] choices = getResources().getStringArray(R.array.pref_difficulty);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices);
+        mDifficulty.setAdapter(adapter);
 
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlarmScheduler.setEnabled(SettingsActivity.this, isChecked);
-                AlarmScheduler.setRingingAlarm(SettingsActivity.this, mAlarmTime, isChecked);
+                AlarmSettings.setEnabled(SettingsActivity.this, isChecked);
+                AlarmSettings.setRingingAlarm(SettingsActivity.this, mAlarmTime, isChecked);
                 updateUI();
             }
         });
@@ -62,6 +73,18 @@ public class SettingsActivity extends AppCompatActivity
                 FragmentManager mgr = getSupportFragmentManager();
                 TimePickerFragment dialog = TimePickerFragment.newInstance(mAlarmTime);
                 dialog.show(mgr, TAG);
+            }
+        });
+
+        mDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                AlarmSettings.setDifficulty(SettingsActivity.this, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -79,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_demo:
-                Intent i = new Intent(this, PuzzleActivity.class);
+                Intent i = new Intent(this, UntangleActivity.class);
                 startActivity(i);
                 return true;
             default:
@@ -89,16 +112,17 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onTimePickerResult(Date time) {
-        AlarmScheduler.setAlarmTime(this, time);
-        mAlarmTime = AlarmScheduler.getAlarmTime(this);
+        AlarmSettings.setAlarmTime(this, time);
+        mAlarmTime = AlarmSettings.getAlarmTime(this);
         updateUI();
     }
 
     private void updateUI() {
-        mEnabledCheckBox.setChecked(AlarmScheduler.isEnabled(this));
+        mEnabledCheckBox.setChecked(AlarmSettings.isEnabled(this));
         SimpleDateFormat format =
                 new SimpleDateFormat("HH:mm, dd.MM", java.util.Locale.getDefault());
         mTimeTextView.setText(format.format(mAlarmTime));
+        mDifficulty.setSelection(AlarmSettings.getDifficultyIndex(this));
     }
 
     private boolean isRingingServiceRunning() {

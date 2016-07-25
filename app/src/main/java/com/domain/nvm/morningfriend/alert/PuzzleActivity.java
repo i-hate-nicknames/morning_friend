@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.Date;
 
@@ -68,13 +68,13 @@ public abstract class PuzzleActivity extends AppCompatActivity {
     public void stopRinging() {
         mService.stopPlaying();
         // todo: add setting "recurrent alarm" and check if it's true here
-        AlarmScheduler.revalidateAlarmTime(this);
-        Date nextAlarm = AlarmScheduler.getAlarmTime(this);
-        AlarmScheduler.setRingingAlarm(this, nextAlarm, true);
+        AlarmSettings.revalidateAlarmTime(this);
+        Date nextAlarm = AlarmSettings.getAlarmTime(this);
+        AlarmSettings.setRingingAlarm(this, nextAlarm, true);
     }
 
     public void stopAndRestartRinging(Date restartTime) {
         mService.stopPlaying();
-        AlarmScheduler.setRingingAlarm(this, restartTime, true);
+        AlarmSettings.setRingingAlarm(this, restartTime, true);
     }
 }

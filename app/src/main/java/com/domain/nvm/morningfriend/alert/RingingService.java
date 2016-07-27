@@ -35,6 +35,7 @@ public class RingingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        AlarmWakeLock.acquireLock(this);
         mp = MediaPlayer.create(this, R.raw.eh);
         mp.setLooping(true);
     }

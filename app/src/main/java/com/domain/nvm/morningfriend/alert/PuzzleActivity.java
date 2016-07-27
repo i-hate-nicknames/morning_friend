@@ -38,6 +38,7 @@ public abstract class PuzzleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AlarmWakeLock.acquireLock(this);
         final Window win = getWindow();
         win.addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |

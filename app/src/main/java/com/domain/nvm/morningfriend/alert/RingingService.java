@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {
@@ -23,6 +24,7 @@ public class RingingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Logger.write(this, "RingingService::onStartCommand");
         startPlaying();
         return START_STICKY;
     }
@@ -35,6 +37,7 @@ public class RingingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Logger.write(this, "RingingService::onCreate");
         AlarmWakeLock.acquireLock(this);
         mp = MediaPlayer.create(this, R.raw.eh);
         mp.setLooping(true);
@@ -57,6 +60,6 @@ public class RingingService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mp.release();
-        AlarmWakeLock.releaseLock();
+        AlarmWakeLock.releaseLock(this);
     }
 }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 import com.domain.nvm.morningfriend.alert.RingingService;
+import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
@@ -102,8 +103,15 @@ public class SettingsActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_demo:
-                Intent i = new Intent(this, UntangleActivity.class);
+                Intent i = new Intent(this, SquaresActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.settings_menu_logs:
+                Intent log = new Intent(this, LogActivity.class);
+                startActivity(log);
+                return true;
+            case R.id.settings_menu_clear:
+                Logger.clear(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

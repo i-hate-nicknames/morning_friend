@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.domain.nvm.morningfriend.Logger;
+
 public class AlarmWakeLock {
 
     private static final String TAG = "MorningFriend";
@@ -15,6 +17,8 @@ public class AlarmWakeLock {
             return;
         }
 
+        Logger.write(context, "Acquiring wake lock");
+
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         sWakeLock = pm.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK |
@@ -23,8 +27,9 @@ public class AlarmWakeLock {
         sWakeLock.acquire();
     }
 
-    public static void releaseLock() {
+    public static void releaseLock(Context context) {
         if (sWakeLock != null) {
+            Logger.write(context, "Releasing wake lock");
             sWakeLock.release();
             sWakeLock = null;
         }

@@ -108,7 +108,7 @@ public class AlarmSettings {
     }
 
     public static void setRingingAlarm(Context context, Date time, boolean isOn) {
-        Intent i = new Intent(context, AlertReceiver.class);
+        Intent i = AlertReceiver.newIntent(context, time);
         PendingIntent pi =
                 PendingIntent.getBroadcast(context, 0, i, 0);
 

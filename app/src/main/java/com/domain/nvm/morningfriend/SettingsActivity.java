@@ -23,7 +23,6 @@ import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SettingsActivity extends AppCompatActivity
@@ -127,9 +126,7 @@ public class SettingsActivity extends AppCompatActivity
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(AlarmSettings.isEnabled(this));
-        SimpleDateFormat format =
-                new SimpleDateFormat("HH:mm, dd.MM", java.util.Locale.getDefault());
-        mTimeTextView.setText(format.format(mAlarmTime));
+        mTimeTextView.setText(AlarmSettings.formatDate(mAlarmTime));
         mDifficulty.setSelection(AlarmSettings.getDifficultyIndex(this));
     }
 

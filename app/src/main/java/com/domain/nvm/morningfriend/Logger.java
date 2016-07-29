@@ -3,13 +3,14 @@ package com.domain.nvm.morningfriend;
 import android.content.Context;
 import android.util.Log;
 
+import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Logger {
@@ -22,9 +23,7 @@ public class Logger {
     }
 
     public static void write(Context context, long timeMillis, String msg) {
-        SimpleDateFormat format =
-                new SimpleDateFormat("HH:mm:ss, dd.MM", java.util.Locale.getDefault());
-        String timedMsg = format.format(new Date(timeMillis)) + ": " + msg;
+        String timedMsg = AlarmSettings.formatDate(new Date(timeMillis)) + ": " + msg;
         try {
             OutputStreamWriter outputStreamWriter
                     = new OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_APPEND));

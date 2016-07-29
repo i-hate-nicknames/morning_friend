@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (isRingingServiceRunning()) {
-            Intent i = new Intent(this, PuzzleActivity.class);
+            Intent i = new Intent(this, SquaresActivity.class);
             startActivity(i);
             finish();
         }

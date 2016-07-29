@@ -69,9 +69,7 @@ public abstract class PuzzleActivity extends AppCompatActivity {
     public void stopRinging() {
         mService.stopPlaying();
         // todo: add setting "recurrent alarm" and check if it's true here
-        AlarmSettings.revalidateAlarmTime(this);
-        Date nextAlarm = AlarmSettings.getAlarmTime(this);
-        AlarmSettings.setRingingAlarm(this, nextAlarm, true);
+        AlarmSettings.setNextAlarm(this);
     }
 
     public void stopAndRestartRinging(Date restartTime) {

@@ -15,6 +15,7 @@ public class Alarm {
     public enum Difficulty {EASY, MEDIUM, HARD}
     public enum Puzzle {SQUARES, GRAPH}
 
+    private int id;
     private Date time;
     private boolean isEnabled;
     private Difficulty difficulty;
@@ -32,7 +33,8 @@ public class Alarm {
         }
     }
 
-    public Alarm(Date time) {
+    public Alarm(int id, Date time) {
+        this.id = id;
         this.time = time;
         difficulty = Difficulty.EASY;
         puzzle = Puzzle.SQUARES;

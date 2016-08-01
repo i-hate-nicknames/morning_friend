@@ -28,7 +28,7 @@ public class AlarmSettings {
                             .getInt(DIFFICULTY, 0);
             long timeMillis = PreferenceManager.getDefaultSharedPreferences(context)
                     .getLong(ALARM_TIME, 0);
-            alarm = new Alarm(new Date(timeMillis));
+            alarm = new Alarm(0, new Date(timeMillis));
             alarm.setDifficulty(diffPos);
             alarm.setEnabled(isEnabled);
         }

@@ -40,6 +40,10 @@ public class Alarm {
         puzzle = Puzzle.SQUARES;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public boolean isEnabled() {
         return isEnabled;
     }

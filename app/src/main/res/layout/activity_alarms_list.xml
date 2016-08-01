@@ -11,9 +11,9 @@
     android:orientation="horizontal"
     tools:context="com.domain.nvm.morningfriend.AlarmsListActivity">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/alarms_list_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Alarms list will be here"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

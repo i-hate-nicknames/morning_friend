@@ -37,36 +37,13 @@ public class AlarmSettings {
 
 
     public static boolean isEnabled(Context context) {
-        return getAlarm(context).isEnabled();
+        // stub method for old functionality for single alarm
+        return false;
     }
 
-    public static void setEnabled(Context context, boolean isEnabled) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putBoolean(IS_ENABLED, isEnabled)
-                .apply();
-        getAlarm(context).setEnabled(isEnabled);
-    }
-
-    public static int getDifficultyIndex(Context context) {
-        return getAlarm(context).getDifficulty().ordinal();
-    }
 
     public static Alarm.Difficulty getDifficulty(Context context) {
-        return getAlarm(context).getDifficulty();
-    }
-
-    public static void setDifficulty(Context context, int difficulty) {
-        try {
-            getAlarm(context).setDifficulty(difficulty);
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putInt(DIFFICULTY, difficulty)
-                    .apply();
-        }
-        catch (ArrayIndexOutOfBoundsException ex) {
-            Log.e(TAG, "Invalid difficulty code" + difficulty);
-        }
+        return Alarm.Difficulty.EASY;
     }
 
     /**
@@ -79,20 +56,13 @@ public class AlarmSettings {
         return getAlarm(context).getTime();
     }
 
-    public static void setAlarmTime(Context context, Date alarmTime) {
-        getAlarm(context).setTime(alarmTime);
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putLong(ALARM_TIME, getAlarm(context).getTime().getTime())
-                .apply();
-    }
 
     public static void setRingingAlarm(Context context, Date time, boolean isOn) {
-        getAlarm(context).schedule(context, isOn);
+
     }
 
     public static void setNextAlarm(Context context) {
-        getAlarm(context).setNextAlarm(context);
+
     }
 
     public static String formatDate(Date date) {

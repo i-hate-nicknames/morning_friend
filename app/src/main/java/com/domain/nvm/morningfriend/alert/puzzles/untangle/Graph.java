@@ -100,7 +100,7 @@ public class Graph {
 
     public HashSet<Edge> getIntersectingEdges() {
         HashSet<Edge> intersecting = new HashSet<>();
-        // not optimal but meh the number of edges will never get high
+        // not optimal but meh the number of edges will never getAlarm high
         for (Edge e: getEdges()) {
             for (Edge r: getEdges()) {
                 if (e.intersects(r)) {
@@ -181,7 +181,7 @@ public class Graph {
 
         @Override
         public int hashCode() {
-            // every edge with the same (u, v) will get same hash
+            // every edge with the same (u, v) will getAlarm same hash
             return u.getNum() * MAX_ITEMS + v.getNum();
         }
     }

@@ -1,6 +1,5 @@
 package com.domain.nvm.morningfriend;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.domain.nvm.morningfriend.alert.RingingService;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.database.AlarmsRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.Date;
@@ -33,11 +32,11 @@ public class AlarmDetailActivity extends AppCompatActivity
     private Alarm mAlarm;
 
     private static final String TAG = "AlarmDetailActivity";
-    private static final String EXTRA_ALARM = "extraAlarm";
+    private static final String EXTRA_ALARM_ID = "extraAlarmId";
 
     public static Intent makeIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, AlarmDetailActivity.class);
-        i.putExtra(EXTRA_ALARM, alarm);
+        i.putExtra(EXTRA_ALARM_ID, alarm.getId());
         return i;
     }
 
@@ -47,7 +46,8 @@ public class AlarmDetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_alarm_settings);
-        mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
+        int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
+        mAlarm = AlarmsRepository.get(this).getAlarm(alarmId);
 
         mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
@@ -61,7 +61,8 @@ public class AlarmDetailActivity extends AppCompatActivity
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateUI();
+                mAlarm.setEnabled(isChecked);
+                onAlarmChanged();
             }
         });
 
@@ -78,6 +79,7 @@ public class AlarmDetailActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mAlarm.setDifficulty(position);
+                onAlarmChanged();
             }
 
             @Override
@@ -118,6 +120,11 @@ public class AlarmDetailActivity extends AppCompatActivity
     @Override
     public void onTimePickerResult(Date time) {
         mAlarm.setTime(time);
+        onAlarmChanged();
+    }
+
+    private void onAlarmChanged() {
+        AlarmsRepository.get(this).updateAlarm(mAlarm);
         updateUI();
     }
 

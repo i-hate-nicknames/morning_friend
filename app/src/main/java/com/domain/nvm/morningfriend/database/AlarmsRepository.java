@@ -34,4 +34,12 @@ public class AlarmsRepository {
     public List<Alarm> getAlarms() {
         return mAlarms;
     }
+
+    public void updateAlarm(Alarm alarm) {
+        mAlarms.set(alarm.getId(), alarm);
+    }
+
+    public Alarm getAlarm(int id) {
+        return mAlarms.get(id);
+    }
 }

@@ -19,7 +19,7 @@ public class AlarmsWrapper extends CursorWrapper {
 
     public Alarm getAlarm() {
         int id = getInt(getColumnIndex(AlarmsTable.Cols._ID));
-        // todo: get all other fields, create alarm object and return it
+        // todo: getAlarm all other fields, create alarm object and return it
         throw new UnsupportedOperationException();
     }
 }

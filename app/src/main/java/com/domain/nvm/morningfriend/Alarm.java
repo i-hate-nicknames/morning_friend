@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Alarm implements Serializable {
+public class Alarm {
 
     public enum Difficulty {EASY, MEDIUM, HARD}
     public enum Puzzle {SQUARES, GRAPH}

@@ -38,6 +38,7 @@ public class RingingService extends Service {
     public void onCreate() {
         super.onCreate();
         Logger.write(this, "RingingService::onCreate");
+        RingingState.get().setRinging(true);
         AlarmWakeLock.acquireLock(this);
         mp = MediaPlayer.create(this, R.raw.eh);
         mp.setLooping(true);
@@ -60,6 +61,7 @@ public class RingingService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mp.release();
+        RingingState.get().setRinging(false);
         AlarmWakeLock.releaseLock(this);
     }
 }

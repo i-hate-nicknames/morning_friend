@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.domain.nvm.morningfriend.alert.RingingState;
+import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmsRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
@@ -23,6 +25,11 @@ public class AlarmsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (RingingState.get().isRinging()) {
+            Intent i = new Intent(this, SquaresActivity.class);
+            startActivity(i);
+            finish();
+        }
         setContentView(R.layout.activity_alarms_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
         mAdapter = new AlarmsAdapter(AlarmsRepository.get(this).getAlarms());

@@ -45,11 +45,7 @@ public class AlarmDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isRingingServiceRunning()) {
-            Intent i = new Intent(this, SquaresActivity.class);
-            startActivity(i);
-            finish();
-        }
+
         setContentView(R.layout.activity_alarm_settings);
         mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
 
@@ -131,14 +127,4 @@ public class AlarmDetailActivity extends AppCompatActivity
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
     }
 
-    private boolean isRingingServiceRunning() {
-        ActivityManager mgr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service:
-                mgr.getRunningServices(Integer.MAX_VALUE)) {
-            if (RingingService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

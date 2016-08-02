@@ -7,10 +7,11 @@ import android.content.Intent;
 
 import com.domain.nvm.morningfriend.alert.AlertReceiver;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Alarm {
+public class Alarm implements Serializable {
 
     public enum Difficulty {EASY, MEDIUM, HARD}
     public enum Puzzle {SQUARES, GRAPH}

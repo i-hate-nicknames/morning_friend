@@ -1,5 +1,6 @@
 package com.domain.nvm.morningfriend;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,20 +30,29 @@ public class AlarmsListActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private class AlarmsHolder extends RecyclerView.ViewHolder {
+    private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mIdTextView;
         private TextView mTimeTextView;
+        private Alarm mAlarm;
 
         public AlarmsHolder(View itemView) {
             super(itemView);
             mTimeTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_time);
             mIdTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_id);
+            itemView.setOnClickListener(this);
         }
 
         public void bindAlarm(Alarm alarm) {
+            this.mAlarm = alarm;
             mIdTextView.setText(Integer.toString(alarm.getId()));
             mTimeTextView.setText(AlarmSettings.formatDate(alarm.getTime()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = AlarmDetailActivity.makeIntent(AlarmsListActivity.this, mAlarm);
+            startActivity(i);
         }
     }
 

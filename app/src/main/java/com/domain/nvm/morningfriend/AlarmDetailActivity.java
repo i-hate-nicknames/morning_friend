@@ -1,6 +1,7 @@
 package com.domain.nvm.morningfriend;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,24 +18,28 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 import com.domain.nvm.morningfriend.alert.RingingService;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.Date;
 
-public class SettingsActivity extends AppCompatActivity
+public class AlarmDetailActivity extends AppCompatActivity
         implements TimePickerFragment.TimePickerResultListener {
 
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
     private Spinner mDifficulty;
+    private Alarm mAlarm;
 
-    private Date mAlarmTime;
+    private static final String TAG = "AlarmDetailActivity";
+    private static final String EXTRA_ALARM = "extraAlarm";
 
-    private static final String TAG = "SettingsActivity";
+    public static Intent makeIntent(Context context, Alarm alarm) {
+        Intent i = new Intent(context, AlarmDetailActivity.class);
+        i.putExtra(EXTRA_ALARM, alarm);
+        return i;
+    }
 
 
     @Override
@@ -46,8 +51,7 @@ public class SettingsActivity extends AppCompatActivity
             finish();
         }
         setContentView(R.layout.activity_alarm_settings);
-
-        mAlarmTime = AlarmSettings.getAlarmTime(this);
+        mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
 
         mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
@@ -61,8 +65,6 @@ public class SettingsActivity extends AppCompatActivity
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlarmSettings.setEnabled(SettingsActivity.this, isChecked);
-                AlarmSettings.setRingingAlarm(SettingsActivity.this, mAlarmTime, isChecked);
                 updateUI();
             }
         });
@@ -71,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FragmentManager mgr = getSupportFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(mAlarmTime);
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mAlarm.getTime());
                 dialog.show(mgr, TAG);
             }
         });
@@ -79,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity
         mDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AlarmSettings.setDifficulty(SettingsActivity.this, position);
+                mAlarm.setDifficulty(position);
             }
 
             @Override
@@ -119,15 +121,14 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onTimePickerResult(Date time) {
-        AlarmSettings.setAlarmTime(this, time);
-        mAlarmTime = AlarmSettings.getAlarmTime(this);
+        mAlarm.setTime(time);
         updateUI();
     }
 
     private void updateUI() {
-        mEnabledCheckBox.setChecked(AlarmSettings.isEnabled(this));
-        mTimeTextView.setText(AlarmSettings.formatDate(mAlarmTime));
-        mDifficulty.setSelection(AlarmSettings.getDifficultyIndex(this));
+        mEnabledCheckBox.setChecked(mAlarm.isEnabled());
+        mTimeTextView.setText(AlarmSettings.formatDate(mAlarm.getTime()));
+        mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
     }
 
     private boolean isRingingServiceRunning() {

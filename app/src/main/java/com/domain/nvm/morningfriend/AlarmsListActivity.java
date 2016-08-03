@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -32,9 +35,35 @@ public class AlarmsListActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_alarms_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.alarms_list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.alarms_list_add_alarm:
+                Alarm a = AlarmsRepository.get(this).addAlarm();
+                startActivity(AlarmDetailActivity.makeIntent(this, a));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAdapter = new AlarmsAdapter(AlarmsRepository.get(this).getAlarms());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

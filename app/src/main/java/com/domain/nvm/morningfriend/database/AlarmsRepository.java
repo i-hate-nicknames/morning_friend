@@ -25,7 +25,9 @@ public class AlarmsRepository {
         sContext = context.getApplicationContext();
         mAlarms = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Alarm a = new Alarm(i, new Date(System.currentTimeMillis()));
+            Alarm a = Alarm.emptyAlarm();
+            a.setId(i);
+            a.setTime(new Date(System.currentTimeMillis()));
             a.setEnabled(i % 2 == 0);
             mAlarms.add(a);
         }
@@ -33,6 +35,13 @@ public class AlarmsRepository {
 
     public List<Alarm> getAlarms() {
         return mAlarms;
+    }
+
+    public Alarm addAlarm() {
+        Alarm a = Alarm.emptyAlarm();
+        a.setId(mAlarms.size());
+        mAlarms.add(a);
+        return a;
     }
 
     public void updateAlarm(Alarm alarm) {

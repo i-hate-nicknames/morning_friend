@@ -17,25 +17,6 @@ public class AlarmSettings {
     private static final String ALARM_TIME = "alarmTime";
     private static final String DIFFICULTY = "difficulty";
 
-    private static Alarm alarm;
-
-    public static Alarm getAlarm(Context context) {
-        if (alarm == null) {
-            // generate alarm
-            boolean isEnabled = PreferenceManager.getDefaultSharedPreferences(context)
-                                    .getBoolean(IS_ENABLED, false);
-            int diffPos = PreferenceManager.getDefaultSharedPreferences(context)
-                            .getInt(DIFFICULTY, 0);
-            long timeMillis = PreferenceManager.getDefaultSharedPreferences(context)
-                    .getLong(ALARM_TIME, 0);
-            alarm = new Alarm(0, new Date(timeMillis));
-            alarm.setDifficulty(diffPos);
-            alarm.setEnabled(isEnabled);
-        }
-        return alarm;
-    }
-
-
     public static boolean isEnabled(Context context) {
         // stub method for old functionality for single alarm
         return false;
@@ -53,7 +34,7 @@ public class AlarmSettings {
      * @return time for the next alarm
      */
     public static Date getAlarmTime(Context context) {
-        return getAlarm(context).getTime();
+        return null;
     }
 
 

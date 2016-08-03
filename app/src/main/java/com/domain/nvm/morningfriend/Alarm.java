@@ -34,16 +34,20 @@ public class Alarm {
         }
     }
 
-    public Alarm(int id, Date time) {
-        this.id = id;
-        this.time = time;
-        difficulty = Difficulty.EASY;
-        puzzle = Puzzle.SQUARES;
+    public static Alarm emptyAlarm() {
+        Alarm a = new Alarm();
+        a.setTime(new Date());
+        a.setEnabled(false);
+        a.setDifficulty(Difficulty.EASY);
+        a.setPuzzle(Puzzle.SQUARES);
+        return a;
     }
 
     public int getId() {
         return id;
     }
+
+    public void setId(int id) { this.id = id;}
 
     public boolean isEnabled() {
         return isEnabled;

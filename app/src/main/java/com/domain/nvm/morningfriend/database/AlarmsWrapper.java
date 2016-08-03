@@ -6,6 +6,8 @@ import android.database.CursorWrapper;
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmsContract.AlarmsTable;
 
+import java.util.Date;
+
 public class AlarmsWrapper extends CursorWrapper {
 
     /**
@@ -19,7 +21,16 @@ public class AlarmsWrapper extends CursorWrapper {
 
     public Alarm getAlarm() {
         int id = getInt(getColumnIndex(AlarmsTable.Cols._ID));
-        // todo: getAlarm all other fields, create alarm object and return it
-        throw new UnsupportedOperationException();
+        long time = getLong(getColumnIndex(AlarmsTable.Cols.TIME));
+        boolean isEnabled = getInt(getColumnIndex(AlarmsTable.Cols.ENABLED)) == 1;
+        int puzzleId = getInt(getColumnIndex(AlarmsTable.Cols.PUZZLE));
+        int diffictultyId = getInt(getColumnIndex(AlarmsTable.Cols.DIFFICULTY));
+        Alarm a = Alarm.emptyAlarm();
+        a.setId(id);
+        a.setTime(new Date(time));
+        a.setEnabled(isEnabled);
+        a.setPuzzle(puzzleId);
+        a.setDifficulty(diffictultyId);
+        return a;
     }
 }

@@ -16,7 +16,7 @@ public class AlarmsContract {
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + NAME + "(" +
-                Cols._ID + " integer primary key autoincrement" +
+                Cols._ID + " integer primary key autoincrement, " +
                 Cols.TIME + ", " +
                 Cols.ENABLED + ", " +
                 Cols.RECURRING + ", " +

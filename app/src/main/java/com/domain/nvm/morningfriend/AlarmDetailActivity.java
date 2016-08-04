@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.database.AlarmsRepository;
+import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.Date;
@@ -47,7 +47,7 @@ public class AlarmDetailActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_alarm_settings);
         int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
-        mAlarm = AlarmsRepository.get(this).getAlarm(alarmId);
+        mAlarm = AlarmRepository.get(this).getAlarm(alarmId);
 
         mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
@@ -124,7 +124,7 @@ public class AlarmDetailActivity extends AppCompatActivity
     }
 
     private void onAlarmChanged() {
-        AlarmsRepository.get(this).updateAlarm(mAlarm);
+        AlarmRepository.get(this).updateAlarm(mAlarm);
         updateUI();
     }
 

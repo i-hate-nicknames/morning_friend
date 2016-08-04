@@ -2,7 +2,7 @@ package com.domain.nvm.morningfriend.database;
 
 import android.provider.BaseColumns;
 
-public class AlarmsContract {
+public class AlarmContract {
     public static final class AlarmsTable {
         public static final String NAME = "alarms";
 

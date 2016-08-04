@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.domain.nvm.morningfriend.database.AlarmsContract.AlarmsTable;
+import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 
 public class AlarmBaseHelper extends SQLiteOpenHelper {
 

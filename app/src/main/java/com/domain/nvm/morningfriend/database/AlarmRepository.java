@@ -6,33 +6,32 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.database.AlarmsContract.AlarmsTable;
+import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class AlarmsRepository {
+public class AlarmRepository {
 
-    private static AlarmsRepository sInstance;
+    private static AlarmRepository sInstance;
     private static Context sContext;
 
     private SQLiteDatabase mDatabase;
 
-    public static AlarmsRepository get(Context context) {
+    public static AlarmRepository get(Context context) {
         if (sInstance == null) {
-            sInstance = new AlarmsRepository(context);
+            sInstance = new AlarmRepository(context);
         }
         return sInstance;
     }
 
-    public AlarmsRepository(Context context) {
+    public AlarmRepository(Context context) {
         sContext = context.getApplicationContext();
         mDatabase = new AlarmBaseHelper(sContext).getWritableDatabase();
     }
 
     public List<Alarm> getAlarms() {
-        AlarmsWrapper cursor = queryAlarms(null, null);
+        AlarmCursorWrapper cursor = queryAlarms(null, null);
         List<Alarm> alarms = new ArrayList<>();
         try {
             cursor.moveToFirst();
@@ -66,7 +65,7 @@ public class AlarmsRepository {
     }
 
     public Alarm getAlarm(int id) {
-        AlarmsWrapper cursor = queryAlarms(" _id = ?", new String[] {Integer.toString(id)});
+        AlarmCursorWrapper cursor = queryAlarms(" _id = ?", new String[] {Integer.toString(id)});
         try {
             if (cursor.getCount() == 0) {
                 return null;
@@ -80,9 +79,9 @@ public class AlarmsRepository {
 
     }
 
-    private AlarmsWrapper queryAlarms(String selection, String[] selArgs) {
+    private AlarmCursorWrapper queryAlarms(String selection, String[] selArgs) {
         Cursor c = mDatabase.query(AlarmsTable.NAME, null, selection, selArgs, null, null, null);
-        return new AlarmsWrapper(c);
+        return new AlarmCursorWrapper(c);
     }
 
     private ContentValues getContentValues(Alarm a) {

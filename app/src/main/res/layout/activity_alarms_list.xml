@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="horizontal"
-    tools:context="com.domain.nvm.morningfriend.AlarmsListActivity">
+    tools:context=".AlarmListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/alarms_list_list_view"

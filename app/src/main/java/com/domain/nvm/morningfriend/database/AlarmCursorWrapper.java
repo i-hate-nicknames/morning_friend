@@ -4,18 +4,18 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.database.AlarmsContract.AlarmsTable;
+import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 
 import java.util.Date;
 
-public class AlarmsWrapper extends CursorWrapper {
+public class AlarmCursorWrapper extends CursorWrapper {
 
     /**
      * Creates a cursor wrapper.
      *
      * @param cursor The underlying cursor to wrap.
      */
-    public AlarmsWrapper(Cursor cursor) {
+    public AlarmCursorWrapper(Cursor cursor) {
         super(cursor);
     }
 

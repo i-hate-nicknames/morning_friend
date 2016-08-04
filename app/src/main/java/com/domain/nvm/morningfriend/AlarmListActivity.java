@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.database.AlarmsRepository;
+import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.List;
 
-public class AlarmsListActivity extends AppCompatActivity {
+public class AlarmListActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     AlarmsAdapter mAdapter;
@@ -49,7 +49,7 @@ public class AlarmsListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.alarms_list_add_alarm:
-                Alarm a = AlarmsRepository.get(this).addAlarm();
+                Alarm a = AlarmRepository.get(this).addAlarm();
                 startActivity(AlarmDetailActivity.makeIntent(this, a));
                 return true;
             default:
@@ -60,7 +60,7 @@ public class AlarmsListActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAdapter = new AlarmsAdapter(AlarmsRepository.get(this).getAlarms());
+        mAdapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -87,7 +87,7 @@ public class AlarmsListActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent i = AlarmDetailActivity.makeIntent(AlarmsListActivity.this, mAlarm);
+            Intent i = AlarmDetailActivity.makeIntent(AlarmListActivity.this, mAlarm);
             startActivity(i);
         }
     }
@@ -102,7 +102,7 @@ public class AlarmsListActivity extends AppCompatActivity {
 
         @Override
         public AlarmsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(AlarmsListActivity.this);
+            LayoutInflater inflater = LayoutInflater.from(AlarmListActivity.this);
             View v = inflater.inflate(R.layout.list_item_alarm, parent, false);
             return new AlarmsHolder(v);
         }

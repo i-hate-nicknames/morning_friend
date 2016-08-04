@@ -37,26 +37,28 @@ public class AlarmsRepository {
         List<Alarm> alarms = new ArrayList<>();
         while (cursor.moveToNext()) {
             alarms.add(cursor.getAlarm());
-            cursor.moveToNext();
         }
         return alarms;
     }
 
     public Alarm addAlarm() {
         Alarm a = Alarm.emptyAlarm();
-        ContentValues vals = new ContentValues();
-        vals.put(AlarmsTable.Cols.TIME, a.getTime().getTime());
-        vals.put(AlarmsTable.Cols.DIFFICULTY, a.getDifficulty().ordinal());
-        vals.put(AlarmsTable.Cols.PUZZLE, a.getPuzzle().ordinal());
-        vals.put(AlarmsTable.Cols.ENABLED, a.isEnabled() ? 1 : 0);
         long id = dbHelper.getWritableDatabase()
-                .insert(AlarmsTable.NAME, null, vals);
+                .insert(AlarmsTable.NAME, null, getContentValues(a));
         a.setId((int)id);
         return a;
     }
 
-    public void updateAlarm(Alarm alarm) {
+    public void updateAlarm(Alarm a) {
+        dbHelper.getWritableDatabase()
+                .update(AlarmsTable.NAME, getContentValues(a),
+                        " _id = ?", new String[] {Integer.toString(a.getId())});
+    }
 
+    public void deleteAlarm(Alarm a) {
+        dbHelper.getWritableDatabase()
+                .delete(AlarmsTable.NAME, " _id = ?",
+                        new String[] {Integer.toString(a.getId())});
     }
 
     public Alarm getAlarm(int id) {
@@ -69,5 +71,14 @@ public class AlarmsRepository {
             return cursor.getAlarm();
         }
         return null;
+    }
+
+    private ContentValues getContentValues(Alarm a) {
+        ContentValues vals = new ContentValues();
+        vals.put(AlarmsTable.Cols.TIME, a.getTime().getTime());
+        vals.put(AlarmsTable.Cols.DIFFICULTY, a.getDifficulty().ordinal());
+        vals.put(AlarmsTable.Cols.PUZZLE, a.getPuzzle().ordinal());
+        vals.put(AlarmsTable.Cols.ENABLED, a.isEnabled() ? 1 : 0);
+        return vals;
     }
 }

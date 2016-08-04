@@ -3,6 +3,7 @@ package com.domain.nvm.morningfriend.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmsContract.AlarmsTable;
@@ -16,7 +17,7 @@ public class AlarmsRepository {
     private static AlarmsRepository sInstance;
     private static Context sContext;
 
-    private AlarmBaseHelper dbHelper;
+    private SQLiteDatabase mDatabase;
 
     public static AlarmsRepository get(Context context) {
         if (sInstance == null) {
@@ -27,50 +28,61 @@ public class AlarmsRepository {
 
     public AlarmsRepository(Context context) {
         sContext = context.getApplicationContext();
-        dbHelper = new AlarmBaseHelper(sContext);
+        mDatabase = new AlarmBaseHelper(sContext).getWritableDatabase();
     }
 
     public List<Alarm> getAlarms() {
-        Cursor c = dbHelper.getReadableDatabase().query(
-                AlarmsTable.NAME, null, null, null, null, null, null);
-        AlarmsWrapper cursor = new AlarmsWrapper(c);
+        AlarmsWrapper cursor = queryAlarms(null, null);
         List<Alarm> alarms = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            alarms.add(cursor.getAlarm());
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                alarms.add(cursor.getAlarm());
+                cursor.moveToNext();
+            }
         }
+        finally {
+            cursor.close();
+        }
+
         return alarms;
     }
 
     public Alarm addAlarm() {
         Alarm a = Alarm.emptyAlarm();
-        long id = dbHelper.getWritableDatabase()
-                .insert(AlarmsTable.NAME, null, getContentValues(a));
+        long id = mDatabase.insert(AlarmsTable.NAME, null, getContentValues(a));
         a.setId((int)id);
         return a;
     }
 
     public void updateAlarm(Alarm a) {
-        dbHelper.getWritableDatabase()
-                .update(AlarmsTable.NAME, getContentValues(a),
-                        " _id = ?", new String[] {Integer.toString(a.getId())});
+        mDatabase.update(AlarmsTable.NAME, getContentValues(a),
+                " _id = ?", new String[] {Integer.toString(a.getId())});
     }
 
     public void deleteAlarm(Alarm a) {
-        dbHelper.getWritableDatabase()
-                .delete(AlarmsTable.NAME, " _id = ?",
-                        new String[] {Integer.toString(a.getId())});
+        mDatabase.delete(AlarmsTable.NAME, " _id = ?",
+                new String[] {Integer.toString(a.getId())});
     }
 
     public Alarm getAlarm(int id) {
-        Cursor c = dbHelper.getReadableDatabase().query(
-                AlarmsTable.NAME, null,
-                " _id = ?", new String[] {Integer.toString(id)},
-                null, null, null);
-        AlarmsWrapper cursor = new AlarmsWrapper(c);
-        if (cursor.moveToFirst()) {
+        AlarmsWrapper cursor = queryAlarms(" _id = ?", new String[] {Integer.toString(id)});
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
             return cursor.getAlarm();
         }
-        return null;
+        finally {
+            cursor.close();
+        }
+
+    }
+
+    private AlarmsWrapper queryAlarms(String selection, String[] selArgs) {
+        Cursor c = mDatabase.query(AlarmsTable.NAME, null, selection, selArgs, null, null, null);
+        return new AlarmsWrapper(c);
     }
 
     private ContentValues getContentValues(Alarm a) {

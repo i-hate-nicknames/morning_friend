@@ -58,8 +58,8 @@ public class AlarmListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         mAdapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);

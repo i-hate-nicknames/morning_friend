@@ -94,22 +94,26 @@ public class AlarmDetailActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.settings_menu, menu);
+        inflater.inflate(R.menu.detail_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.settings_menu_demo:
+            case R.id.detail_menu_demo:
                 Intent i = new Intent(this, SquaresActivity.class);
                 startActivity(i);
                 return true;
-            case R.id.settings_menu_logs:
+            case R.id.detail_menu_delete:
+                AlarmRepository.get(this).deleteAlarm(mAlarm);
+                finish();
+                return true;
+            case R.id.detail_menu_logs:
                 Intent log = new Intent(this, LogActivity.class);
                 startActivity(log);
                 return true;
-            case R.id.settings_menu_clear:
+            case R.id.detail_menu_clear:
                 Logger.clear(this);
                 return true;
             default:

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.domain.nvm.morningfriend.Logger;
+import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
@@ -24,10 +25,10 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Logger.write(context, "AlertReceiver::onReceive");
         Logger.write(context, "Alarm time stored in settings: "
-                + AlarmSettings.formatDate(AlarmSettings.getAlarmTime(context)));
+                + Utils.formatDate(AlarmSettings.getAlarmTime(context)));
         Date time = (Date) intent.getSerializableExtra(EXTRA_ALARM_TIME);
         if (time != null) {
-            Logger.write(context, "Alarm time stored in Intent: " + AlarmSettings.formatDate(time));
+            Logger.write(context, "Alarm time stored in Intent: " + Utils.formatDate(time));
         }
         else {
             Logger.write(context, "No time value was stored in Intent");

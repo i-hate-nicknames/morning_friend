@@ -23,7 +23,7 @@ public class Logger {
     }
 
     public static void write(Context context, long timeMillis, String msg) {
-        String timedMsg = AlarmSettings.formatDate(new Date(timeMillis)) + ": " + msg;
+        String timedMsg = Utils.formatDate(new Date(timeMillis)) + ": " + msg;
         try {
             OutputStreamWriter outputStreamWriter
                     = new OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_APPEND));

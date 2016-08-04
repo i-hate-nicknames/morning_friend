@@ -46,10 +46,4 @@ public class AlarmSettings {
 
     }
 
-    public static String formatDate(Date date) {
-        SimpleDateFormat format =
-                new SimpleDateFormat("HH:mm:ss, dd.MM", java.util.Locale.getDefault());
-        return format.format(date);
-    }
-
 }

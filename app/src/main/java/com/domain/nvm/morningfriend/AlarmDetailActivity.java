@@ -134,7 +134,7 @@ public class AlarmDetailActivity extends AppCompatActivity
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(mAlarm.isEnabled());
-        mTimeTextView.setText(AlarmSettings.formatDate(mAlarm.getTime()));
+        mTimeTextView.setText(Utils.formatDate(mAlarm.getTime()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
     }
 

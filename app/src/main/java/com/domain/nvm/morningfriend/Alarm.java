@@ -96,7 +96,7 @@ public class Alarm {
     }
 
     public void setTime(Date time) {
-        this.time = validateTime(time);
+        this.time = Utils.createAlarmTime(time);
     }
 
     public void schedule(Context context, boolean isOn) {
@@ -115,17 +115,9 @@ public class Alarm {
     }
 
     public void setNextAlarm(Context context) {
-        this.time = validateTime(this.time);
+        this.time = Utils.createAlarmTime(this.time);
         schedule(context, true);
     }
 
-    private Date validateTime(Date time) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(time);
-        calendar.set(Calendar.SECOND, 0);
-        if (time.getTime() <= System.currentTimeMillis()) {
-            calendar.add(Calendar.DATE, 1);
-        }
-        return calendar.getTime();
-    }
+
 }

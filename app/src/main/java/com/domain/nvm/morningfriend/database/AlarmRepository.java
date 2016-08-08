@@ -86,6 +86,8 @@ public class AlarmRepository {
 
     private ContentValues getContentValues(Alarm a) {
         ContentValues vals = new ContentValues();
+        vals.put(AlarmsTable.Cols.HOUR, a.getHour());
+        vals.put(AlarmsTable.Cols.MINUTE, a.getMinute());
         vals.put(AlarmsTable.Cols.TIME, a.getTime().getTime());
         vals.put(AlarmsTable.Cols.DIFFICULTY, a.getDifficulty().ordinal());
         vals.put(AlarmsTable.Cols.PUZZLE, a.getPuzzle().ordinal());

@@ -21,6 +21,7 @@ import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmDetailActivity extends AppCompatActivity
@@ -70,7 +71,8 @@ public class AlarmDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 FragmentManager mgr = getSupportFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(mAlarm.getTime());
+                TimePickerFragment dialog =
+                        TimePickerFragment.newInstance(mAlarm.getHour(), mAlarm.getMinute());
                 dialog.show(mgr, TAG);
             }
         });
@@ -123,7 +125,10 @@ public class AlarmDetailActivity extends AppCompatActivity
 
     @Override
     public void onTimePickerResult(Date time) {
-        mAlarm.setTime(time);
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        mAlarm.setHour(c.get(Calendar.HOUR_OF_DAY));
+        mAlarm.setMinute(c.get(Calendar.MINUTE));
         onAlarmChanged();
     }
 
@@ -134,7 +139,7 @@ public class AlarmDetailActivity extends AppCompatActivity
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(mAlarm.isEnabled());
-        mTimeTextView.setText(Utils.formatDate(mAlarm.getTime()));
+        mTimeTextView.setText(String.format("%d:%d", mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
     }
 

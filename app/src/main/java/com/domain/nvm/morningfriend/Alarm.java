@@ -17,6 +17,8 @@ public class Alarm {
     public enum Puzzle {SQUARES, GRAPH}
 
     private int id;
+    private int hour;
+    private int minute;
     private Date time;
     private boolean isEnabled;
     private Difficulty difficulty;
@@ -48,6 +50,22 @@ public class Alarm {
     }
 
     public void setId(int id) { this.id = id;}
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
 
     public boolean isEnabled() {
         return isEnabled;
@@ -100,7 +118,7 @@ public class Alarm {
     }
 
     public void schedule(Context context, boolean isOn) {
-        Intent i = AlertReceiver.newIntent(context, time);
+        /*Intent i = AlertReceiver.newIntent(context, time);
         PendingIntent pi =
                 PendingIntent.getBroadcast(context, 0, i, 0);
 
@@ -111,12 +129,12 @@ public class Alarm {
         else {
             am.cancel(pi);
             pi.cancel();
-        }
+        }*/
     }
 
     public void setNextAlarm(Context context) {
-        this.time = Utils.createAlarmTime(this.time);
-        schedule(context, true);
+        /*this.time = Utils.createAlarmTime(this.time);
+        schedule(context, true);*/
     }
 
 

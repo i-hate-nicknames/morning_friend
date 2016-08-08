@@ -21,12 +21,16 @@ public class AlarmCursorWrapper extends CursorWrapper {
 
     public Alarm getAlarm() {
         int id = getInt(getColumnIndex(AlarmsTable.Cols._ID));
+        int hour = getInt(getColumnIndex(AlarmsTable.Cols.HOUR));
+        int minute = getInt(getColumnIndex(AlarmsTable.Cols.MINUTE));
         long time = getLong(getColumnIndex(AlarmsTable.Cols.TIME));
         boolean isEnabled = getInt(getColumnIndex(AlarmsTable.Cols.ENABLED)) == 1;
         int puzzleId = getInt(getColumnIndex(AlarmsTable.Cols.PUZZLE));
         int diffictultyId = getInt(getColumnIndex(AlarmsTable.Cols.DIFFICULTY));
         Alarm a = Alarm.emptyAlarm();
         a.setId(id);
+        a.setHour(hour);
+        a.setMinute(minute);
         a.setTime(new Date(time));
         a.setEnabled(isEnabled);
         a.setPuzzle(puzzleId);

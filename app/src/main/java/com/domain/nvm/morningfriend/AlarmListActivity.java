@@ -82,7 +82,7 @@ public class AlarmListActivity extends AppCompatActivity {
         public void bindAlarm(Alarm alarm) {
             this.mAlarm = alarm;
             mIdTextView.setText(Integer.toString(alarm.getId()));
-            mTimeTextView.setText(Utils.formatDate(alarm.getTime()));
+            mTimeTextView.setText(String.format("%d:%d", alarm.getHour(), alarm.getMinute()));
         }
 
         @Override

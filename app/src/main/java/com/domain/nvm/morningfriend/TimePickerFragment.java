@@ -23,6 +23,8 @@ public class TimePickerFragment extends DialogFragment {
     private TimePicker mTimePicker;
 
     private static final String ARG_TIME = "time";
+    private static final String ARG_HOUR = "hour";
+    private static final String ARG_MINUTE = "minute";
 
     public static TimePickerFragment newInstance(Date time) {
         Bundle args = new Bundle();
@@ -32,10 +34,19 @@ public class TimePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    public static TimePickerFragment newInstance(int hour, int minute) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_HOUR, hour);
+        args.putInt(ARG_MINUTE, minute);
+        TimePickerFragment fragment = new TimePickerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Date time = (Date) getArguments().getSerializable(ARG_TIME);
+        Date time = getArgTime();
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View v = inflater.inflate(R.layout.dialog_time_picker, null);
@@ -91,5 +102,19 @@ public class TimePickerFragment extends DialogFragment {
             mTimePicker.setHour(hour);
             mTimePicker.setMinute(minute);
         }
+    }
+
+    private Date getArgTime() {
+        Bundle args = getArguments();
+        Date time = (Date) args.getSerializable(ARG_TIME);
+        if (time != null) {
+            return time;
+        }
+        int hour = args.getInt(ARG_HOUR);
+        int minute = args.getInt(ARG_MINUTE);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        return c.getTime();
     }
 }

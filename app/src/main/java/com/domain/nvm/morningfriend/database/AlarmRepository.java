@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,13 @@ public class AlarmRepository {
     public void updateAlarm(Alarm a) {
         mDatabase.update(AlarmsTable.NAME, getContentValues(a),
                 " _id = ?", new String[] {Integer.toString(a.getId())});
+        AlarmScheduler.setNextAlarm(sContext);
     }
 
     public void deleteAlarm(Alarm a) {
         mDatabase.delete(AlarmsTable.NAME, " _id = ?",
                 new String[] {Integer.toString(a.getId())});
+        AlarmScheduler.setNextAlarm(sContext);
     }
 
     public Alarm getAlarm(int id) {

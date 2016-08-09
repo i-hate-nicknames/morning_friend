@@ -12,24 +12,15 @@ public class Utils {
         return format.format(date);
     }
 
-    /**
-     * Extract hour and minute from given timestamp
-     * and find closest point in future for an alarm to fire at
-     * @param time
-     * @return
-     */
-    public static Date createAlarmTime(Date time) {
-        Calendar givenTime = Calendar.getInstance();
-        givenTime.setTime(time);
-        Calendar nextAlarm = Calendar.getInstance();
-        nextAlarm.set(Calendar.HOUR_OF_DAY, givenTime.get(Calendar.HOUR_OF_DAY));
-        nextAlarm.set(Calendar.MINUTE, givenTime.get(Calendar.MINUTE));
-        nextAlarm.set(Calendar.SECOND, 0);
-        if (nextAlarm.getTime().getTime() <= System.currentTimeMillis()) {
-            nextAlarm.add(Calendar.DATE, 1);
+    public static Date calculateAlertTime(Alarm alarm) {
+        Calendar alertTime = Calendar.getInstance();
+        alertTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());
+        alertTime.set(Calendar.MINUTE, alarm.getMinute());
+        alertTime.set(Calendar.SECOND, 0);
+        alertTime.set(Calendar.MILLISECOND, 0);
+        if (alertTime.getTime().getTime() < System.currentTimeMillis()) {
+            alertTime.add(Calendar.DATE, 1);
         }
-        return nextAlarm.getTime();
+        return alertTime.getTime();
     }
-
-
 }

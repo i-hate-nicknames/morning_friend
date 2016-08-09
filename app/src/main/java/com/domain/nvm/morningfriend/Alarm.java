@@ -114,7 +114,11 @@ public class Alarm implements Serializable {
     }
 
     public void setTime(Date time) {
-        this.time = Utils.createAlarmTime(time);
+        this.time = time;
+    }
+
+    public void setTime(long time) {
+        this.time = new Date(time);
     }
 
     public void schedule(Context context, boolean isOn) {

@@ -21,7 +21,6 @@ public abstract class PuzzleActivity extends AppCompatActivity {
 
     private RingingService mService;
     private boolean mBound = false;
-    protected Alarm mAlarm;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -37,19 +36,10 @@ public abstract class PuzzleActivity extends AppCompatActivity {
         }
     };
 
-    private static final String EXTRA_ALARM = "alarm";
-
-    public static Intent newIntent(Context context, Alarm alarm) {
-        Intent i = new Intent(context, AlertReceiver.class);
-        i.putExtra(EXTRA_ALARM, alarm);
-        return i;
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AlarmWakeLock.acquireLock(this);
-        mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
         final Window win = getWindow();
         win.addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |

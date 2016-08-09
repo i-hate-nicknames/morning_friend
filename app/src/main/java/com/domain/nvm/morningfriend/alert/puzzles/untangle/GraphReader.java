@@ -5,8 +5,9 @@ import android.graphics.PointF;
 import android.support.annotation.RawRes;
 import android.util.Log;
 
+import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +31,11 @@ public class GraphReader {
     private static final String VER_X = "x";
     private static final String VER_Y = "y";
 
-    public static Graph getGraph(Context context) {
+    public static Graph getGraph(Context context, Alarm.Difficulty difficulty) {
         String graphString = null;
         Graph graph = null;
         @RawRes int graphRes;
-        switch (AlarmSettings.getDifficulty(context)) {
+        switch (difficulty) {
             case MEDIUM:
                 graphRes = R.raw.graph7_12;
                 break;

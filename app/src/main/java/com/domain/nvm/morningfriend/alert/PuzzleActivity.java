@@ -11,7 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
+import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import java.util.Date;
 
@@ -20,6 +21,7 @@ public abstract class PuzzleActivity extends AppCompatActivity {
 
     private RingingService mService;
     private boolean mBound = false;
+    protected Alarm mAlarm;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -35,10 +37,19 @@ public abstract class PuzzleActivity extends AppCompatActivity {
         }
     };
 
+    private static final String EXTRA_ALARM = "alarm";
+
+    public static Intent newIntent(Context context, Alarm alarm) {
+        Intent i = new Intent(context, AlertReceiver.class);
+        i.putExtra(EXTRA_ALARM, alarm);
+        return i;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AlarmWakeLock.acquireLock(this);
+        mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
         final Window win = getWindow();
         win.addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
@@ -68,12 +79,11 @@ public abstract class PuzzleActivity extends AppCompatActivity {
 
     public void stopRinging() {
         mService.stopPlaying();
-        // todo: add setting "recurrent alarm" and check if it's true here
-        AlarmSettings.setNextAlarm(this);
+        AlarmScheduler.setNextAlarm(this);
     }
 
-    public void stopAndRestartRinging(Date restartTime) {
+    public void stopAndRestartRinging() {
         mService.stopPlaying();
-        AlarmSettings.setRingingAlarm(this, restartTime, true);
+        AlarmScheduler.snooze(this);
     }
 }

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
-import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
 
 import java.util.List;
 

@@ -22,7 +22,7 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        mField.generateGraph();
+                        mField.generateGraph(mAlarm.getDifficulty());
                         mField.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });

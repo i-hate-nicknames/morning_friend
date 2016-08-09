@@ -38,8 +38,7 @@ public class SquaresActivity extends PuzzleActivity implements SquaresView.Squar
 
     @Override
     public void onGreenClicked() {
-        long nextStart = System.currentTimeMillis() + 5 * 1000;
-        stopAndRestartRinging(new Date(nextStart));
+        stopAndRestartRinging();
         finish();
     }
 }

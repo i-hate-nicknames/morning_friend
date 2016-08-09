@@ -3,8 +3,6 @@ package com.domain.nvm.morningfriend;
 import android.content.Context;
 import android.util.Log;
 
-import com.domain.nvm.morningfriend.scheduler.AlarmSettings;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;

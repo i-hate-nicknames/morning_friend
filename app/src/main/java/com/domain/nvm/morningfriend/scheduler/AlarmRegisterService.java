@@ -17,10 +17,7 @@ public class AlarmRegisterService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // TODO: find the soonest alarm and schedule it
-        boolean isOn = AlarmSettings.isEnabled(getApplicationContext());
-        Date time = AlarmSettings.getAlarmTime(getApplicationContext());
-        AlarmSettings.setRingingAlarm(getApplicationContext(), time, isOn);
+        AlarmScheduler.setNextAlarm(this);
         return START_NOT_STICKY;
     }
 }

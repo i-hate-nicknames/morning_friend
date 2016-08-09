@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
 
 public class UntangleField extends FrameLayout implements View.OnTouchListener {
@@ -64,8 +65,8 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         mCallbacks = callbacks;
     }
 
-    public void generateGraph() {
-        mGraph = GraphReader.getGraph(getContext());
+    public void generateGraph(Alarm.Difficulty difficulty) {
+        mGraph = GraphReader.getGraph(getContext(), difficulty);
         mGraph.shufflePositions();
         mGraph.scaleVertexPositions(getWidth()*VERTEX_SCALE_PERCENTAGE,
                 getHeight()*VERTEX_SCALE_PERCENTAGE);

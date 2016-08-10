@@ -49,14 +49,14 @@ public class AlarmDetailActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_alarm_settings);
+        setContentView(R.layout.activity_alarm_detail);
         int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
         mAlarm = AlarmRepository.get(this).getAlarm(alarmId);
 
-        mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
-        mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
+        mTimeTextView = (TextView) findViewById(R.id.alarm_detail_alarm_time_caption);
+        mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_detail_enabled_check_box);
         mMessageEdit = (EditText) findViewById(R.id.alarm_detail_alarm_message_edit_text);
-        mDifficulty = (Spinner) findViewById(R.id.settings_spinner_difficulty);
+        mDifficulty = (Spinner) findViewById(R.id.alarm_detail_spinner_difficulty);
 
         String[] choices = getResources().getStringArray(R.array.pref_difficulty);
         ArrayAdapter<String> adapter =

@@ -12,6 +12,7 @@ public class Alarm implements Serializable {
     private int hour;
     private int minute;
     private long time;
+    private String message;
     private boolean isEnabled;
     private Difficulty difficulty;
     private Puzzle puzzle;
@@ -113,4 +114,11 @@ public class Alarm implements Serializable {
         this.time = time;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

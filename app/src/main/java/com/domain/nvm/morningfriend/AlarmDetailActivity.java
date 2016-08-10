@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,6 +31,8 @@ public class AlarmDetailActivity extends AppCompatActivity
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
     private Spinner mDifficulty;
+    private EditText mMessageEdit;
+
     private Alarm mAlarm;
 
     private static final String TAG = "AlarmDetailActivity";
@@ -50,6 +55,7 @@ public class AlarmDetailActivity extends AppCompatActivity
 
         mTimeTextView = (TextView) findViewById(R.id.alarm_time_caption);
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_enabled_check_box);
+        mMessageEdit = (EditText) findViewById(R.id.alarm_detail_alarm_message_edit_text);
         mDifficulty = (Spinner) findViewById(R.id.settings_spinner_difficulty);
 
         String[] choices = getResources().getStringArray(R.array.pref_difficulty);
@@ -61,7 +67,7 @@ public class AlarmDetailActivity extends AppCompatActivity
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mAlarm.setEnabled(isChecked);
-                onAlarmChanged();
+                updateAlarmWithUI();
             }
         });
 
@@ -79,12 +85,30 @@ public class AlarmDetailActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mAlarm.setDifficulty(position);
-                onAlarmChanged();
+                updateAlarmWithUI();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        mMessageEdit.setText(mAlarm.getMessage());
+        mMessageEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAlarm.setMessage(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateAlarm();
             }
         });
 
@@ -125,11 +149,15 @@ public class AlarmDetailActivity extends AppCompatActivity
     public void onTimePickerResult(Date time) {
         mAlarm.setHour(Utils.getHour(time));
         mAlarm.setMinute(Utils.getMinute(time));
-        onAlarmChanged();
+        updateAlarmWithUI();
     }
 
-    private void onAlarmChanged() {
+    private void updateAlarm() {
         AlarmRepository.get(this).updateAlarm(mAlarm);
+    }
+
+    private void updateAlarmWithUI() {
+        updateAlarm();
         updateUI();
     }
 

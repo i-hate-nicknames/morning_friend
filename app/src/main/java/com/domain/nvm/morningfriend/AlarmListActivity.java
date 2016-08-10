@@ -67,20 +67,20 @@ public class AlarmListActivity extends AppCompatActivity {
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mIdTextView;
+        private TextView mTitle;
         private TextView mTimeTextView;
         private Alarm mAlarm;
 
         public AlarmsHolder(View itemView) {
             super(itemView);
             mTimeTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_time);
-            mIdTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_id);
+            mTitle = (TextView) itemView.findViewById(R.id.alarm_list_item_id);
             itemView.setOnClickListener(this);
         }
 
         public void bindAlarm(Alarm alarm) {
             this.mAlarm = alarm;
-            mIdTextView.setText(Integer.toString(alarm.getId()));
+            mTitle.setText(Integer.toString(alarm.getId()) + alarm.getMessage());
             mTimeTextView.setText(String.format("%d:%d", alarm.getHour(), alarm.getMinute()));
         }
 

@@ -9,7 +9,7 @@ public class AlarmContract {
         public static final class Cols implements BaseColumns {
             public static final String HOUR = "hour";
             public static final String MINUTE = "minute";
-            public static final String TIME = "time";
+            public static final String MESSAGE = "message";
             public static final String ENABLED = "is_enabled";
             public static final String RECURRING = "is_recurring";
             public static final String PUZZLE = "puzzle";
@@ -21,7 +21,7 @@ public class AlarmContract {
                 Cols._ID + " integer primary key autoincrement, " +
                 Cols.HOUR + ", " +
                 Cols.MINUTE + ", " +
-                Cols.TIME + ", " +
+                Cols.MESSAGE + ", " +
                 Cols.ENABLED + ", " +
                 Cols.RECURRING + ", " +
                 Cols.PUZZLE + ", " +

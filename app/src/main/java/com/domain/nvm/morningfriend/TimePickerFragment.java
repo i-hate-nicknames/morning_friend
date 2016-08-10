@@ -80,19 +80,14 @@ public class TimePickerFragment extends DialogFragment {
             hour = mTimePicker.getHour();
             minute = mTimePicker.getMinute();
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        Date resultTime = calendar.getTime();
+
+        Date resultTime = Utils.getDateWithHourMinute(hour, minute);
         activity.onTimePickerResult(resultTime);
     }
 
     private void setTimePickerValue(Date time) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(time);
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        int hour = Utils.getHour(time);
+        int minute = Utils.getMinute(time);
 
         if (Build.VERSION.SDK_INT < 23) {
             mTimePicker.setCurrentHour(hour);

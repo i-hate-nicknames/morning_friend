@@ -31,7 +31,7 @@ public class AlarmCursorWrapper extends CursorWrapper {
         a.setId(id);
         a.setHour(hour);
         a.setMinute(minute);
-        a.setTime(new Date(time));
+        a.setTime(time);
         a.setEnabled(isEnabled);
         a.setPuzzle(puzzleId);
         a.setDifficulty(diffictultyId);

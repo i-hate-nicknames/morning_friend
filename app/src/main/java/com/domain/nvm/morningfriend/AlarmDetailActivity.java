@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmDetailActivity extends AppCompatActivity
@@ -124,10 +123,8 @@ public class AlarmDetailActivity extends AppCompatActivity
 
     @Override
     public void onTimePickerResult(Date time) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(time);
-        mAlarm.setHour(c.get(Calendar.HOUR_OF_DAY));
-        mAlarm.setMinute(c.get(Calendar.MINUTE));
+        mAlarm.setHour(Utils.getHour(time));
+        mAlarm.setMinute(Utils.getMinute(time));
         onAlarmChanged();
     }
 

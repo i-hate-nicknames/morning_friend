@@ -40,10 +40,10 @@ public class AlarmScheduler {
                 PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (Build.VERSION.SDK_INT >= 19) {
-            am.setExact(AlarmManager.RTC_WAKEUP, next.getTime().getTime(), pi);
+            am.setExact(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }
         else {
-            am.set(AlarmManager.RTC_WAKEUP, next.getTime().getTime(), pi);
+            am.set(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }
     }
 

@@ -23,4 +23,23 @@ public class Utils {
         }
         return alertTime.getTime();
     }
+
+    public static int getHour(Date time) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        return c.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public static int getMinute(Date time) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        return c.get(Calendar.MINUTE);
+    }
+
+    public static Date getDateWithHourMinute(int hour, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        return c.getTime();
+    }
 }

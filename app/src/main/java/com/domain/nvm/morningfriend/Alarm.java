@@ -1,14 +1,6 @@
 package com.domain.nvm.morningfriend;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-
-import com.domain.nvm.morningfriend.alert.AlertReceiver;
-
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Alarm implements Serializable {
@@ -19,7 +11,7 @@ public class Alarm implements Serializable {
     private int id;
     private int hour;
     private int minute;
-    private Date time;
+    private long time;
     private boolean isEnabled;
     private Difficulty difficulty;
     private Puzzle puzzle;
@@ -109,37 +101,16 @@ public class Alarm implements Serializable {
         }
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
     public void setTime(Date time) {
-        this.time = time;
+        this.time = time.getTime();
     }
 
     public void setTime(long time) {
-        this.time = new Date(time);
+        this.time = time;
     }
-
-    public void schedule(Context context, boolean isOn) {
-        /*Intent i = AlertReceiver.newIntent(context, time);
-        PendingIntent pi =
-                PendingIntent.getBroadcast(context, 0, i, 0);
-
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (isOn) {
-            am.set(AlarmManager.RTC_WAKEUP, time.getTime(), pi);
-        }
-        else {
-            am.cancel(pi);
-            pi.cancel();
-        }*/
-    }
-
-    public void setNextAlarm(Context context) {
-        /*this.time = Utils.createAlarmTime(this.time);
-        schedule(context, true);*/
-    }
-
 
 }

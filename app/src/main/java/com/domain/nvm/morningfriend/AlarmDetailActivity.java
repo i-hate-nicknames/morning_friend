@@ -31,6 +31,7 @@ public class AlarmDetailActivity extends AppCompatActivity
     private TextView mTimeTextView;
     private CheckBox mEnabledCheckBox;
     private Spinner mDifficulty;
+    private Spinner mPuzzle;
     private EditText mMessageEdit;
 
     private Alarm mAlarm;
@@ -57,11 +58,16 @@ public class AlarmDetailActivity extends AppCompatActivity
         mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_detail_enabled_check_box);
         mMessageEdit = (EditText) findViewById(R.id.alarm_detail_alarm_message_edit_text);
         mDifficulty = (Spinner) findViewById(R.id.alarm_detail_spinner_difficulty);
+        mPuzzle = (Spinner) findViewById(R.id.alarm_detail_spinner_puzzle);
 
         String[] choices = getResources().getStringArray(R.array.pref_difficulty);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices);
         mDifficulty.setAdapter(adapter);
+
+        choices = getResources().getStringArray(R.array.pref_puzzle);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices);
+        mPuzzle.setAdapter(adapter);
 
         mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -85,6 +91,19 @@ public class AlarmDetailActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mAlarm.setDifficulty(position);
+                updateAlarmWithUI();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mPuzzle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mAlarm.setPuzzle(position);
                 updateAlarmWithUI();
             }
 
@@ -165,6 +184,7 @@ public class AlarmDetailActivity extends AppCompatActivity
         mEnabledCheckBox.setChecked(mAlarm.isEnabled());
         mTimeTextView.setText(String.format("%d:%d", mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
+        mPuzzle.setSelection(mAlarm.getPuzzle().ordinal());
     }
 
 }

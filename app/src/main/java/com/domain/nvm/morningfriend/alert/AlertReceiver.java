@@ -8,6 +8,7 @@ import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import java.util.Date;
@@ -27,8 +28,16 @@ public class AlertReceiver extends BroadcastReceiver {
         Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
         Logger.write(context, "Alarm triggered!");
         AlarmWakeLock.acquireLock(context);
-        Intent i = SquaresActivity.newIntent(context, alarm);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        Intent puzzleIntent = null;
+        switch (alarm.getPuzzle()) {
+            case GRAPH:
+                puzzleIntent = UntangleActivity.newIntent(context, alarm);
+                break;
+            case SQUARES:
+                puzzleIntent = SquaresActivity.newIntent(context, alarm);
+                break;
+        }
+        puzzleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(puzzleIntent);
     }
 }

@@ -33,6 +33,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/choose_puzzle_caption" />
+
+        <Spinner
+            android:id="@+id/alarm_detail_spinner_puzzle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/choose_difficulty_caption" />
 
         <Spinner

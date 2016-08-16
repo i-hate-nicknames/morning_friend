@@ -1,6 +1,11 @@
 package com.domain.nvm.morningfriend;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +39,7 @@ public class AlarmListActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_alarms_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
+        mRecyclerView.addItemDecoration(new AlarmItemDecoration(this, 15));
 
     }
 
@@ -114,6 +120,47 @@ public class AlarmListActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return mAlarmsList.size();
+        }
+    }
+
+    private class AlarmItemDecoration extends RecyclerView.ItemDecoration {
+
+        private final int[] mAttrs = new int[] {android.R.attr.listDivider};
+
+        private final int mVerticalSpaceHeight;
+
+        private Drawable mDivider;
+
+        public AlarmItemDecoration(Context context, int spaceHeight) {
+            this.mVerticalSpaceHeight = spaceHeight;
+            final TypedArray styledAttrs = context.obtainStyledAttributes(mAttrs);
+            mDivider = styledAttrs.getDrawable(0);
+            styledAttrs.recycle();
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+            if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
+                outRect.bottom = mVerticalSpaceHeight;
+            }
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                View child = parent.getChildAt(i);
+                RecyclerView.LayoutParams params =
+                        (RecyclerView.LayoutParams) child.getLayoutParams();
+                int top = child.getBottom() + params.bottomMargin;
+                int bottom = top + mDivider.getIntrinsicHeight();
+
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
         }
     }
 }

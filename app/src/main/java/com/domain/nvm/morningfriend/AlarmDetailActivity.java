@@ -182,7 +182,7 @@ public class AlarmDetailActivity extends AppCompatActivity
 
     private void updateUI() {
         mEnabledCheckBox.setChecked(mAlarm.isEnabled());
-        mTimeTextView.setText(String.format("%d:%d", mAlarm.getHour(), mAlarm.getMinute()));
+        mTimeTextView.setText(Utils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
         mPuzzle.setSelection(mAlarm.getPuzzle().ordinal());
     }

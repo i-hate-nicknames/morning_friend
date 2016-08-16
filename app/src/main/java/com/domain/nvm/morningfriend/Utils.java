@@ -12,6 +12,14 @@ public class Utils {
         return format.format(date);
     }
 
+    public static String formatTime(int hour, int minute) {
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY, hour);
+        time.set(Calendar.MINUTE, minute);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
+        return format.format(time.getTime());
+    }
+
     public static Date calculateAlertTime(Alarm alarm) {
         Calendar alertTime = Calendar.getInstance();
         alertTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());

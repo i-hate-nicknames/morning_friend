@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 
@@ -28,6 +29,7 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.write(this, "UntangleActivity::onCreate");
         setContentView(R.layout.activity_untangle);
         mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
         mField = (UntangleField) findViewById(R.id.untangle_field);

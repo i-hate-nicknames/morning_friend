@@ -57,6 +57,13 @@ public class AlarmListActivity extends AppCompatActivity {
                 Alarm a = AlarmRepository.get(this).addAlarm();
                 startActivity(AlarmDetailActivity.makeIntent(this, a));
                 return true;
+            case R.id.detail_menu_logs:
+                Intent log = new Intent(this, LogActivity.class);
+                startActivity(log);
+                return true;
+            case R.id.detail_menu_clear:
+                Logger.clear(this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

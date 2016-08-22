@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/alarms_list_add_alarm"
           android:title="@string/menu_alarms_list_add_alarm"/>
-    <item android:id="@+id/detail_menu_logs" android:title="Show Logs"/>
-    <item android:id="@+id/detail_menu_clear" android:title="Clear Logs"/>
+    <item android:id="@+id/list_menu_logs" android:title="Show Logs"/>
+    <item android:id="@+id/list_menu_clear" android:title="Clear Logs"/>
+    <item android:id="@+id/list_menu_settings" android:title="@string/menu_alarms_list_settings"/>
 </menu>

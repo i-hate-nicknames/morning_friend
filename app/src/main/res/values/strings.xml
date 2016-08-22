@@ -8,6 +8,7 @@
 
     <string name="menu_settings_run_demo">Run demo</string>
     <string name="menu_alarms_list_add_alarm">Add alarm</string>
+    <string name="menu_alarms_list_settings">Settings</string>
     <string name="menu_detail_delete_alarm">Delete alarm</string>
 
     <string name="prefs_puzzle_squares">Squares</string>
@@ -19,5 +20,7 @@
     <string name="prefs_difficulty_easy">Hatred</string>
     <string name="prefs_difficulty_medium">Nightmare</string>
     <string name="prefs_difficulty_hard">Hell</string>
+
+    <string name="prefs_increase_volume">Increase volume</string>
 
 </resources>

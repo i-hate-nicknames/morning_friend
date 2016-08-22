@@ -18,13 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".AlarmDetailActivity">
-
         </activity>
-
-        <activity android:name=".LogActivity" />
-
+        <activity android:name=".LogActivity"/>
         <activity
             android:name=".alert.puzzles.squares.SquaresActivity"
             android:theme="@style/Theme.Fullscreen"/>
@@ -50,7 +46,8 @@
             android:exported="false">
         </service>
 
-
+        <activity android:name=".SettingsActivity">
+        </activity>
     </application>
 
 </manifest>

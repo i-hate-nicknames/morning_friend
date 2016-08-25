@@ -82,6 +82,12 @@ public class RingingService extends Service {
         stopSelf();
     }
 
+    public void muteSound() {
+        if (isPlaying) {
+            mp.setVolume(0f, 0f);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -7,14 +7,15 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
-
-import java.util.Date;
 
 
 public abstract class PuzzleActivity extends AppCompatActivity {
@@ -75,5 +76,20 @@ public abstract class PuzzleActivity extends AppCompatActivity {
     public void stopAndRestartRinging() {
         mService.stopPlaying();
         AlarmScheduler.snooze(this);
+    }
+
+    public void showMuteMessage(String message) {
+        if (message == null) {
+            message = getString(R.string.snackbar_mute_message);
+        }
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.snackbar_mute_button_text),
+                        new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mService.muteSound();
+                    }
+                })
+                .show();
     }
 }

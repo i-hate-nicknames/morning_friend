@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MorningFriend</string>
 
+    <string name="snackbar_mute_message">You can mute the ringing</string>
+    <string name="snackbar_mute_button_text">Mute</string>
+
     <string name="alarm_enabled_caption">Enabled</string>
     <string name="choose_difficulty_caption">Difficulty</string>
     <string name="choose_puzzle_caption">Puzzle</string>

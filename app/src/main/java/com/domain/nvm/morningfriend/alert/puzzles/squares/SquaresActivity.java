@@ -41,6 +41,7 @@ public class SquaresActivity extends PuzzleActivity implements SquaresView.Squar
                 }
             });
         setContentView(mView);
+        showMuteMessage(mAlarm.getMessage());
     }
 
     @Override

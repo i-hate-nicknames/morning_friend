@@ -42,6 +42,7 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
                         mField.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
+        showMuteMessage(mAlarm.getMessage());
     }
 
     @Override

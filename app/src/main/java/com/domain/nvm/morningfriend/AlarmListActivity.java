@@ -64,6 +64,10 @@ public class AlarmListActivity extends AppCompatActivity {
             case R.id.list_menu_clear:
                 Logger.clear(this);
                 return true;
+            case R.id.list_menu_demo:
+                Intent demo = new Intent(this, SquaresActivity.class);
+                startActivity(demo);
+                return true;
             case R.id.list_menu_settings:
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);

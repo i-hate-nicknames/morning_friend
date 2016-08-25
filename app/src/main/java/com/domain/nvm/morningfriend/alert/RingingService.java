@@ -1,10 +1,15 @@
 package com.domain.nvm.morningfriend.alert;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
@@ -40,8 +45,28 @@ public class RingingService extends Service {
         Logger.write(this, "RingingService::onCreate");
         RingingState.get().setRinging(true);
         AlarmWakeLock.acquireLock(this);
-        mp = MediaPlayer.create(this, R.raw.eh);
+        setupPlayer();
+
+    }
+
+    private void setupPlayer() {
+        String ringtoneSetting = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.prefs_ringtone_key), null);
+        if (ringtoneSetting == null) {
+            mp = MediaPlayer.create(this, R.raw.eh);
+        }
+        else {
+            Uri ringtone = Uri.parse(ringtoneSetting);
+            mp = MediaPlayer.create(this, ringtone);
+        }
+
         mp.setLooping(true);
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(
+                AudioManager.STREAM_RING,
+                am.getStreamMaxVolume(AudioManager.STREAM_RING) / 2,
+                0
+        );
     }
 
     public void startPlaying() {

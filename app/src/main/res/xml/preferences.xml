@@ -2,6 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:key="pref_increase_volume"
-        android:title="@string/prefs_increase_volume"
+        android:title="Increase volume"
         android:defaultValue="false" />
+    <RingtonePreference
+        android:key="@string/prefs_ringtone_key"
+        android:title="@string/prefs_ringtone_label"
+        android:defaultValue="content://settings/system/alarm_alert" />
 </PreferenceScreen>

@@ -4,5 +4,6 @@
           android:title="@string/menu_alarms_list_add_alarm"/>
     <item android:id="@+id/list_menu_logs" android:title="Show Logs"/>
     <item android:id="@+id/list_menu_clear" android:title="Clear Logs"/>
+    <item android:id="@+id/list_menu_demo" android:title="Run demo"/>
     <item android:id="@+id/list_menu_settings" android:title="@string/menu_alarms_list_settings"/>
 </menu>

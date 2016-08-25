@@ -21,6 +21,7 @@
     <string name="prefs_difficulty_medium">Nightmare</string>
     <string name="prefs_difficulty_hard">Hell</string>
 
-    <string name="prefs_increase_volume">Increase volume</string>
+    <string name="prefs_ringtone_key">pref_ringtone</string>
+    <string name="prefs_ringtone_label">Ringtone</string>
 
 </resources>

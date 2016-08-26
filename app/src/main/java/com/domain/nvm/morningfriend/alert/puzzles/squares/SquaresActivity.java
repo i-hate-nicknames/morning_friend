@@ -52,7 +52,7 @@ public class SquaresActivity extends PuzzleActivity implements SquaresView.Squar
 
     @Override
     public void onGreenClicked() {
-        stopAndRestartRinging();
+        stopAndRestartRinging(mAlarm);
         finish();
     }
 }

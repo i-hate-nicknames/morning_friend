@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.preference.PreferenceManager;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Utils;
@@ -14,7 +15,10 @@ import com.domain.nvm.morningfriend.database.AlarmRepository;
 public class AlarmScheduler {
 
     private static Alarm getClosestAlarm(Context context) {
-        Alarm found = null;
+        Alarm found = getSnoozeAlarm(context);
+        if (found != null) {
+            return found;
+        }
         long minTime = Long.MAX_VALUE;
         for (Alarm a: AlarmRepository.get(context).getAlarms()) {
             if (!a.isEnabled()) {
@@ -28,6 +32,16 @@ public class AlarmScheduler {
             }
         }
         return found;
+    }
+
+    /**
+     * Check if snooze shared pref is set and the time to fire is valid and return Alarm
+     * corresponding to this snooze setting
+     * @param context
+     * @return alarm
+     */
+    private static Alarm getSnoozeAlarm(Context context) {
+        return null;
     }
 
     public static void setNextAlarm(Context context) {
@@ -47,8 +61,18 @@ public class AlarmScheduler {
         }
     }
 
-    public static void snooze(Context context) {
-
+    /**
+     * Register snooze for given alarm. Snooze time is calculated using current time and alarm
+     * settings. Results in setting shared preference corresponding to snooze state. Only one
+     * snooze can be registered, consequent registering will overwrite older ones.
+     * @param context
+     * @param alarm
+     */
+    public static void snooze(Context context, Alarm alarm) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString("pref_snooze", alarm.getId() + "_" + alarm.getTime())
+                .apply();
     }
 
 }

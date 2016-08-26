@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
@@ -73,9 +74,9 @@ public abstract class PuzzleActivity extends AppCompatActivity {
         AlarmScheduler.setNextAlarm(this);
     }
 
-    public void stopAndRestartRinging() {
+    public void stopAndRestartRinging(Alarm alarm) {
         mService.stopPlaying();
-        AlarmScheduler.snooze(this);
+        AlarmScheduler.snooze(this, alarm);
     }
 
     public void showMuteMessage(String message) {

@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +42,9 @@ public class AlarmListActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
         mRecyclerView.addItemDecoration(new AlarmItemDecoration(this, 15));
 
+        TextView nextAlarmText = (TextView) findViewById(R.id.alarms_list_next_alarm);
+        nextAlarmText.setText(PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("pref_snooze", null));
     }
 
     @Override

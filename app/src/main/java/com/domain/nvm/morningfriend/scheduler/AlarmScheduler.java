@@ -14,6 +14,9 @@ import com.domain.nvm.morningfriend.database.AlarmRepository;
 
 public class AlarmScheduler {
 
+    private static final String PREF_SNOOZE = "pref_snooze";
+    private static final long LATE_OFFSET = 0;
+
     private static Alarm getClosestAlarm(Context context) {
         Alarm found = getSnoozeAlarm(context);
         if (found != null) {
@@ -41,7 +44,20 @@ public class AlarmScheduler {
      * @return alarm
      */
     private static Alarm getSnoozeAlarm(Context context) {
-        return null;
+        String pref = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(PREF_SNOOZE, null);
+        if (pref == null) {
+            return null;
+        }
+        String[] snoozeVals = pref.split("_");
+        int id = Integer.parseInt(snoozeVals[0]);
+        Alarm alarm = AlarmRepository.get(context).getAlarm(id);
+        long time = Long.parseLong(snoozeVals[1]);
+        if (time - LATE_OFFSET < System.currentTimeMillis()) {
+            return null;
+        }
+        alarm.setTime(time);
+        return alarm;
     }
 
     public static void setNextAlarm(Context context) {
@@ -69,10 +85,12 @@ public class AlarmScheduler {
      * @param alarm
      */
     public static void snooze(Context context, Alarm alarm) {
+        long snoozeTime = System.currentTimeMillis() + alarm.getSnoozeDuration();
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString("pref_snooze", alarm.getId() + "_" + alarm.getTime())
+                .putString(PREF_SNOOZE, alarm.getId() + "_" + snoozeTime)
                 .apply();
+        setNextAlarm(context);
     }
 
 }

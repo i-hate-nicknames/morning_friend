@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Alarm implements Serializable {
 
+    private static final long DEFAULT_SNOOZE_DURATION = 5 * 1000;
+
     public enum Difficulty {EASY, MEDIUM, HARD}
     public enum Puzzle {SQUARES, GRAPH}
 
@@ -12,6 +14,7 @@ public class Alarm implements Serializable {
     private int hour;
     private int minute;
     private long time;
+    private long snoozeDuration;
     private String message;
     private boolean isEnabled;
     private Difficulty difficulty;
@@ -112,6 +115,17 @@ public class Alarm implements Serializable {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public long getSnoozeDuration() {
+        if (snoozeDuration == 0) {
+            return DEFAULT_SNOOZE_DURATION;
+        }
+        return snoozeDuration;
+    }
+
+    public void setSnoozeDuration(long snoozeDuration) {
+        this.snoozeDuration = snoozeDuration;
     }
 
     public String getMessage() {

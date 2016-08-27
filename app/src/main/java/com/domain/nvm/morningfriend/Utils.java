@@ -20,6 +20,14 @@ public class Utils {
         return format.format(time.getTime());
     }
 
+    public static String formatRemainingTime(long time) {
+        long timeMins = time / (1000 * 60);
+        String mins = Long.toString(timeMins % 60);
+        String hours = Long.toString(timeMins / 60);
+        return String.format(java.util.Locale.getDefault(), "%s hours, %s minutes", hours, mins);
+
+    }
+
     public static Date calculateAlertTime(Alarm alarm) {
         Calendar alertTime = Calendar.getInstance();
         alertTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());

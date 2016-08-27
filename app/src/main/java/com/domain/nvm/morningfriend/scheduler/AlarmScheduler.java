@@ -15,9 +15,9 @@ import com.domain.nvm.morningfriend.database.AlarmRepository;
 public class AlarmScheduler {
 
     private static final String PREF_SNOOZE = "pref_snooze";
-    private static final long LATE_OFFSET = 0;
+    private static final long LATE_OFFSET = 3 * 1000;
 
-    private static Alarm getClosestAlarm(Context context) {
+    public static Alarm getClosestAlarm(Context context) {
         Alarm found = getSnoozeAlarm(context);
         if (found != null) {
             return found;
@@ -57,6 +57,7 @@ public class AlarmScheduler {
             return null;
         }
         alarm.setTime(time);
+        alarm.setSnooze(true);
         return alarm;
     }
 

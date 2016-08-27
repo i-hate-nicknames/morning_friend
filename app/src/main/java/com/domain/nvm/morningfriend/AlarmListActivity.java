@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
+import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.List;
 public class AlarmListActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
+    TextView mNextAlarm;
     AlarmsAdapter mAdapter;
 
     @Override
@@ -43,11 +45,7 @@ public class AlarmListActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
         mRecyclerView.addItemDecoration(new AlarmItemDecoration(this, 15));
 
-        TextView nextAlarmText = (TextView) findViewById(R.id.alarms_list_next_alarm);
-        String pref = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString("pref_snooze", null);
-        long time = Long.parseLong(pref.split("_")[0]);
-        nextAlarmText.setText(Utils.formatDate(new Date(time)));
+        mNextAlarm = (TextView) findViewById(R.id.alarms_list_next_alarm);
     }
 
     @Override
@@ -90,7 +88,9 @@ public class AlarmListActivity extends AppCompatActivity {
         mAdapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-
+        Alarm closest = AlarmScheduler.getClosestAlarm(this);
+        long timeDiff = closest.getTime() - System.currentTimeMillis();
+        mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
     }
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

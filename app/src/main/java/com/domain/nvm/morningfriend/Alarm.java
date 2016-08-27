@@ -15,6 +15,7 @@ public class Alarm implements Serializable {
     private int minute;
     private long time;
     private long snoozeDuration;
+    private boolean isSnooze;
     private String message;
     private boolean isEnabled;
     private Difficulty difficulty;
@@ -124,8 +125,12 @@ public class Alarm implements Serializable {
         return snoozeDuration;
     }
 
-    public void setSnoozeDuration(long snoozeDuration) {
-        this.snoozeDuration = snoozeDuration;
+    public boolean isSnooze() {
+        return isSnooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        isSnooze = snooze;
     }
 
     public String getMessage() {
@@ -135,4 +140,6 @@ public class Alarm implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

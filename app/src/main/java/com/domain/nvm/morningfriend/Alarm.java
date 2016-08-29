@@ -159,6 +159,18 @@ public class Alarm implements Serializable {
 
         public enum Names { SUN, MON, TUE, WED, THU, FRI, SAT}
 
+        private static Days sWeekends = new Days();
+        private static Days sWorkdays = new Days();
+        static {
+            sWeekends.setDay(Names.SAT, true);
+            sWeekends.setDay(Names.SUN, true);
+            sWorkdays.setDay(Names.MON, true);
+            sWorkdays.setDay(Names.TUE, true);
+            sWorkdays.setDay(Names.WED, true);
+            sWorkdays.setDay(Names.THU, true);
+            sWorkdays.setDay(Names.FRI, true);
+        }
+
         private int bitMask;
 
         public boolean isDayActive(Names day) {
@@ -176,18 +188,21 @@ public class Alarm implements Serializable {
         }
 
         public void setOnlyWeekends() {
-            this.bitMask = 0;
-            setDay(Names.SAT, true);
-            setDay(Names.SUN, true);
+            this.bitMask = sWeekends.bitMask;
+
         }
 
         public void setOnlyWorkDays() {
-            this.bitMask = 0;
-            setDay(Names.MON, true);
-            setDay(Names.TUE, true);
-            setDay(Names.WED, true);
-            setDay(Names.THU, true);
-            setDay(Names.FRI, true);
+            this.bitMask = sWorkdays.bitMask;
+
+        }
+
+        public boolean isOnlyWeekends() {
+            return this.bitMask == sWeekends.bitMask;
+        }
+
+        public boolean isOnlyWorkDays() {
+            return this.bitMask == sWorkdays.bitMask;
         }
 
     }

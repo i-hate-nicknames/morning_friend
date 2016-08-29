@@ -32,6 +32,8 @@ public class DaysTest {
         assertTrue(repeatDays.isDayActive(Names.FRI));
         assertFalse(repeatDays.isDayActive(Names.SAT));
         assertFalse(repeatDays.isDayActive(Names.SUN));
+        assertTrue(repeatDays.isOnlyWorkDays());
+        assertFalse(repeatDays.isOnlyWeekends());
 
         repeatDays.setOnlyWeekends();
         assertFalse(repeatDays.isDayActive(Names.MON));
@@ -41,5 +43,7 @@ public class DaysTest {
         assertFalse(repeatDays.isDayActive(Names.FRI));
         assertTrue(repeatDays.isDayActive(Names.SAT));
         assertTrue(repeatDays.isDayActive(Names.SUN));
+        assertTrue(repeatDays.isOnlyWeekends());
+        assertFalse(repeatDays.isOnlyWorkDays());
     }
 }

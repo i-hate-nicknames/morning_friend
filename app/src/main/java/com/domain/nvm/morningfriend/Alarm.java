@@ -20,6 +20,7 @@ public class Alarm implements Serializable {
     private boolean isEnabled;
     private Difficulty difficulty;
     private Puzzle puzzle;
+    private Days repeatDays;
 
     public static class InvalidDifficultyException extends IllegalArgumentException {
         public InvalidDifficultyException(String detailMessage) {
@@ -39,6 +40,7 @@ public class Alarm implements Serializable {
         a.setEnabled(false);
         a.setDifficulty(Difficulty.EASY);
         a.setPuzzle(Puzzle.SQUARES);
+        a.repeatDays = new Days();
         return a;
     }
 
@@ -139,6 +141,55 @@ public class Alarm implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Days getRepeatDays() {
+        return repeatDays;
+    }
+
+    public void setRepeatDays(Days repeatDays) {
+        this.repeatDays = repeatDays;
+    }
+
+    /**
+     * Repeating days are represented as a bit mask, where every bit from 0th to 6th denote
+     * repeating at a particular day of week, starting from Sunday at 0th bit.
+     */
+    public static class Days implements Serializable {
+
+        public enum Names { SUN, MON, TUE, WED, THU, FRI, SAT}
+
+        private int bitMask;
+
+        public boolean isDayActive(Names day) {
+            return ((bitMask>>day.ordinal()) % 2) == 1;
+        }
+
+        public void setDay(Names day, boolean enable) {
+            int dayMask = 1<<day.ordinal();
+            if (enable) {
+                this.bitMask |= dayMask;
+            }
+            else {
+                this.bitMask &= ~dayMask;
+            }
+        }
+
+        public void setOnlyWeekends() {
+            this.bitMask = 0;
+            setDay(Names.SAT, true);
+            setDay(Names.SUN, true);
+        }
+
+        public void setOnlyWorkDays() {
+            this.bitMask = 0;
+            setDay(Names.MON, true);
+            setDay(Names.TUE, true);
+            setDay(Names.WED, true);
+            setDay(Names.THU, true);
+            setDay(Names.FRI, true);
+        }
+
     }
 
 

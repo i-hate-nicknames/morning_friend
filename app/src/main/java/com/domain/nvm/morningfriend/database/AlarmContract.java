@@ -14,6 +14,7 @@ public class AlarmContract {
             public static final String RECURRING = "is_recurring";
             public static final String PUZZLE = "puzzle";
             public static final String DIFFICULTY = "difficulty";
+            public static final String REPEAT_DAYS = "repeat_days";
         }
 
         public static final String SQL_CREATE_TABLE =
@@ -25,6 +26,7 @@ public class AlarmContract {
                 Cols.ENABLED + ", " +
                 Cols.RECURRING + ", " +
                 Cols.PUZZLE + ", " +
-                Cols.DIFFICULTY + ")";
+                Cols.DIFFICULTY + ", " +
+                Cols.REPEAT_DAYS + ")";
     }
 }

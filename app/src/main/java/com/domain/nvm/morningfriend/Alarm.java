@@ -173,6 +173,18 @@ public class Alarm implements Serializable {
 
         private int bitMask;
 
+        public Days() {
+            this.bitMask = 0;
+        }
+
+        public Days(int bitMask) {
+            this.bitMask = bitMask;
+        }
+
+        public int getBitMask() {
+            return bitMask;
+        }
+
         public boolean isDayActive(Names day) {
             return ((bitMask>>day.ordinal()) % 2) == 1;
         }

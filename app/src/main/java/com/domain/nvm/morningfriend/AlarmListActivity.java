@@ -89,8 +89,10 @@ public class AlarmListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         Alarm closest = AlarmScheduler.getClosestAlarm(this);
-        long timeDiff = closest.getTime() - System.currentTimeMillis();
-        mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
+        if (closest != null) {
+            long timeDiff = closest.getTime() - System.currentTimeMillis();
+            mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
+        }
     }
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

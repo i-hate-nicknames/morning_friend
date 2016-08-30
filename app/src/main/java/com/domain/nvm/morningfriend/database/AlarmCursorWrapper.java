@@ -27,6 +27,7 @@ public class AlarmCursorWrapper extends CursorWrapper {
         boolean isEnabled = getInt(getColumnIndex(AlarmsTable.Cols.ENABLED)) == 1;
         int puzzleId = getInt(getColumnIndex(AlarmsTable.Cols.PUZZLE));
         int diffictultyId = getInt(getColumnIndex(AlarmsTable.Cols.DIFFICULTY));
+        int repeatingDaysMask = getInt(getColumnIndex(AlarmsTable.Cols.REPEAT_DAYS));
         Alarm a = Alarm.emptyAlarm();
         a.setId(id);
         a.setHour(hour);
@@ -35,6 +36,7 @@ public class AlarmCursorWrapper extends CursorWrapper {
         a.setEnabled(isEnabled);
         a.setPuzzle(puzzleId);
         a.setDifficulty(diffictultyId);
+        a.setRepeatDays(new Alarm.Days(repeatingDaysMask));
         return a;
     }
 }

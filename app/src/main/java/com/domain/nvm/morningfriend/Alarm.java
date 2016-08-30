@@ -205,6 +205,15 @@ public class Alarm implements Serializable {
             return this.bitMask == sWorkdays.bitMask;
         }
 
+        public static boolean isDayWeekend(int dayCode) {
+            Names day = Names.values()[dayCode];
+            return day == Names.SAT || day == Names.SUN;
+        }
+
+        public static boolean isDayWorkday(int dayCode) {
+            return !isDayWeekend(dayCode);
+        }
+
     }
 
 

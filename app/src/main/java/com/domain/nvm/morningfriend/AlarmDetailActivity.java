@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,9 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.domain.nvm.morningfriend.Alarm.Days.Names;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 
@@ -33,18 +37,23 @@ public class AlarmDetailActivity extends AppCompatActivity
     private Spinner mDifficulty;
     private Spinner mPuzzle;
     private EditText mMessageEdit;
+    private CheckBox[] mDayCheckBoxes;
 
     private Alarm mAlarm;
 
     private static final String TAG = "AlarmDetailActivity";
     private static final String EXTRA_ALARM_ID = "extraAlarmId";
 
+    private int[] checkBoxIds = new int[] {R.id.details_repeating_days_sun_check_box,
+            R.id.details_repeating_days_mon_check_box, R.id.details_repeating_days_tue_check_box,
+            R.id.details_repeating_days_wed_check_box, R.id.details_repeating_days_thu_check_box,
+            R.id.details_repeating_days_fri_check_box, R.id.details_repeating_days_sat_check_box};
+
     public static Intent makeIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, AlarmDetailActivity.class);
         i.putExtra(EXTRA_ALARM_ID, alarm.getId());
         return i;
     }
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +68,11 @@ public class AlarmDetailActivity extends AppCompatActivity
         mMessageEdit = (EditText) findViewById(R.id.alarm_detail_alarm_message_edit_text);
         mDifficulty = (Spinner) findViewById(R.id.alarm_detail_spinner_difficulty);
         mPuzzle = (Spinner) findViewById(R.id.alarm_detail_spinner_puzzle);
+
+        mDayCheckBoxes = new CheckBox[7];
+        for (int i = 0; i < checkBoxIds.length; i++) {
+            mDayCheckBoxes[i] = (CheckBox) findViewById(checkBoxIds[i]);
+        }
 
         String[] choices = getResources().getStringArray(R.array.pref_difficulty);
         ArrayAdapter<String> adapter =
@@ -130,7 +144,6 @@ public class AlarmDetailActivity extends AppCompatActivity
                 updateAlarm();
             }
         });
-
         updateUI();
     }
 
@@ -151,6 +164,64 @@ public class AlarmDetailActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+        if (!checked) {
+            return;
+        }
+        switch (view.getId()) {
+            case R.id.alarm_detail_days_workdays_radio_button:
+                mAlarm.getRepeatDays().setOnlyWorkDays();
+                updateAlarm();
+                updateDaysViews(false);
+                break;
+            case R.id.alarm_detail_days_weekends_radio_button:
+                mAlarm.getRepeatDays().setOnlyWeekends();
+                updateAlarm();
+                updateDaysViews(false);
+                break;
+            default:
+                updateDaysViews(true);
+        }
+
+    }
+
+    public void onCheckBoxClicked(View view) {
+
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.details_repeating_days_sun_check_box:
+                setAlarmRepeatDay(Names.SUN, checked);
+                break;
+            case R.id.details_repeating_days_mon_check_box:
+                setAlarmRepeatDay(Names.MON, checked);
+                break;
+            case R.id.details_repeating_days_tue_check_box:
+                setAlarmRepeatDay(Names.TUE, checked);
+                break;
+            case R.id.details_repeating_days_wed_check_box:
+                setAlarmRepeatDay(Names.WED, checked);
+                break;
+            case R.id.details_repeating_days_thu_check_box:
+                setAlarmRepeatDay(Names.THU, checked);
+                break;
+            case R.id.details_repeating_days_fri_check_box:
+                setAlarmRepeatDay(Names.FRI, checked);
+                break;
+            case R.id.details_repeating_days_sat_check_box:
+                setAlarmRepeatDay(Names.SAT, checked);
+                break;
+        }
+    }
+
+    private void setAlarmRepeatDay(Names dayName, boolean isOn) {
+        mAlarm.getRepeatDays().setDay(dayName, isOn);
+        updateAlarm();
+        updateDaysViews(true);
     }
 
     @Override
@@ -174,6 +245,34 @@ public class AlarmDetailActivity extends AppCompatActivity
         mTimeTextView.setText(Utils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
         mPuzzle.setSelection(mAlarm.getPuzzle().ordinal());
+        updateDaysViews(false);
+    }
+
+    private void updateDaysViews(boolean enableCheckBoxes) {
+        RadioGroup daysRadioGroup = (RadioGroup) findViewById(R.id.alarm_detail_days_radio_group);
+        if (mAlarm.getRepeatDays().isOnlyWorkDays()) {
+            daysRadioGroup.check(R.id.alarm_detail_days_workdays_radio_button);
+            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
+                mDayCheckBoxes[dayCode].setChecked(Alarm.Days.isDayWorkday(dayCode));
+                mDayCheckBoxes[dayCode].setEnabled(enableCheckBoxes);
+            }
+
+        }
+        else if (mAlarm.getRepeatDays().isOnlyWeekends()) {
+            daysRadioGroup.check(R.id.alarm_detail_days_weekends_radio_button);
+            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
+                mDayCheckBoxes[dayCode].setChecked(Alarm.Days.isDayWeekend(dayCode));
+                mDayCheckBoxes[dayCode].setEnabled(enableCheckBoxes);
+            }
+        }
+        else {
+            daysRadioGroup.check(R.id.alarm_detail_days_custom_radio_button);
+            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
+                mDayCheckBoxes[dayCode]
+                        .setChecked(mAlarm.getRepeatDays().isDayActive(Names.values()[dayCode]));
+            }
+        }
+
     }
 
 }

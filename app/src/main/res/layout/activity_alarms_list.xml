@@ -37,5 +37,6 @@
         android:clickable="true"
         android:src="@drawable/ic_alarm_add_white_24dp"
         app:layout_anchor="@id/alarms_list_container"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.domain.nvm.morningfriend.ScrollAwareFABBehavior"/>
 </android.support.design.widget.CoordinatorLayout>

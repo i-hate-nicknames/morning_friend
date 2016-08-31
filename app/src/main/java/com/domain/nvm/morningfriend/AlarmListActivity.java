@@ -6,11 +6,14 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,9 +32,11 @@ import java.util.List;
 
 public class AlarmListActivity extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    TextView mNextAlarm;
-    AlarmsAdapter mAdapter;
+    private static final String BUNDLE_RECYCLER_LAYOUT = "AlarmListActivity.recycler.layout";
+
+    private RecyclerView mRecyclerView;
+    private TextView mNextAlarm;
+    private FloatingActionButton mAddButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,20 @@ public class AlarmListActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new AlarmItemDecoration(this, 15));
 
         mNextAlarm = (TextView) findViewById(R.id.alarms_list_next_alarm);
+        mAddButton = (FloatingActionButton) findViewById(R.id.fab_add);
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewAlarm();
+            }
+        });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    private void createNewAlarm() {
+        Alarm a = AlarmRepository.get(this).addAlarm();
+        startActivity(AlarmDetailActivity.makeIntent(this, a));
     }
 
     @Override
@@ -59,8 +78,7 @@ public class AlarmListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.alarms_list_add_alarm:
-                Alarm a = AlarmRepository.get(this).addAlarm();
-                startActivity(AlarmDetailActivity.makeIntent(this, a));
+                createNewAlarm();
                 return true;
             case R.id.list_menu_logs:
                 Intent log = new Intent(this, LogActivity.class);
@@ -85,14 +103,30 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mAdapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
+        AlarmsAdapter adapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
+        mRecyclerView.setAdapter(adapter);
         Alarm closest = AlarmScheduler.getClosestAlarm(this);
         if (closest != null) {
             long timeDiff = closest.getTime() - System.currentTimeMillis();
             mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
         }
+        if (mAddButton.getVisibility() != View.VISIBLE) {
+            mAddButton.show();
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Parcelable layoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+        mRecyclerView.getLayoutManager().onRestoreInstanceState(layoutState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT,
+                mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -145,6 +179,8 @@ public class AlarmListActivity extends AppCompatActivity {
         public int getItemCount() {
             return mAlarmsList.size();
         }
+
+
     }
 
     private class AlarmItemDecoration extends RecyclerView.ItemDecoration {

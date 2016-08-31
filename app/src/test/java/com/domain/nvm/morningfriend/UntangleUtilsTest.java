@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class UtilsTest {
+public class UntangleUtilsTest {
 
     private static final double EPSILON = .000001;
 

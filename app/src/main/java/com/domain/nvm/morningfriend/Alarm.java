@@ -189,6 +189,26 @@ public class Alarm implements Serializable {
             return ((bitMask>>day.ordinal()) % 2) == 1;
         }
 
+        public int getClosestDayIndex(int startDay) {
+            if (bitMask == 0) {
+                return -1;
+            }
+            int offset = 0;
+            // shift until the end of mask
+            while (offset+startDay <= Names.SAT.ordinal()) {
+                if ((bitMask>>offset+startDay) % 2 == 1) {
+                    return offset;
+                }
+                offset++;
+            }
+            // at this point we have shifted all the way left to sat and our current offset value
+            // is the number of shifts from startDay to the end of mask
+            // (also a number of days from startDay to Sunday). Since we haven't found
+            // active days yet, we have to take number of days until sunday (offset) and add to it
+            // position of the first active day starting from Sunday
+            return offset+getClosestDayIndex(0);
+        }
+
         public void setDay(Names day, boolean enable) {
             int dayMask = 1<<day.ordinal();
             if (enable) {

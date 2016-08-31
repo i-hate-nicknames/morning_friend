@@ -30,14 +30,31 @@ public class Utils {
 
     public static Date calculateAlertTime(Alarm alarm) {
         Calendar alertTime = Calendar.getInstance();
+        int daysOffset = getDaysOffset(alertTime.get(Calendar.DAY_OF_WEEK), alarm.getRepeatDays());
+        if (daysOffset == -1) {
+            return new Date(Long.MAX_VALUE);
+        }
         alertTime.set(Calendar.HOUR_OF_DAY, alarm.getHour());
         alertTime.set(Calendar.MINUTE, alarm.getMinute());
         alertTime.set(Calendar.SECOND, 0);
         alertTime.set(Calendar.MILLISECOND, 0);
+        alertTime.add(Calendar.DATE, daysOffset);
         if (alertTime.getTime().getTime() < System.currentTimeMillis()) {
             alertTime.add(Calendar.DATE, 1);
         }
         return alertTime.getTime();
+    }
+
+    /**
+     * Get number of days between given day (in Calendar format, starting with SUN=1) and the first
+     * active day in repeatingDays
+     * -1 if there are no active days
+     * @param repeatingDays
+     * @return
+     */
+    public static int getDaysOffset(int day, Alarm.Days repeatingDays) {
+        int dayIdx = day-1;
+        return repeatingDays.getClosestDayIndex(dayIdx);
     }
 
     public static int getHour(Date time) {

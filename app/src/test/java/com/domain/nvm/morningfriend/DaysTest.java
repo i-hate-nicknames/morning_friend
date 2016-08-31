@@ -46,4 +46,28 @@ public class DaysTest {
         assertTrue(repeatDays.isOnlyWeekends());
         assertFalse(repeatDays.isOnlyWorkDays());
     }
+
+    @Test
+    public void testClosestDayIndex() {
+        Alarm.Days days = new Alarm.Days();
+        assertEquals(-1, days.getClosestDayIndex(0));
+        assertEquals(-1, days.getClosestDayIndex(5));
+        days.setOnlyWeekends();
+        assertEquals(0, days.getClosestDayIndex(0));
+        assertEquals(0, days.getClosestDayIndex(6));
+        assertEquals(1, days.getClosestDayIndex(5));
+        assertEquals(5, days.getClosestDayIndex(1));
+        days = new Alarm.Days();
+        days.setOnlyWorkDays();
+        assertEquals(0, days.getClosestDayIndex(1));
+        assertEquals(0, days.getClosestDayIndex(4));
+        assertEquals(0, days.getClosestDayIndex(5));
+        assertEquals(1, days.getClosestDayIndex(0));
+        assertEquals(2, days.getClosestDayIndex(6));
+        days = new Alarm.Days();
+        days.setDay(Names.WED, true);
+        assertEquals(0, days.getClosestDayIndex(3));
+        assertEquals(1, days.getClosestDayIndex(2));
+        assertEquals(6, days.getClosestDayIndex(4));
+    }
 }

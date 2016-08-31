@@ -7,13 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +25,7 @@ import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlarmListActivity extends AppCompatActivity {
@@ -37,6 +35,8 @@ public class AlarmListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private TextView mNextAlarm;
     private FloatingActionButton mAddButton;
+    private AlarmAdapter mAdapter;
+    private List<Alarm> mAlarmList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,9 @@ public class AlarmListActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        mAlarmList = new ArrayList<>();
+        mAdapter = new AlarmAdapter(mAlarmList);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void createNewAlarm() {
@@ -103,8 +105,9 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        AlarmsAdapter adapter = new AlarmsAdapter(AlarmRepository.get(this).getAlarms());
-        mRecyclerView.setAdapter(adapter);
+        mAlarmList.clear();
+        mAlarmList.addAll(AlarmRepository.get(this).getAlarms());
+        mAdapter.notifyDataSetChanged();
         Alarm closest = AlarmScheduler.getClosestAlarm(this);
         if (closest != null) {
             long timeDiff = closest.getTime() - System.currentTimeMillis();
@@ -155,11 +158,11 @@ public class AlarmListActivity extends AppCompatActivity {
         }
     }
 
-    private class AlarmsAdapter extends RecyclerView.Adapter<AlarmsHolder> {
+    private class AlarmAdapter extends RecyclerView.Adapter<AlarmsHolder> {
 
         private List<Alarm> mAlarmsList;
 
-        public AlarmsAdapter(List<Alarm> alarmList) {
+        public AlarmAdapter(List<Alarm> alarmList) {
             mAlarmsList = alarmList;
         }
 

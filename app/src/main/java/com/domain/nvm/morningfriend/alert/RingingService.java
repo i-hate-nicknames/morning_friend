@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
@@ -22,8 +21,8 @@ public class RingingService extends Service {
     private final IBinder mBinder = new RingingBinder();
 
     private boolean isPlaying;
-    private float volume = 0.5f;
-    private int initialVolume;
+    private float playerVolume = 0.5f;
+    private int initialSystemVolume;
     private MediaPlayer mp;
 
     public class RingingBinder extends Binder {
@@ -68,9 +67,9 @@ public class RingingService extends Service {
         mp = MediaPlayer.create(this, ringtone);
 
         mp.setLooping(true);
-        mp.setVolume(volume, volume);
+        mp.setVolume(playerVolume, playerVolume);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        initialVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        initialSystemVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC,
                 am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
                 0);
@@ -91,22 +90,22 @@ public class RingingService extends Service {
 
     public void muteSound() {
         if (isPlaying) {
-            volume = 0f;
+            playerVolume = 0f;
             mp.setVolume(0f, 0f);
         }
     }
 
     public void increaseVolume() {
-        if (isPlaying && volume < 1.0f) {
-            volume += VOLUME_STEP;
-            mp.setVolume(volume, volume);
+        if (isPlaying && playerVolume < 1.0f) {
+            playerVolume += VOLUME_STEP;
+            mp.setVolume(playerVolume, playerVolume);
         }
     }
 
     public void decreaseVolume() {
-        if (isPlaying && volume >= VOLUME_STEP) {
-            volume -= VOLUME_STEP;
-            mp.setVolume(volume, volume);
+        if (isPlaying && playerVolume >= VOLUME_STEP) {
+            playerVolume -= VOLUME_STEP;
+            mp.setVolume(playerVolume, playerVolume);
         }
     }
 
@@ -116,7 +115,7 @@ public class RingingService extends Service {
         mp.release();
         RingingState.get().setRinging(false);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        am.setStreamVolume(AudioManager.STREAM_MUSIC, initialVolume, 0);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, initialSystemVolume, 0);
         AlarmWakeLock.releaseLock(this);
     }
 }

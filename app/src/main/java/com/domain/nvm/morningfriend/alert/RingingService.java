@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
@@ -52,19 +53,22 @@ public class RingingService extends Service {
     private void setupPlayer() {
         String ringtoneSetting = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.prefs_ringtone_key), null);
+        Uri ringtone;
         if (ringtoneSetting == null) {
-            mp = MediaPlayer.create(this, R.raw.eh);
+            ringtone = RingtoneManager.getActualDefaultRingtoneUri(this.getApplicationContext(),
+                            RingtoneManager.TYPE_RINGTONE);
         }
         else {
-            Uri ringtone = Uri.parse(ringtoneSetting);
-            mp = MediaPlayer.create(this, ringtone);
+            ringtone = Uri.parse(ringtoneSetting);
         }
+        mp = MediaPlayer.create(this, ringtone);
 
         mp.setLooping(true);
+        mp.setVolume(1f, 1f);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(
-                AudioManager.STREAM_RING,
-                am.getStreamMaxVolume(AudioManager.STREAM_RING) / 2,
+                AudioManager.STREAM_MUSIC,
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2,
                 0
         );
     }

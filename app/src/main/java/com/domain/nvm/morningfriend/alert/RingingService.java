@@ -16,7 +16,7 @@ import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {
 
-    private static final float VOLUME_STEP = 0.1f;
+    private static final float VOLUME_STEP = 0.015f;
 
     private final IBinder mBinder = new RingingBinder();
 

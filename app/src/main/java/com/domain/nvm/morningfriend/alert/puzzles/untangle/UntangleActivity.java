@@ -16,7 +16,7 @@ import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 public class UntangleActivity extends PuzzleActivity implements UntangleField.Callbacks {
 
     private static final String EXTRA_ALARM = "alarm";
-    private static final int USER_INTERACTION_CHECK_FREQUENCY = 1 * 1000;
+    private static final int USER_INTERACTION_CHECK_FREQUENCY = 250;
 
     private UntangleField mField;
     private Alarm mAlarm;

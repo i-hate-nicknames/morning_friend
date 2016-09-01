@@ -21,23 +21,6 @@ import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 public abstract class PuzzleActivity extends AppCompatActivity {
 
-    protected RingingService mService;
-    private boolean mBound = false;
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            RingingService.RingingBinder binder = (RingingService.RingingBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-        }
-    };
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,28 +31,15 @@ public abstract class PuzzleActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        Intent intent = new Intent(this, RingingService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        // this won't create another instance of service, but will call onStartCommand
-        startService(intent);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
     }
 
     public void stopRinging() {
-        mService.stopPlaying();
+        RingingState.get(this).stop();
         AlarmScheduler.setNextAlarm(this);
     }
 
     public void stopAndRestartRinging(Alarm alarm) {
-        mService.stopPlaying();
+        RingingState.get(this).stop();
         AlarmScheduler.snooze(this, alarm);
     }
 
@@ -82,7 +52,8 @@ public abstract class PuzzleActivity extends AppCompatActivity {
                         new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mService.muteSound();
+
+//                        todo: mute sound
                     }
                 })
                 .show();

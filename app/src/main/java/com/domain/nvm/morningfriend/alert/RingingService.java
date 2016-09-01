@@ -20,7 +20,6 @@ public class RingingService extends Service {
 
     private final IBinder mBinder = new RingingBinder();
 
-    private boolean isPlaying;
     private float playerVolume = 0.5f;
     private int initialSystemVolume;
     private MediaPlayer mp;
@@ -34,7 +33,6 @@ public class RingingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Logger.write(this, "RingingService::onStartCommand");
-        startPlaying();
         return START_STICKY;
     }
 
@@ -47,10 +45,7 @@ public class RingingService extends Service {
     public void onCreate() {
         super.onCreate();
         Logger.write(this, "RingingService::onCreate");
-        RingingState.get().setRinging(true);
-        AlarmWakeLock.acquireLock(this);
         setupPlayer();
-
     }
 
     private void setupPlayer() {
@@ -71,51 +66,48 @@ public class RingingService extends Service {
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         initialSystemVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC,
-                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 4,
                 0);
     }
 
     public void startPlaying() {
-        if (!isPlaying) {
-            isPlaying = true;
-            mp.start();
-        }
+        mp.start();
     }
 
     public void stopPlaying() {
-        isPlaying = false;
         mp.stop();
-        stopSelf();
     }
 
     public void muteSound() {
-        if (isPlaying) {
-            playerVolume = 0f;
-            mp.setVolume(0f, 0f);
-        }
+        playerVolume = 0f;
+        mp.setVolume(0f, 0f);
     }
 
     public void increaseVolume() {
-        if (isPlaying && playerVolume < 1.0f) {
+        if (playerVolume < 1.0f) {
             playerVolume += VOLUME_STEP;
             mp.setVolume(playerVolume, playerVolume);
         }
     }
 
     public void decreaseVolume() {
-        if (isPlaying && playerVolume >= VOLUME_STEP) {
+        if (playerVolume >= VOLUME_STEP) {
             playerVolume -= VOLUME_STEP;
             mp.setVolume(playerVolume, playerVolume);
         }
+    }
+
+    public void stop() {
+        stopPlaying();
+        stopSelf();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mp.release();
-        RingingState.get().setRinging(false);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, initialSystemVolume, 0);
-        AlarmWakeLock.releaseLock(this);
+
     }
 }

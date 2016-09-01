@@ -21,7 +21,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.RingingState;
+import com.domain.nvm.morningfriend.alert.puzzles.squares.Square;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
@@ -41,10 +43,24 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (RingingState.get().isRinging()) {
-            Intent i = new Intent(this, SquaresActivity.class);
-            startActivity(i);
-            finish();
+        if (RingingState.get(this).isRinging()) {
+            Alarm alarm = RingingState.get(this).getAlarm();
+            if (alarm == null) {
+                RingingState.get(this).stop();
+            }
+            else {
+                Intent puzzleActivity;
+                switch (alarm.getPuzzle()) {
+                    case GRAPH:
+                        puzzleActivity = UntangleActivity.newIntent(this, alarm);
+                        break;
+                    default:
+                    case SQUARES:
+                        puzzleActivity = SquaresActivity.newIntent(this, alarm);
+                }
+                startActivity(puzzleActivity);
+                finish();
+            }
         }
         setContentView(R.layout.activity_alarms_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);

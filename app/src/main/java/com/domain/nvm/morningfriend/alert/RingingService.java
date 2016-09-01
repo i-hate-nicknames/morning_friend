@@ -23,6 +23,7 @@ public class RingingService extends Service {
 
     private boolean isPlaying;
     private float volume = 0.5f;
+    private int initialVolume;
     private MediaPlayer mp;
 
     public class RingingBinder extends Binder {
@@ -69,11 +70,10 @@ public class RingingService extends Service {
         mp.setLooping(true);
         mp.setVolume(volume, volume);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        am.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 2,
-                0
-        );
+        initialVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC,
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                0);
     }
 
     public void startPlaying() {
@@ -115,6 +115,8 @@ public class RingingService extends Service {
         super.onDestroy();
         mp.release();
         RingingState.get().setRinging(false);
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, initialVolume, 0);
         AlarmWakeLock.releaseLock(this);
     }
 }

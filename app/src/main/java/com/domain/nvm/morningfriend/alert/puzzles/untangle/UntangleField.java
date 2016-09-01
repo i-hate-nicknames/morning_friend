@@ -35,6 +35,7 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
     public interface Callbacks {
         void onGraphSolved();
         void onSolutionBroken();
+        void onPuzzleTouched();
     }
 
     public UntangleField(Context context, AttributeSet attrs) {
@@ -87,6 +88,7 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
             case MotionEvent.ACTION_UP:
                 checkSolution();
         }
+        mCallbacks.onPuzzleTouched();
         return true;
     }
 

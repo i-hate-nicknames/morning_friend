@@ -21,7 +21,7 @@ import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
 
 public abstract class PuzzleActivity extends AppCompatActivity {
 
-    private RingingService mService;
+    protected RingingService mService;
     private boolean mBound = false;
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -48,11 +48,6 @@ public abstract class PuzzleActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         Intent intent = new Intent(this, RingingService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         // this won't create another instance of service, but will call onStartCommand
@@ -60,14 +55,13 @@ public abstract class PuzzleActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
         }
     }
-
 
     public void stopRinging() {
         mService.stopPlaying();

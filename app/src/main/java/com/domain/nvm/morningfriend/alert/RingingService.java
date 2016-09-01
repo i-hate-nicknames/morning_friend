@@ -17,9 +17,12 @@ import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {
 
+    private static final float VOLUME_STEP = 0.1f;
+
     private final IBinder mBinder = new RingingBinder();
 
     private boolean isPlaying;
+    private float volume = 0.5f;
     private MediaPlayer mp;
 
     public class RingingBinder extends Binder {
@@ -64,7 +67,7 @@ public class RingingService extends Service {
         mp = MediaPlayer.create(this, ringtone);
 
         mp.setLooping(true);
-        mp.setVolume(1f, 1f);
+        mp.setVolume(volume, volume);
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(
                 AudioManager.STREAM_MUSIC,
@@ -88,7 +91,22 @@ public class RingingService extends Service {
 
     public void muteSound() {
         if (isPlaying) {
+            volume = 0f;
             mp.setVolume(0f, 0f);
+        }
+    }
+
+    public void increaseVolume() {
+        if (isPlaying && volume < 1.0f) {
+            volume += VOLUME_STEP;
+            mp.setVolume(volume, volume);
+        }
+    }
+
+    public void decreaseVolume() {
+        if (isPlaying && volume >= VOLUME_STEP) {
+            volume -= VOLUME_STEP;
+            mp.setVolume(volume, volume);
         }
     }
 

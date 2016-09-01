@@ -3,6 +3,7 @@ package com.domain.nvm.morningfriend.alert.puzzles.untangle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.ViewTreeObserver;
 
@@ -14,11 +15,33 @@ import com.domain.nvm.morningfriend.alert.PuzzleActivity;
 
 public class UntangleActivity extends PuzzleActivity implements UntangleField.Callbacks {
 
-    private UntangleField mField;
+    private static final String EXTRA_ALARM = "alarm";
+    private static final int USER_INTERACTION_CHECK_FREQUENCY = 1 * 1000;
 
+    private UntangleField mField;
     private Alarm mAlarm;
 
-    private static final String EXTRA_ALARM = "alarm";
+    private boolean hasUserInteracted;
+
+    private final Handler handler = new Handler();
+
+    public void checkUserInteracted() {
+        if (mService != null) {
+            // service might not be connected yet
+            if (!hasUserInteracted) {
+                mService.increaseVolume();
+            } else {
+                mService.decreaseVolume();
+            }
+        }
+        hasUserInteracted = false;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkUserInteracted();
+            }
+        }, USER_INTERACTION_CHECK_FREQUENCY);
+    }
 
     public static Intent newIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, UntangleActivity.class);
@@ -46,6 +69,12 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserInteracted();
+    }
+
+    @Override
     public void onGraphSolved() {
         stopRinging();
     }
@@ -53,5 +82,10 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
     @Override
     public void onSolutionBroken() {
         // TODO: restart ringing
+    }
+
+    @Override
+    public void onPuzzleTouched() {
+        hasUserInteracted = true;
     }
 }

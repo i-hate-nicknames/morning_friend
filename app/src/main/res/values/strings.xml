@@ -26,15 +26,16 @@
 
     <string name="details_repeating_days_workdays">Workdays</string>
     <string name="details_repeating_days_weekends">Weekends</string>
+    <string name="details_repeating_days_everyday">Everyday</string>
     <string name="details_repeating_days_custom">Custom</string>
 
-    <string name="details_repeating_days_mon">MON</string>
-    <string name="details_repeating_days_tue">TUE</string>
-    <string name="details_repeating_days_wed">WED</string>
-    <string name="details_repeating_days_thu">THU</string>
-    <string name="details_repeating_days_fri">FRI</string>
-    <string name="details_repeating_days_sat">SAT</string>
-    <string name="details_repeating_days_sun">SUN</string>
+    <string name="details_repeating_days_mon">Mon</string>
+    <string name="details_repeating_days_tue">Tue</string>
+    <string name="details_repeating_days_wed">Wed</string>
+    <string name="details_repeating_days_thu">Thu</string>
+    <string name="details_repeating_days_fri">Fri</string>
+    <string name="details_repeating_days_sat">Sat</string>
+    <string name="details_repeating_days_sun">Sun</string>
 
 
     <string name="prefs_ringtone_key">pref_ringtone</string>

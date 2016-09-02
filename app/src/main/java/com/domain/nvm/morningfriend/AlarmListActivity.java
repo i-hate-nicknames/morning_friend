@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.RingingState;
-import com.domain.nvm.morningfriend.alert.puzzles.squares.Square;
 import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
 import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
@@ -150,20 +149,21 @@ public class AlarmListActivity extends AppCompatActivity {
 
     private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTitle;
+        private TextView mRepeatDays;
         private TextView mTimeTextView;
         private Alarm mAlarm;
 
         public AlarmsHolder(View itemView) {
             super(itemView);
             mTimeTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_time);
-            mTitle = (TextView) itemView.findViewById(R.id.alarm_list_item_id);
+            mRepeatDays = (TextView) itemView.findViewById(R.id.alarm_list_item_repeat);
             itemView.setOnClickListener(this);
         }
 
         public void bindAlarm(Alarm alarm) {
             this.mAlarm = alarm;
-            mTitle.setText(alarm.getMessage());
+            mRepeatDays.setText(Utils.formatRepeatingDays(AlarmListActivity.this,
+                    alarm.getRepeatDays()));
             mTimeTextView.setText(Utils.formatTime(alarm.getHour(), alarm.getMinute()));
         }
 

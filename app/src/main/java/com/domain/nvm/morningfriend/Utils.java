@@ -1,10 +1,22 @@
 package com.domain.nvm.morningfriend;
 
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.domain.nvm.morningfriend.Alarm.Days;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Utils {
+
+    private static int[] repeatDaysStringResIds = {R.string.details_repeating_days_sun,
+            R.string.details_repeating_days_mon, R.string.details_repeating_days_tue,
+            R.string.details_repeating_days_wed, R.string.details_repeating_days_thu,
+            R.string.details_repeating_days_fri, R.string.details_repeating_days_sat};
 
     public static String formatDate(Date date) {
         SimpleDateFormat format =
@@ -26,6 +38,34 @@ public class Utils {
         String hours = Long.toString(timeMins / 60);
         return String.format(java.util.Locale.getDefault(), "%s hours, %s minutes", hours, mins);
 
+    }
+
+    public static String formatRepeatingDays(Context context, Days days) {
+        if (days.isOnlyWeekends()) {
+            return context.getString(R.string.details_repeating_days_weekends);
+        }
+        else if (days.isOnlyWorkDays()) {
+            return context.getString(R.string.details_repeating_days_workdays);
+        }
+        else if (days.isEveryDay()) {
+            return context.getString(R.string.details_repeating_days_everyday);
+        }
+        else {
+            List<Days.Names> activeDays = days.getActiveDays();
+            if (activeDays.size() == 0) {
+                return "";
+            }
+            if (activeDays.get(0) == Days.Names.SUN) {
+                // put sundays to the end if it's at the start
+                activeDays.remove(0);
+                activeDays.add(Days.Names.SUN);
+            }
+            List<String> activeDaysLabels = new ArrayList<>();
+            for (Days.Names day: activeDays) {
+                activeDaysLabels.add(context.getString(repeatDaysStringResIds[day.ordinal()]));
+            }
+            return TextUtils.join(", ", activeDaysLabels);
+        }
     }
 
     public static Date calculateAlertTime(Alarm alarm) {
@@ -52,7 +92,7 @@ public class Utils {
      * @param repeatingDays
      * @return
      */
-    public static int getDaysOffset(int day, Alarm.Days repeatingDays) {
+    public static int getDaysOffset(int day, Days repeatingDays) {
         int dayIdx = day-1;
         return repeatingDays.getClosestDayIndex(dayIdx);
     }

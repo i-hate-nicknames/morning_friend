@@ -1,7 +1,11 @@
 package com.domain.nvm.morningfriend;
 
+import android.support.annotation.StringRes;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Alarm implements Serializable {
 
@@ -189,6 +193,18 @@ public class Alarm implements Serializable {
             return ((bitMask>>day.ordinal()) % 2) == 1;
         }
 
+        public List<Names> getActiveDays() {
+            List<Names> names = new ArrayList<>();
+            int offset = 0;
+            while (bitMask>>offset != 0) {
+                if ((bitMask>>offset) % 2 == 1) {
+                    names.add(Names.values()[offset]);
+                }
+                offset++;
+            }
+            return names;
+        }
+
         public int getClosestDayIndex(int startDay) {
             if (bitMask == 0) {
                 return -1;
@@ -233,6 +249,10 @@ public class Alarm implements Serializable {
             return this.bitMask == sWeekends.bitMask;
         }
 
+        public boolean isEveryDay() {
+            return this.bitMask == (sWeekends.bitMask + sWorkdays.bitMask);
+        }
+
         public boolean isOnlyWorkDays() {
             return this.bitMask == sWorkdays.bitMask;
         }
@@ -245,7 +265,6 @@ public class Alarm implements Serializable {
         public static boolean isDayWorkday(int dayCode) {
             return !isDayWeekend(dayCode);
         }
-
     }
 
 

@@ -14,7 +14,6 @@ public class RingingState {
     private static RingingState sState;
 
     private boolean isRinging;
-    private Alarm mAlarm;
     private RingingService mService;
     private Context mContext;
     private boolean mBound = false;
@@ -49,12 +48,12 @@ public class RingingState {
     }
 
     public Alarm getAlarm() {
-        return mAlarm;
+        if (isRinging) {
+            return mService.getAlarm();
+        }
+        return null;
     }
 
-    public void setAlarm(Alarm alarm) {
-        mAlarm = alarm;
-    }
 
     public boolean isRinging() {
         return isRinging;
@@ -64,7 +63,7 @@ public class RingingState {
         if (!isRinging) {
             Log.d(TAG, "RingingState::start");
             AlarmWakeLock.acquireLock(mContext);
-            mAlarm = alarm;
+            mService.setAlarm(alarm);
             mService.startPlaying();
             isRinging = true;
         }

@@ -11,6 +11,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
+import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
 
@@ -23,6 +24,7 @@ public class RingingService extends Service {
     private float playerVolume = 0.5f;
     private int initialSystemVolume;
     private MediaPlayer mp;
+    private Alarm mAlarm;
 
     public class RingingBinder extends Binder {
         RingingService getService() {
@@ -46,6 +48,14 @@ public class RingingService extends Service {
         super.onCreate();
         Logger.write(this, "RingingService::onCreate");
         setupPlayer();
+    }
+
+    public Alarm getAlarm() {
+        return mAlarm;
+    }
+
+    public void setAlarm(Alarm alarm) {
+        mAlarm = alarm;
     }
 
     private void setupPlayer() {

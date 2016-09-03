@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.alert.RingingState;
@@ -147,16 +149,19 @@ public class AlarmListActivity extends AppCompatActivity {
                 mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
-    private class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class AlarmsHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, CheckBox.OnCheckedChangeListener {
 
         private TextView mRepeatDays;
         private TextView mTimeTextView;
         private Alarm mAlarm;
+        private CheckBox mCheckBox;
 
         public AlarmsHolder(View itemView) {
             super(itemView);
             mTimeTextView = (TextView) itemView.findViewById(R.id.alarm_list_item_time);
             mRepeatDays = (TextView) itemView.findViewById(R.id.alarm_list_item_repeat);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.alarm_list_enabled_check_box);
             itemView.setOnClickListener(this);
         }
 
@@ -165,12 +170,20 @@ public class AlarmListActivity extends AppCompatActivity {
             mRepeatDays.setText(Utils.formatRepeatingDays(AlarmListActivity.this,
                     alarm.getRepeatDays()));
             mTimeTextView.setText(Utils.formatTime(alarm.getHour(), alarm.getMinute()));
+            mCheckBox.setChecked(alarm.isEnabled());
+            mCheckBox.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View v) {
             Intent i = AlarmDetailActivity.makeIntent(AlarmListActivity.this, mAlarm);
             startActivity(i);
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mAlarm.setEnabled(isChecked);
+            AlarmRepository.get(AlarmListActivity.this).updateAlarm(mAlarm);
         }
     }
 

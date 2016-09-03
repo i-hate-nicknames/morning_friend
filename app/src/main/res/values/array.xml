@@ -14,4 +14,14 @@
         <item>@string/prefs_difficulty_medium</item>
         <item>@string/prefs_difficulty_hard</item>
     </string-array>
+
+    <string-array name="repeat_days_names">
+        <item>@string/details_repeating_days_sun</item>
+        <item>@string/details_repeating_days_mon</item>
+        <item>@string/details_repeating_days_tue</item>
+        <item>@string/details_repeating_days_wed</item>
+        <item>@string/details_repeating_days_thu</item>
+        <item>@string/details_repeating_days_fri</item>
+        <item>@string/details_repeating_days_sat</item>
+    </string-array>
 </resources>

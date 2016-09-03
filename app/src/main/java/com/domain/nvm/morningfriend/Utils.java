@@ -13,11 +13,6 @@ import java.util.List;
 
 public class Utils {
 
-    private static int[] repeatDaysStringResIds = {R.string.details_repeating_days_sun,
-            R.string.details_repeating_days_mon, R.string.details_repeating_days_tue,
-            R.string.details_repeating_days_wed, R.string.details_repeating_days_thu,
-            R.string.details_repeating_days_fri, R.string.details_repeating_days_sat};
-
     public static String formatDate(Date date) {
         SimpleDateFormat format =
                 new SimpleDateFormat("HH:mm:ss, dd.MM", java.util.Locale.getDefault());
@@ -52,6 +47,7 @@ public class Utils {
         }
         else {
             List<Days.Names> activeDays = days.getActiveDays();
+            String[] dayNames = context.getResources().getStringArray(R.array.repeat_days_names);
             if (activeDays.size() == 0) {
                 return "";
             }
@@ -62,7 +58,7 @@ public class Utils {
             }
             List<String> activeDaysLabels = new ArrayList<>();
             for (Days.Names day: activeDays) {
-                activeDaysLabels.add(context.getString(repeatDaysStringResIds[day.ordinal()]));
+                activeDaysLabels.add(dayNames[day.ordinal()]);
             }
             return TextUtils.join(", ", activeDaysLabels);
         }

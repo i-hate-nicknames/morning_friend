@@ -11,7 +11,6 @@ import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.alert.PuzzleActivity;
-import com.domain.nvm.morningfriend.alert.RingingState;
 
 
 public class UntangleActivity extends PuzzleActivity implements UntangleField.Callbacks {
@@ -27,11 +26,13 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
     private final Handler handler = new Handler();
 
     public void checkUserInteracted() {
-        if (!hasUserInteracted) {
-            RingingState.get(this).volumeUp();
-        }
-        else {
-            RingingState.get(this).volumeDown();
+        if (mService != null) {
+            // service might not be connected yet
+            if (!hasUserInteracted) {
+                mService.increaseVolume();
+            } else {
+                mService.decreaseVolume();
+            }
         }
         hasUserInteracted = false;
         handler.postDelayed(new Runnable() {
@@ -46,6 +47,11 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
         Intent i = new Intent(context, UntangleActivity.class);
         i.putExtra(EXTRA_ALARM, alarm);
         return i;
+    }
+
+    @Override
+    public Alarm getAlarm() {
+        return mAlarm;
     }
 
     @Override
@@ -64,7 +70,6 @@ public class UntangleActivity extends PuzzleActivity implements UntangleField.Ca
                         mField.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
-        RingingState.get(this).start(mAlarm);
     }
 
     @Override

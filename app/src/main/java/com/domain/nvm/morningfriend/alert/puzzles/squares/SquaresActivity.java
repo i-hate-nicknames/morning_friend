@@ -9,7 +9,6 @@ import android.view.ViewTreeObserver;
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Logger;
 import com.domain.nvm.morningfriend.alert.PuzzleActivity;
-import com.domain.nvm.morningfriend.alert.RingingState;
 
 import java.util.Date;
 
@@ -24,6 +23,11 @@ public class SquaresActivity extends PuzzleActivity implements SquaresView.Squar
         Intent i = new Intent(context, SquaresActivity.class);
         i.putExtra(EXTRA_ALARM, alarm);
         return i;
+    }
+
+    @Override
+    public Alarm getAlarm() {
+        return mAlarm;
     }
 
     @Override
@@ -42,7 +46,6 @@ public class SquaresActivity extends PuzzleActivity implements SquaresView.Squar
                 }
             });
         setContentView(mView);
-        RingingState.get(this).start(mAlarm);
     }
 
     @Override

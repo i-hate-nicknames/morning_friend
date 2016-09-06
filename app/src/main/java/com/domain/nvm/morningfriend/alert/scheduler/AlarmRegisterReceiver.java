@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.scheduler;
+package com.domain.nvm.morningfriend.alert.scheduler;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

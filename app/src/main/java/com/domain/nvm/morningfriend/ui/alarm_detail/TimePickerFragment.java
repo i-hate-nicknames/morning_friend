@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.alarm_detail;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
+
+import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.Utils;
 
 import java.util.Calendar;
 import java.util.Date;

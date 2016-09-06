@@ -11,21 +11,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AlarmListActivity">
+        <activity android:name=".ui.alarm_list.AlarmListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmDetailActivity">
+        <activity android:name=".ui.alarm_detail.AlarmDetailActivity">
         </activity>
-        <activity android:name=".LogActivity"/>
+        <activity android:name=".ui.logs.LogActivity"/>
         <activity
-            android:name=".alert.puzzles.squares.SquaresActivity"
+            android:name=".ui.puzzle.squares.SquaresActivity"
             android:theme="@style/Theme.Fullscreen"/>
         <activity
-            android:name=".alert.puzzles.untangle.UntangleActivity"
+            android:name=".ui.puzzle.untangle.UntangleActivity"
             android:theme="@style/Theme.Fullscreen"/>
 
         <service
@@ -33,7 +33,7 @@
             android:enabled="true">
         </service>
 
-        <receiver android:name=".scheduler.AlarmRegisterReceiver">
+        <receiver android:name=".alert.scheduler.AlarmRegisterReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -41,12 +41,12 @@
         <receiver android:name=".alert.AlertReceiver"/>
 
         <service
-            android:name=".scheduler.AlarmRegisterService"
+            android:name=".alert.scheduler.AlarmRegisterService"
             android:enabled="true"
             android:exported="false">
         </service>
 
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".ui.settings.SettingsActivity">
         </activity>
     </application>
 

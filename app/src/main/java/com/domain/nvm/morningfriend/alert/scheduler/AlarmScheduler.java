@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.scheduler;
+package com.domain.nvm.morningfriend.alert.scheduler;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

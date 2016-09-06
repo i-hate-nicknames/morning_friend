@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.Logger;
-import com.domain.nvm.morningfriend.Utils;
-import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
-
-import java.util.Date;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
+import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleActivity;
 
 public class AlertReceiver extends BroadcastReceiver {
 

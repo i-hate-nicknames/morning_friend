@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.alarm_list;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.alert.puzzles.untangle;
+package com.domain.nvm.morningfriend.ui.puzzle.untangle;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +8,9 @@ import android.support.annotation.Nullable;
 import android.view.ViewTreeObserver;
 
 import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.Logger;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.alert.PuzzleActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.PuzzleActivity;
 
 
 public class UntangleActivity extends PuzzleActivity implements UntangleField.Callbacks {

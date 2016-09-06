@@ -1,6 +1,8 @@
-package com.domain.nvm.morningfriend.alert.puzzles.untangle;
+package com.domain.nvm.morningfriend.ui.puzzle.untangle.data;
 
 import android.graphics.PointF;
+
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.utils.LineUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,7 +158,7 @@ public class Graph {
             b = v.getPosition();
             c = other.getFirst().getPosition();
             d = other.getSecond().getPosition();
-            return !Utils.linesTouch(a, b, c, d) && Utils.intersects(a, b, c, d);
+            return !LineUtils.linesTouch(a, b, c, d) && LineUtils.intersects(a, b, c, d);
         }
 
         public Vertex getFirst() {

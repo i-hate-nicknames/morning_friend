@@ -1,10 +1,12 @@
-package com.domain.nvm.morningfriend.alert.puzzles.untangle;
+package com.domain.nvm.morningfriend.ui.puzzle.untangle;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.view.View;
+
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
 
 public class VertexView extends View {
 

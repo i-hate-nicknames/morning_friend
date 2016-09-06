@@ -1,8 +1,10 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.settings;
 
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.domain.nvm.morningfriend.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

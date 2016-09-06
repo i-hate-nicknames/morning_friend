@@ -1,10 +1,8 @@
-package com.domain.nvm.morningfriend.scheduler;
+package com.domain.nvm.morningfriend.alert.scheduler;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-
-import java.util.Date;
 
 public class AlarmRegisterService extends Service {
     public AlarmRegisterService() {

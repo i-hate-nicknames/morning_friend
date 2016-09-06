@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.alert;
+package com.domain.nvm.morningfriend.ui.puzzle;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,7 +15,10 @@ import android.view.WindowManager;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
+import com.domain.nvm.morningfriend.alert.RingingService;
+import com.domain.nvm.morningfriend.alert.RingingState;
+import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 
 
 public abstract class PuzzleActivity extends AppCompatActivity {

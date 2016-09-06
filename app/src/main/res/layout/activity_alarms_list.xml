@@ -15,7 +15,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical"
-        tools:context=".AlarmListActivity">
+        tools:context=".ui.alarm_list.AlarmListActivity">
 
         <TextView
             android:id="@+id/alarms_list_next_alarm"

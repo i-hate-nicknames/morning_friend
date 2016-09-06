@@ -1,7 +1,9 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.logs;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.domain.nvm.morningfriend.Utils;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

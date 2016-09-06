@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.alarm_list;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +22,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.ui.alarm_detail.AlarmDetailActivity;
+import com.domain.nvm.morningfriend.ui.logs.LogActivity;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
+import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.ui.settings.SettingsActivity;
+import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.alert.RingingState;
-import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.alert.puzzles.untangle.UntangleActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,12 @@
-package com.domain.nvm.morningfriend.alert.puzzles.untangle;
+package com.domain.nvm.morningfriend.ui.puzzle.untangle.utils;
 
 import android.graphics.PointF;
 
-public class Utils {
+public class LineUtils {
 
     private static final double ALMOST_EQUAL_EPSILON = .0000001;
 
-    private Utils() {
+    private LineUtils() {
 
     }
 

@@ -2,9 +2,8 @@ package com.domain.nvm.morningfriend.alert;
 
 import android.content.Context;
 import android.os.PowerManager;
-import android.util.Log;
 
-import com.domain.nvm.morningfriend.Logger;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
 
 public class AlarmWakeLock {
 

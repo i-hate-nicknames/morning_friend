@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.alert.puzzles.squares;
+package com.domain.nvm.morningfriend.ui.puzzle.squares;
 
 import android.graphics.PointF;
 

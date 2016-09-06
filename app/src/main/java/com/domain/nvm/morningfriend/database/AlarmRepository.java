@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 
 import java.util.ArrayList;
 import java.util.List;

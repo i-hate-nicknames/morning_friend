@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.alert.puzzles.untangle;
+package com.domain.nvm.morningfriend.ui.puzzle.untangle.utils;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -7,7 +7,8 @@ import android.util.Log;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Graph;
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
 
 import org.json.JSONArray;
 import org.json.JSONException;

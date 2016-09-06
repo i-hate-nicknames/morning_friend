@@ -11,7 +11,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
-import com.domain.nvm.morningfriend.Logger;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {

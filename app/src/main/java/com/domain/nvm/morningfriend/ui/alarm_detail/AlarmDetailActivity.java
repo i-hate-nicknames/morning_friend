@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend;
+package com.domain.nvm.morningfriend.ui.alarm_detail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,8 +22,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.Alarm.Days.Names;
-import com.domain.nvm.morningfriend.alert.puzzles.squares.SquaresActivity;
+import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 
 import java.util.Date;

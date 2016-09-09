@@ -26,7 +26,7 @@ public class RingingService extends Service {
     private MediaPlayer mp;
 
     public class RingingBinder extends Binder {
-        RingingService getService() {
+        public RingingService getService() {
             return RingingService.this;
         }
     }

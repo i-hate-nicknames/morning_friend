@@ -163,6 +163,7 @@ public class AlarmListActivity extends AppCompatActivity {
         private TextView mTimeTextView;
         private Alarm mAlarm;
         private CheckBox mCheckBox;
+        private boolean isBinding;
 
         public AlarmsHolder(View itemView) {
             super(itemView);
@@ -173,12 +174,14 @@ public class AlarmListActivity extends AppCompatActivity {
         }
 
         public void bindAlarm(Alarm alarm) {
+            isBinding = true;
             this.mAlarm = alarm;
             mRepeatDays.setText(Utils.formatRepeatingDays(AlarmListActivity.this,
                     alarm.getRepeatDays()));
             mTimeTextView.setText(Utils.formatTime(alarm.getHour(), alarm.getMinute()));
             mCheckBox.setChecked(alarm.isEnabled());
             mCheckBox.setOnCheckedChangeListener(this);
+            isBinding = false;
         }
 
         @Override
@@ -189,8 +192,11 @@ public class AlarmListActivity extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mAlarm.setEnabled(isChecked);
-            AlarmRepository.get(AlarmListActivity.this).updateAlarm(mAlarm);
+            if (!isBinding) {
+                mAlarm.setEnabled(isChecked);
+                AlarmRepository.get(AlarmListActivity.this).updateAlarm(mAlarm);
+                updateUI();
+            }
         }
     }
 

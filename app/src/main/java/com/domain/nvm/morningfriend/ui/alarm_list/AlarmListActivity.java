@@ -125,17 +125,7 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mAlarmList.clear();
-        mAlarmList.addAll(AlarmRepository.get(this).getAlarms());
-        mAdapter.notifyDataSetChanged();
-        Alarm closest = AlarmScheduler.getClosestAlarm(this);
-        if (closest != null) {
-            long timeDiff = closest.getTime() - System.currentTimeMillis();
-            mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
-        }
-        if (mAddButton.getVisibility() != View.VISIBLE) {
-            mAddButton.show();
-        }
+        updateUI();
     }
 
     @Override
@@ -150,6 +140,20 @@ public class AlarmListActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT,
                 mRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    private void updateUI() {
+        mAlarmList.clear();
+        mAlarmList.addAll(AlarmRepository.get(this).getSortedAlarms());
+        mAdapter.notifyDataSetChanged();
+        Alarm closest = AlarmScheduler.getClosestAlarm(this);
+        if (closest != null) {
+            long timeDiff = closest.getTime() - System.currentTimeMillis();
+            mNextAlarm.setText(Utils.formatRemainingTime(timeDiff));
+        }
+        if (mAddButton.getVisibility() != View.VISIBLE) {
+            mAddButton.show();
+        }
     }
 
     private class AlarmsHolder extends RecyclerView.ViewHolder

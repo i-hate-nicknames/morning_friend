@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class AlarmRepository {
@@ -46,6 +49,27 @@ public class AlarmRepository {
         }
 
         return alarms;
+    }
+
+    public List<Alarm> getSortedAlarms() {
+        List<Alarm> unsorted = getAlarms();
+        Alarm[] alarms = unsorted.toArray(new Alarm[unsorted.size()]);
+        Arrays.sort(alarms, new Comparator<Alarm>() {
+            @Override
+            public int compare(Alarm lhs, Alarm rhs) {
+                return (int) (Utils.calculateAlertTime(lhs).getTime() -
+                        Utils.calculateAlertTime(rhs).getTime());
+            }
+        });
+        Arrays.sort(alarms, new Comparator<Alarm>() {
+            @Override
+            public int compare(Alarm lhs, Alarm rhs) {
+                int lVal = lhs.isEnabled() ? 1 : 0;
+                int rVal = rhs.isEnabled() ? 1 : 0;
+                return rVal - lVal;
+            }
+        });
+        return Arrays.asList(alarms);
     }
 
     public Alarm addAlarm() {

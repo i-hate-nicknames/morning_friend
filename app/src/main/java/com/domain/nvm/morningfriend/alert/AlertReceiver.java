@@ -24,6 +24,10 @@ public class AlertReceiver extends BroadcastReceiver {
         Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
         Logger.write(context, "Alarm triggered!");
         AlarmWakeLock.acquireLock(context);
+        // create new ringing service intent and pass there alarm object
+        // start ringing service
+        // start alarmlistacivity, it will take care of creating appropriate
+        // puzzle activity
         Intent puzzleIntent = null;
         switch (alarm.getPuzzle()) {
             case GRAPH:

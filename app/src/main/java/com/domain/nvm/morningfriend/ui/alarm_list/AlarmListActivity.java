@@ -51,21 +51,6 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Alarm alarm = RingingState.getAlarm(this);
-        if (alarm != null) {
-            Intent puzzle;
-            switch (alarm.getPuzzle()) {
-                case GRAPH:
-                    puzzle = UntangleActivity.newIntent(this, alarm);
-                    break;
-                default:
-                case SQUARES:
-                    puzzle = SquaresActivity.newIntent(this, alarm);
-                    break;
-            }
-            startActivity(puzzle);
-            finish();
-        }
         setContentView(R.layout.activity_alarms_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_list_list_view);
         mRecyclerView.addItemDecoration(new AlarmItemDecoration(this, 15));

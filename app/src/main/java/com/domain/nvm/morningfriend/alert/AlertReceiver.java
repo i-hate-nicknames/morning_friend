@@ -6,14 +6,13 @@ import android.content.Intent;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.ui.logs.Logger;
-import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.PuzzleActivity;
 
 public class AlertReceiver extends BroadcastReceiver {
 
     private static final String EXTRA_ALARM = "alarm";
 
-    public static Intent newIntent(Context context, Alarm alarm) {
+    public static Intent makeIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, AlertReceiver.class);
         i.putExtra(EXTRA_ALARM, alarm);
         return i;
@@ -24,20 +23,8 @@ public class AlertReceiver extends BroadcastReceiver {
         Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
         Logger.write(context, "Alarm triggered!");
         AlarmWakeLock.acquireLock(context);
-        // create new ringing service intent and pass there alarm object
-        // start ringing service
-        // start alarmlistacivity, it will take care of creating appropriate
-        // puzzle activity
-        Intent puzzleIntent = null;
-        switch (alarm.getPuzzle()) {
-            case GRAPH:
-                puzzleIntent = UntangleActivity.newIntent(context, alarm);
-                break;
-            case SQUARES:
-                puzzleIntent = SquaresActivity.newIntent(context, alarm);
-                break;
-        }
-        puzzleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(puzzleIntent);
+        Intent puzzleActivity = PuzzleActivity.makeIntent(context, alarm);
+        puzzleActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(puzzleActivity);
     }
 }

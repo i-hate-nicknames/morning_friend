@@ -12,7 +12,7 @@ public class VertexView extends View {
 
     public static final int RADIUS = 35;
 
-    public static final int VERTEX_COLOR = 0xffff0000;
+    public static final int VERTEX_COLOR = 0xff000000;
 
     private Paint mPaint;
 

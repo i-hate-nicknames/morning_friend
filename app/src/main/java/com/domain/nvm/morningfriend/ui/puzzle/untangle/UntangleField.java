@@ -13,11 +13,13 @@ import android.widget.FrameLayout;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.ui.puzzle.PuzzleHost;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Graph;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.utils.GraphReader;
 
-public class UntangleField extends FrameLayout implements View.OnTouchListener {
+public class UntangleField extends FrameLayout implements Puzzle, View.OnTouchListener {
 
     private static final int VERTEX_VIEW_SIZE = VertexView.RADIUS * 2;
     private static final int EDGE_WIDTH = 4;
@@ -32,13 +34,22 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
     private Paint mIntersectingLinePaint;
     private VertexView[] mVertexViews;
     private int mVertexColor;
-    private Callbacks mCallbacks;
+    private PuzzleHost mPuzzleHost;
     private boolean notificationSolvedSent;
 
-    public interface Callbacks {
-        void onGraphSolved();
-        void onSolutionBroken();
-        void onPuzzleTouched();
+    @Override
+    public void init(Alarm.Difficulty difficulty) {
+        generateGraph(difficulty);
+    }
+
+    @Override
+    public void setPuzzleHost(PuzzleHost host) {
+        this.mPuzzleHost = host;
+    }
+
+    @Override
+    public boolean isSolved() {
+        return mGraph != null && mGraph.isSolved();
     }
 
     public UntangleField(Context context, AttributeSet attrs) {
@@ -46,15 +57,30 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         init(context, attrs);
     }
 
+    public UntangleField(Context context) {
+        super(context, null);
+        init(context, null);
+    }
+
     public void init(Context context, AttributeSet attrs) {
         mVertexViews = new VertexView[Graph.MAX_ITEMS];
         for (int i = 0; i < mVertexViews.length; i++) {
             mVertexViews[i] = null;
         }
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UntangleField);
-        mVertexColor = a.getColor(R.styleable.UntangleField_vertexColor, VertexView.VERTEX_COLOR);
-        int edgeColor = a.getColor(R.styleable.UntangleField_edgeColor, EDGE_COLOR);
-        int crossEdgeColor = a.getColor(R.styleable.UntangleField_crossEdgeColor, CROSS_EDGE_COLOR);
+        int edgeColor, crossEdgeColor;
+        if (attrs != null) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UntangleField);
+            mVertexColor = a.getColor(R.styleable.UntangleField_vertexColor, VertexView.VERTEX_COLOR);
+            edgeColor = a.getColor(R.styleable.UntangleField_edgeColor, EDGE_COLOR);
+            crossEdgeColor = a.getColor(R.styleable.UntangleField_crossEdgeColor, CROSS_EDGE_COLOR);
+            a.recycle();
+        }
+        // for the cases when we create programmatically without AttributeSet
+        else {
+            mVertexColor = VertexView.VERTEX_COLOR;
+            edgeColor = EDGE_COLOR;
+            crossEdgeColor = CROSS_EDGE_COLOR;
+        }
         mLinePaint = new Paint();
         mLinePaint.setColor(edgeColor);
         mLinePaint.setStrokeWidth(EDGE_WIDTH);
@@ -62,11 +88,6 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
         mIntersectingLinePaint.setColor(crossEdgeColor);
         mIntersectingLinePaint.setStrokeWidth(EDGE_WIDTH);
         this.setWillNotDraw(false);
-        a.recycle();
-    }
-
-    public void setCallbacks(Callbacks callbacks) {
-        mCallbacks = callbacks;
     }
 
     public void generateGraph(Alarm.Difficulty difficulty) {
@@ -91,7 +112,7 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
             case MotionEvent.ACTION_UP:
                 checkSolution();
         }
-        mCallbacks.onPuzzleTouched();
+        mPuzzleHost.onPuzzleTouched();
         return true;
     }
 
@@ -107,14 +128,14 @@ public class UntangleField extends FrameLayout implements View.OnTouchListener {
     }
 
     private void checkSolution() {
-        if (mCallbacks == null)
+        if (mPuzzleHost == null)
             return;
         if (!notificationSolvedSent && mGraph.isSolved()) {
-            mCallbacks.onGraphSolved();
+            mPuzzleHost.onPuzzleSolved();
             notificationSolvedSent = true;
         }
         else if (notificationSolvedSent && !mGraph.isSolved()) {
-            mCallbacks.onSolutionBroken();
+            mPuzzleHost.onPuzzleSolutionBroken();
             notificationSolvedSent = false;
         }
     }

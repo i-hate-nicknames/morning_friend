@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -19,15 +21,23 @@ import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
 import com.domain.nvm.morningfriend.alert.RingingService;
 import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
+import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleField;
 
 
-public abstract class PuzzleActivity extends AppCompatActivity {
+public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
-    protected RingingService mService;
+    private static final int USER_INTERACTION_CHECK_FREQUENCY = 250;
+    private static final String EXTRA_ALARM = "alarm";
+
+    private final Handler handler = new Handler();
+
+    private boolean hasUserInteracted;
+    private RingingService mService;
     private boolean mBound = false;
     private boolean isSolved = false;
-
-    public abstract Alarm getAlarm();
+    private Puzzle mPuzzle;
+    private Alarm mAlarm;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -43,9 +53,43 @@ public abstract class PuzzleActivity extends AppCompatActivity {
         }
     };
 
+    public static Intent makeIntent(Context context, Alarm alarm) {
+        Intent i = new Intent(context, PuzzleActivity.class);
+        i.putExtra(EXTRA_ALARM, alarm);
+        return i;
+    }
+
+    @Override
+    public void onPuzzleSolved() {
+        mService.stopPlaying();
+        AlarmScheduler.setNextAlarm(this);
+        RingingState.removeAlarm(this);
+        finish();
+    }
+
+    @Override
+    public void onPuzzleSolutionBroken() {
+
+    }
+
+    @Override
+    public void onPuzzleTouched() {
+        hasUserInteracted = true;
+    }
+
+    @Override
+    public void snooze() {
+        mService.stopPlaying();
+        AlarmScheduler.snooze(this, mAlarm);
+        RingingState.removeAlarm(this);
+        finish();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // might be null if alarm is ringing and app was started from launcher
+        mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
         AlarmWakeLock.acquireLock(this);
         final Window win = getWindow();
         win.addFlags(
@@ -53,35 +97,51 @@ public abstract class PuzzleActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        Intent intent = new Intent(this, RingingService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        Intent serviceIntent;
+        serviceIntent = new Intent(this, RingingService.class);
+        bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
         // this won't create another instance of service, but will call onStartCommand
-        startService(intent);
+        startService(serviceIntent);
+
+        final View puzzleView;
+        switch (mAlarm.getPuzzle()) {
+            case GRAPH:
+                puzzleView = new UntangleField(this);
+                mPuzzle = (UntangleField) puzzleView;
+                break;
+            case SQUARES:
+            default:
+                puzzleView = new SquaresView(this);
+                mPuzzle = (SquaresView) puzzleView;
+                break;
+        }
+
+        setContentView(puzzleView);
+        mPuzzle.setPuzzleHost(this);
+        puzzleView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mPuzzle.init(mAlarm.getDifficulty());
+                        puzzleView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserInteracted();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (!isSolved) {
-            RingingState.saveAlarm(this, getAlarm());
+        if (!mPuzzle.isSolved()) {
+            RingingState.saveAlarm(this, mAlarm);
         }
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
-    }
-
-    public void stopRinging() {
-        mService.stopPlaying();
-        isSolved = true;
-        RingingState.removeAlarm(this);
-        AlarmScheduler.setNextAlarm(this);
-    }
-
-    public void stopAndRestartRinging(Alarm alarm) {
-        mService.stopPlaying();
-        isSolved = true;
-        AlarmScheduler.snooze(this, alarm);
     }
 
     public void showMuteMessage(String message) {
@@ -98,4 +158,23 @@ public abstract class PuzzleActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    private void checkUserInteracted() {
+        if (mService != null) {
+            // service might not be connected yet
+            if (!hasUserInteracted) {
+                mService.increaseVolume();
+            } else {
+                mService.decreaseVolume();
+            }
+        }
+        hasUserInteracted = false;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkUserInteracted();
+            }
+        }, USER_INTERACTION_CHECK_FREQUENCY);
+    }
+
 }

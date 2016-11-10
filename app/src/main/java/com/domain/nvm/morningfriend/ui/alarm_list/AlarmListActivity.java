@@ -30,8 +30,6 @@ import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.ui.settings.SettingsActivity;
 import com.domain.nvm.morningfriend.Utils;
 import com.domain.nvm.morningfriend.alert.RingingState;
-import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleActivity;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 
@@ -93,10 +91,6 @@ public class AlarmListActivity extends AppCompatActivity {
                 return true;
             case R.id.list_menu_clear:
                 Logger.clear(this);
-                return true;
-            case R.id.list_menu_demo:
-                Intent demo = new Intent(this, SquaresActivity.class);
-                startActivity(demo);
                 return true;
             case R.id.list_menu_settings:
                 Intent i = new Intent(this, SettingsActivity.class);

@@ -22,10 +22,7 @@
         <activity android:name=".ui.alarm_detail.AlarmDetailActivity" />
         <activity android:name=".ui.logs.LogActivity"/>
         <activity
-            android:name=".ui.puzzle.squares.SquaresActivity"
-            android:theme="@style/Theme.Fullscreen"/>
-        <activity
-            android:name=".ui.puzzle.untangle.UntangleActivity"
+            android:name=".ui.puzzle.PuzzleActivity"
             android:theme="@style/Theme.Fullscreen"/>
 
         <service

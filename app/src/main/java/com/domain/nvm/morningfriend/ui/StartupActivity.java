@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.ui.alarm_list.AlarmListActivity;
-import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresActivity;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleActivity;
+import com.domain.nvm.morningfriend.ui.puzzle.PuzzleActivity;
 
 public class StartupActivity extends AppCompatActivity {
 
@@ -16,16 +15,8 @@ public class StartupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Alarm alarm = RingingState.getAlarm(this);
         if (alarm != null) {
-            Intent puzzle;
-            switch (alarm.getPuzzle()) {
-                case GRAPH:
-                    puzzle = UntangleActivity.newIntent(this, alarm);
-                    break;
-                default:
-                case SQUARES:
-                    puzzle = SquaresActivity.newIntent(this, alarm);
-                    break;
-            }
+            Intent puzzle = PuzzleActivity.makeIntent(this, alarm);
+            puzzle.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(puzzle);
         }
         else {

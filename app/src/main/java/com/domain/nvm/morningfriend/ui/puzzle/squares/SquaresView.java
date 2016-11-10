@@ -4,22 +4,38 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class SquaresView extends View {
+import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.ui.puzzle.PuzzleHost;
+
+public class SquaresView extends View implements Puzzle {
 
     private Paint mRedPaint, mGreenPaint, mBackgroundPaint;
     private Square mRedSquare, mGreenSquare;
     private PointF mOriginLeft, mOriginRight;
+    private boolean isSolved;
 
     private static final int SQUARE_SIZE = 200;
 
-    private SquareClickedListener mCallback;
+    private PuzzleHost mPuzzleHost;
 
-    public interface SquareClickedListener {
-        void onRedClicked();
-        void onGreenClicked();
+    @Override
+    public void init(Alarm.Difficulty difficulty) {
+        initSquares();
+    }
+
+    @Override
+    public void setPuzzleHost(PuzzleHost host) {
+        this.mPuzzleHost = host;
+    }
+
+    @Override
+    public boolean isSolved() {
+        return isSolved;
     }
 
     public SquaresView(Context context) {
@@ -32,13 +48,10 @@ public class SquaresView extends View {
         mBackgroundPaint.setColor(0xfff8efe2);
     }
 
-    public void setCallback(SquareClickedListener callback) {
-        mCallback = callback;
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mCallback == null) {
+        if (mPuzzleHost == null) {
             return super.onTouchEvent(event);
         }
         switch(event.getAction()) {
@@ -50,10 +63,12 @@ public class SquaresView extends View {
                 PointF rightCurrent =
                         new PointF(mOriginRight.x + SQUARE_SIZE, mOriginRight.y + SQUARE_SIZE);
                 if (inArea(click, mOriginLeft, leftCurrent)) {
-                    mCallback.onGreenClicked();
+                    isSolved = true;
+                    mPuzzleHost.snooze();
                 }
                 if (inArea(click, mOriginRight, rightCurrent)) {
-                    mCallback.onRedClicked();
+                    isSolved = true;
+                    mPuzzleHost.onPuzzleSolved();
                 }
         }
         return true;
@@ -94,4 +109,6 @@ public class SquaresView extends View {
         boolean inY = r.y <= Math.max(a.y, b.y) && r.y >= Math.min(a.y, b.y);
         return inX && inY;
     }
+
+
 }

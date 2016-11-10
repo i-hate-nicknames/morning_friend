@@ -66,7 +66,7 @@ public class AlarmScheduler {
         if (next == null) {
             return;
         }
-        Intent i = AlertReceiver.newIntent(context, next);
+        Intent i = AlertReceiver.makeIntent(context, next);
         PendingIntent pi =
                 PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

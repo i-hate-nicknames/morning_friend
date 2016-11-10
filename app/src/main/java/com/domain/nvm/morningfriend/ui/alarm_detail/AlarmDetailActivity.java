@@ -118,7 +118,7 @@ public class AlarmDetailActivity extends AppCompatActivity
         mPuzzle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mAlarm.setPuzzle(position);
+                mAlarm.setPuzzleType(position);
                 updateAlarmWithUI();
             }
 

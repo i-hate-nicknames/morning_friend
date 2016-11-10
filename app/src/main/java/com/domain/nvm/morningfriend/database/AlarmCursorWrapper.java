@@ -6,8 +6,6 @@ import android.database.CursorWrapper;
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 
-import java.util.Date;
-
 public class AlarmCursorWrapper extends CursorWrapper {
 
     /**
@@ -34,7 +32,7 @@ public class AlarmCursorWrapper extends CursorWrapper {
         a.setMinute(minute);
         a.setMessage(message);
         a.setEnabled(isEnabled);
-        a.setPuzzle(puzzleId);
+        a.setPuzzleType(puzzleId);
         a.setDifficulty(diffictultyId);
         a.setRepeatDays(new Alarm.Days(repeatingDaysMask));
         return a;

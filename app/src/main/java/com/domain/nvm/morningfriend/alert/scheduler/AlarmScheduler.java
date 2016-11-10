@@ -17,6 +17,12 @@ public class AlarmScheduler {
     private static final String PREF_SNOOZE = "pref_snooze";
     private static final long LATE_OFFSET = 3 * 1000;
 
+    /**
+     * Find closest possible (in time) alarm to be fired. Alarm is to be chosen among current active
+     * alarms and current snooze state.
+     * @param context
+     * @return
+     */
     public static Alarm getClosestAlarm(Context context) {
         Alarm found = getSnoozeAlarm(context);
         if (found != null) {
@@ -61,15 +67,25 @@ public class AlarmScheduler {
         return alarm;
     }
 
+    /**
+     * Choose closest possible alarm from active alarms and current snooze state,
+     * then register it in the system to be fired at the time specified in alarm
+     * Cancel active alarm if no alarm is found
+     * At most one alarm can be active at the same time
+     * @param context
+     */
     public static void setNextAlarm(Context context) {
         Alarm next = getClosestAlarm(context);
-        if (next == null) {
-            return;
-        }
         Intent i = AlertReceiver.makeIntent(context, next);
         PendingIntent pi =
                 PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (next == null) {
+            // intent inside pi has null as extra, but that's okay with cancelling
+            // because when pi is cancelled their intents' extas are not compared
+            am.cancel(pi);
+            return;
+        }
         if (Build.VERSION.SDK_INT >= 19) {
             am.setExact(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }

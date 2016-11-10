@@ -101,12 +101,12 @@ public class Alarm implements Serializable {
         this.mPuzzleType = puzzleType;
     }
 
-    public void setPuzzle(int puzzlePos) {
+    public void setPuzzleType(int puzzleTypePos) {
         try {
-            this.mPuzzleType = PuzzleType.values()[puzzlePos];
+            this.mPuzzleType = PuzzleType.values()[puzzleTypePos];
         }
         catch (ArrayIndexOutOfBoundsException ex) {
-            throw new InvalidPuzzleException(Integer.toString(puzzlePos));
+            throw new InvalidPuzzleException(Integer.toString(puzzleTypePos));
         }
     }
 

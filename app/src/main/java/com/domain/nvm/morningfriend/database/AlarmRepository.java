@@ -117,7 +117,7 @@ public class AlarmRepository {
         vals.put(AlarmsTable.Cols.MINUTE, a.getMinute());
         vals.put(AlarmsTable.Cols.MESSAGE, a.getMessage());
         vals.put(AlarmsTable.Cols.DIFFICULTY, a.getDifficulty().ordinal());
-        vals.put(AlarmsTable.Cols.PUZZLE, a.getPuzzle().ordinal());
+        vals.put(AlarmsTable.Cols.PUZZLE, a.getPuzzleType().ordinal());
         vals.put(AlarmsTable.Cols.ENABLED, a.isEnabled() ? 1 : 0);
         vals.put(AlarmsTable.Cols.REPEAT_DAYS, a.getRepeatDays().getBitMask());
         return vals;

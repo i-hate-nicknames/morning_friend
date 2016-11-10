@@ -1,7 +1,5 @@
 package com.domain.nvm.morningfriend;
 
-import android.support.annotation.StringRes;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +10,7 @@ public class Alarm implements Serializable {
     private static final long DEFAULT_SNOOZE_DURATION = 5 * 1000;
 
     public enum Difficulty {EASY, MEDIUM, HARD}
-    public enum Puzzle {SQUARES, GRAPH}
+    public enum PuzzleType {SQUARES, GRAPH}
 
     private int id;
     private int hour;
@@ -23,7 +21,7 @@ public class Alarm implements Serializable {
     private String message;
     private boolean isEnabled;
     private Difficulty difficulty;
-    private Puzzle puzzle;
+    private PuzzleType mPuzzleType;
     private Days repeatDays;
 
     public static class InvalidDifficultyException extends IllegalArgumentException {
@@ -43,7 +41,7 @@ public class Alarm implements Serializable {
         a.setTime(new Date());
         a.setEnabled(false);
         a.setDifficulty(Difficulty.EASY);
-        a.setPuzzle(Puzzle.SQUARES);
+        a.setPuzzleType(PuzzleType.SQUARES);
         a.repeatDays = new Days();
         return a;
     }
@@ -95,17 +93,17 @@ public class Alarm implements Serializable {
         }
     }
 
-    public Puzzle getPuzzle() {
-        return puzzle;
+    public PuzzleType getPuzzleType() {
+        return mPuzzleType;
     }
 
-    public void setPuzzle(Puzzle puzzle) {
-        this.puzzle = puzzle;
+    public void setPuzzleType(PuzzleType puzzleType) {
+        this.mPuzzleType = puzzleType;
     }
 
     public void setPuzzle(int puzzlePos) {
         try {
-            this.puzzle = Puzzle.values()[puzzlePos];
+            this.mPuzzleType = PuzzleType.values()[puzzlePos];
         }
         catch (ArrayIndexOutOfBoundsException ex) {
             throw new InvalidPuzzleException(Integer.toString(puzzlePos));

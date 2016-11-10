@@ -245,7 +245,7 @@ public class AlarmDetailActivity extends AppCompatActivity
         mEnabledCheckBox.setChecked(mAlarm.isEnabled());
         mTimeTextView.setText(Utils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
-        mPuzzle.setSelection(mAlarm.getPuzzle().ordinal());
+        mPuzzle.setSelection(mAlarm.getPuzzleType().ordinal());
         updateDaysViews(false);
     }
 

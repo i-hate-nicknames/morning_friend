@@ -104,7 +104,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         startService(serviceIntent);
 
         final View puzzleView;
-        switch (mAlarm.getPuzzle()) {
+        switch (mAlarm.getPuzzleType()) {
             case GRAPH:
                 puzzleView = new UntangleField(this);
                 mPuzzle = (UntangleField) puzzleView;

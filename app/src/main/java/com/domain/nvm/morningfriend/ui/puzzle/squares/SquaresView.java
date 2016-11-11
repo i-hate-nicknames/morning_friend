@@ -24,7 +24,7 @@ public class SquaresView extends View implements Puzzle {
     private PuzzleHost mPuzzleHost;
 
     @Override
-    public void init(Alarm.Difficulty difficulty) {
+    public void init(Difficulty difficulty) {
         initSquares();
     }
 

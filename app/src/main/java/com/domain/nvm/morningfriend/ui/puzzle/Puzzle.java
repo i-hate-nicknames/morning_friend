@@ -1,9 +1,10 @@
 package com.domain.nvm.morningfriend.ui.puzzle;
 
-import com.domain.nvm.morningfriend.Alarm;
-
 public interface Puzzle {
-    void init(Alarm.Difficulty difficulty);
+    void init(Difficulty difficulty);
     void setPuzzleHost(PuzzleHost host);
     boolean isSolved();
+
+    enum Difficulty {EASY, MEDIUM, HARD}
+    enum PuzzleType {SQUARES, GRAPH}
 }

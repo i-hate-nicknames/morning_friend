@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
+import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Graph;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
 
@@ -32,7 +33,7 @@ public class GraphReader {
     private static final String VER_X = "x";
     private static final String VER_Y = "y";
 
-    public static Graph getGraph(Context context, Alarm.Difficulty difficulty) {
+    public static Graph getGraph(Context context, Puzzle.Difficulty difficulty) {
         String graphString = null;
         Graph graph = null;
         @RawRes int graphRes;

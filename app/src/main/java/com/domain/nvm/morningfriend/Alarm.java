@@ -1,5 +1,7 @@
 package com.domain.nvm.morningfriend;
 
+import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,8 +11,6 @@ public class Alarm implements Serializable {
 
     private static final long DEFAULT_SNOOZE_DURATION = 5 * 1000;
 
-    public enum Difficulty {EASY, MEDIUM, HARD}
-    public enum PuzzleType {SQUARES, GRAPH}
 
     private int id;
     private int hour;
@@ -20,8 +20,8 @@ public class Alarm implements Serializable {
     private boolean isSnooze;
     private String message;
     private boolean isEnabled;
-    private Difficulty difficulty;
-    private PuzzleType mPuzzleType;
+    private Puzzle.Difficulty difficulty;
+    private Puzzle.PuzzleType mPuzzleType;
     private Days repeatDays;
 
     public static class InvalidDifficultyException extends IllegalArgumentException {
@@ -40,8 +40,8 @@ public class Alarm implements Serializable {
         Alarm a = new Alarm();
         a.setTime(new Date());
         a.setEnabled(false);
-        a.setDifficulty(Difficulty.EASY);
-        a.setPuzzleType(PuzzleType.SQUARES);
+        a.setDifficulty(Puzzle.Difficulty.EASY);
+        a.setPuzzleType(Puzzle.PuzzleType.SQUARES);
         a.repeatDays = new Days();
         return a;
     }
@@ -76,34 +76,34 @@ public class Alarm implements Serializable {
         isEnabled = enabled;
     }
 
-    public Difficulty getDifficulty() {
+    public Puzzle.Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(Puzzle.Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
     public void setDifficulty(int difficultyPos) {
         try {
-            this.difficulty = Difficulty.values()[difficultyPos];
+            this.difficulty = Puzzle.Difficulty.values()[difficultyPos];
         }
         catch (ArrayIndexOutOfBoundsException ex) {
             throw new InvalidDifficultyException(Integer.toString(difficultyPos));
         }
     }
 
-    public PuzzleType getPuzzleType() {
+    public Puzzle.PuzzleType getPuzzleType() {
         return mPuzzleType;
     }
 
-    public void setPuzzleType(PuzzleType puzzleType) {
+    public void setPuzzleType(Puzzle.PuzzleType puzzleType) {
         this.mPuzzleType = puzzleType;
     }
 
     public void setPuzzleType(int puzzleTypePos) {
         try {
-            this.mPuzzleType = PuzzleType.values()[puzzleTypePos];
+            this.mPuzzleType = Puzzle.PuzzleType.values()[puzzleTypePos];
         }
         catch (ArrayIndexOutOfBoundsException ex) {
             throw new InvalidPuzzleException(Integer.toString(puzzleTypePos));

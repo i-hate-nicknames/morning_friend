@@ -38,7 +38,7 @@ public class UntangleField extends FrameLayout implements Puzzle, View.OnTouchLi
     private boolean notificationSolvedSent;
 
     @Override
-    public void init(Alarm.Difficulty difficulty) {
+    public void init(Difficulty difficulty) {
         generateGraph(difficulty);
     }
 
@@ -90,7 +90,7 @@ public class UntangleField extends FrameLayout implements Puzzle, View.OnTouchLi
         this.setWillNotDraw(false);
     }
 
-    public void generateGraph(Alarm.Difficulty difficulty) {
+    public void generateGraph(Difficulty difficulty) {
         mGraph = GraphReader.getGraph(getContext(), difficulty);
         mGraph.shufflePositions();
         mGraph.scaleVertexPositions(getWidth()*VERTEX_SCALE_PERCENTAGE,

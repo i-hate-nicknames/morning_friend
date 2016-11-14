@@ -24,7 +24,13 @@
         <activity
             android:name=".ui.puzzle.PuzzleActivity"
             android:theme="@style/Theme.Fullscreen"/>
-
+        <activity
+            android:name=".ui.puzzle.TrainingActivity"
+            android:theme="@style/Theme.Fullscreen"/>
+        <activity android:name=".ui.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.demo.SelectPuzzleActivity">
+        </activity>
         <service
             android:name=".alert.RingingService"
             android:enabled="true">
@@ -43,10 +49,6 @@
             android:exported="false">
         </service>
 
-        <activity android:name=".ui.settings.SettingsActivity">
-        </activity>
-        <activity android:name=".ui.demo.SelectPuzzleActivity">
-        </activity>
     </application>
 
 </manifest>

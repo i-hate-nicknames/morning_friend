@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.ui.alarm_detail.AlarmDetailActivity;
+import com.domain.nvm.morningfriend.ui.demo.SelectPuzzleActivity;
 import com.domain.nvm.morningfriend.ui.logs.LogActivity;
 import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.R;
@@ -95,6 +96,10 @@ public class AlarmListActivity extends AppCompatActivity {
             case R.id.list_menu_settings:
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.list_menu_demo:
+                Intent demo = new Intent(this, SelectPuzzleActivity.class);
+                startActivity(demo);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

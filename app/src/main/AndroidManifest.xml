@@ -18,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.alarm_list.AlarmListActivity" />
-        <activity android:name=".ui.alarm_detail.AlarmDetailActivity" />
+        <activity android:name=".ui.alarm_list.AlarmListActivity"/>
+        <activity android:name=".ui.alarm_detail.AlarmDetailActivity"/>
         <activity android:name=".ui.logs.LogActivity"/>
         <activity
             android:name=".ui.puzzle.PuzzleActivity"
@@ -44,6 +44,8 @@
         </service>
 
         <activity android:name=".ui.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.demo.SelectPuzzleActivity">
         </activity>
     </application>
 

@@ -41,4 +41,7 @@
     <string name="prefs_ringtone_key">pref_ringtone</string>
     <string name="prefs_ringtone_label">Ringtone</string>
 
+    <string name="demo_hint">Hint</string>
+    <string name="demo_try">Try</string>
+
 </resources>

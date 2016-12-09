@@ -162,6 +162,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     private void checkUserInteracted() {
         if (mService != null) {
             // service might not be connected yet
+            mService.maximizeSystemVolume();
             if (!hasUserInteracted) {
                 mService.increaseVolume();
             } else {

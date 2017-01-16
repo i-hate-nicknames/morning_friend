@@ -37,7 +37,7 @@ public class RingingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Logger.write(this, "RingingService::onStartCommand");
         startPlaying();
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

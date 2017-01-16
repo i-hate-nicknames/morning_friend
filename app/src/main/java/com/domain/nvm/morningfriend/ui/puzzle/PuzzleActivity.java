@@ -140,7 +140,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     protected void onPause() {
         super.onPause();
         if (!mPuzzle.isSolved()) {
-            RingingState.saveAlarm(this, mAlarm);
+            mService.stopPlaying();
+            finish();
+            // register puzzle interrupted snooze
         }
     }
 

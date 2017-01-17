@@ -15,7 +15,9 @@ import com.domain.nvm.morningfriend.database.AlarmRepository;
 public class AlarmScheduler {
 
     private static final String PREF_SNOOZE = "pref_snooze";
+    private static final String PREF_INTERRUPTED_SNOOZE = "pref_snooze";
     private static final long LATE_OFFSET = 3 * 1000;
+    private static final long INTERRUPTED_ALARM_DELAY = 7 * 1000;
 
     /**
      * Find closest possible (in time) alarm to be fired. Alarm is to be chosen among current active
@@ -24,7 +26,11 @@ public class AlarmScheduler {
      * @return
      */
     public static Alarm getClosestAlarm(Context context) {
-        Alarm found = getSnoozeAlarm(context);
+        Alarm found = getSnoozeAlarm(context, PREF_INTERRUPTED_SNOOZE);
+        if (found != null) {
+            return found;
+        }
+        found = getSnoozeAlarm(context, PREF_SNOOZE);
         if (found != null) {
             return found;
         }
@@ -49,9 +55,9 @@ public class AlarmScheduler {
      * @param context
      * @return alarm
      */
-    private static Alarm getSnoozeAlarm(Context context) {
+    private static Alarm getSnoozeAlarm(Context context, String snoozePrefKey) {
         String pref = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PREF_SNOOZE, null);
+                .getString(snoozePrefKey, null);
         if (pref == null) {
             return null;
         }
@@ -106,6 +112,16 @@ public class AlarmScheduler {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(PREF_SNOOZE, alarm.getId() + "_" + snoozeTime)
+                .apply();
+        setNextAlarm(context);
+    }
+
+
+    public static void puzzleInterruptedSnooze(Context context, Alarm alarm) {
+        long snoozeTime = System.currentTimeMillis() + INTERRUPTED_ALARM_DELAY;
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(PREF_INTERRUPTED_SNOOZE, alarm.getId() + "_" + snoozeTime)
                 .apply();
         setNextAlarm(context);
     }

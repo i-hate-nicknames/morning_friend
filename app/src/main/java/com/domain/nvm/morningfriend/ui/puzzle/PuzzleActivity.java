@@ -140,10 +140,17 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     protected void onPause() {
         super.onPause();
         if (!mPuzzle.isSolved()) {
-            mService.stopPlaying();
-            finish();
-            // register puzzle interrupted snooze
+            repeatAlarm();
         }
+    }
+
+    /**
+     * Close current puzzle and register same alarm to be fired soon
+     */
+    private void repeatAlarm() {
+        mService.stopPlaying();
+        AlarmScheduler.puzzleInterruptedSnooze(this, mAlarm);
+        finish();
     }
 
     public void showMuteMessage(String message) {
@@ -162,15 +169,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     }
 
     private void checkUserInteracted() {
-        if (mService != null) {
-            // service might not be connected yet
-            mService.maximizeSystemVolume();
-            if (!hasUserInteracted) {
-                mService.increaseVolume();
-            } else {
-                mService.decreaseVolume();
-            }
-        }
+
         hasUserInteracted = false;
         handler.postDelayed(new Runnable() {
             @Override

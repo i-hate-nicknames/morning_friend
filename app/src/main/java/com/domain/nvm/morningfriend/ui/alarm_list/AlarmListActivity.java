@@ -30,7 +30,6 @@ import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.ui.settings.SettingsActivity;
 import com.domain.nvm.morningfriend.Utils;
-import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 

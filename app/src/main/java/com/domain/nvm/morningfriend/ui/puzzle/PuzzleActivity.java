@@ -19,7 +19,6 @@ import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
 import com.domain.nvm.morningfriend.alert.RingingService;
-import com.domain.nvm.morningfriend.alert.RingingState;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleField;
@@ -63,7 +62,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     public void onPuzzleSolved() {
         mService.stopPlaying();
         AlarmScheduler.setNextAlarm(this);
-        RingingState.removeAlarm(this);
         finish();
     }
 
@@ -81,7 +79,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     public void snooze() {
         mService.stopPlaying();
         AlarmScheduler.snooze(this, mAlarm);
-        RingingState.removeAlarm(this);
         finish();
     }
 

@@ -88,12 +88,15 @@ public class AlarmScheduler {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (next == null) {
             // intent inside pi has null as extra, but that's okay with cancelling
-            // because when pi is cancelled their intents' extas are not compared
+            // because when pi is cancelled their intents' extras are not compared
             am.cancel(pi);
             return;
         }
         if (Build.VERSION.SDK_INT >= 19) {
             am.setExact(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
+        }
+        if (Build.VERSION.SDK_INT >= 23) {
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }
         else {
             am.set(AlarmManager.RTC_WAKEUP, next.getTime(), pi);

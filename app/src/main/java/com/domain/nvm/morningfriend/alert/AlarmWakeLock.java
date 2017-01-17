@@ -12,6 +12,7 @@ public class AlarmWakeLock {
     private static PowerManager.WakeLock sWakeLock;
 
     public static void acquireLock(Context context) {
+        Logger.write(context, "AlarmWakeLock::acquireLock");
         if (sWakeLock != null) {
             return;
         }

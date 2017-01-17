@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -20,6 +21,7 @@ import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
 import com.domain.nvm.morningfriend.alert.RingingService;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleField;
 
@@ -31,7 +33,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     private final Handler handler = new Handler();
 
-    private boolean hasUserInteracted;
     private RingingService mService;
     private boolean mBound = false;
     private boolean isSolved = false;
@@ -72,7 +73,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     @Override
     public void onPuzzleTouched() {
-        hasUserInteracted = true;
+
     }
 
     @Override
@@ -85,6 +86,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.write(this, "PuzzleActivity::onCreate");
         // might be null if alarm is ringing and app was started from launcher
         mAlarm = (Alarm) getIntent().getSerializableExtra(EXTRA_ALARM);
         AlarmWakeLock.acquireLock(this);
@@ -126,19 +128,25 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkUserInteracted();
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
         if (!mPuzzle.isSolved()) {
             repeatAlarm();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mPuzzle.isSolved()) {
+            return super.onKeyDown(keyCode, event);
+        }
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+                || (keyCode == KeyEvent.KEYCODE_POWER)){
+            repeatAlarm();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -148,32 +156,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         mService.stopPlaying();
         AlarmScheduler.puzzleInterruptedSnooze(this, mAlarm);
         finish();
-    }
-
-    public void showMuteMessage(String message) {
-        if (message == null) {
-            message = getString(R.string.snackbar_mute_message);
-        }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.snackbar_mute_button_text),
-                        new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mService.muteSound();
-                    }
-                })
-                .show();
-    }
-
-    private void checkUserInteracted() {
-
-        hasUserInteracted = false;
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkUserInteracted();
-            }
-        }, USER_INTERACTION_CHECK_FREQUENCY);
     }
 
 }

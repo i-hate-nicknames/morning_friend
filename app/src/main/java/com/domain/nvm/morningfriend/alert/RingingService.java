@@ -16,13 +16,11 @@ import com.domain.nvm.morningfriend.R;
 
 public class RingingService extends Service {
 
-    private static final float VOLUME_STEP = 0.01f;
-    private static final float PLAYER_MAX_VOLUME = 0.35f;
+    private static final float PLAYER_VOLUME = 0.35f;
 
     private final IBinder mBinder = new RingingBinder();
 
     private boolean isPlaying;
-    private float playerVolume = 0.05f;
     private int initialSystemVolume;
     private MediaPlayer mp;
     private AudioManager mAudioManager;
@@ -67,11 +65,13 @@ public class RingingService extends Service {
         }
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         initialSystemVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        maximizeSystemVolume();
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                0);
         mp = MediaPlayer.create(this, ringtone);
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mp.setLooping(true);
-        mp.setVolume(playerVolume, playerVolume);
+        mp.setVolume(PLAYER_VOLUME, PLAYER_VOLUME);
     }
 
     public void startPlaying() {
@@ -82,43 +82,20 @@ public class RingingService extends Service {
     }
 
     public void stopPlaying() {
+        Logger.write(this, "RingingService::stopPlaying");
         isPlaying = false;
         mp.stop();
         stopSelf();
     }
 
-    public void muteSound() {
-        if (isPlaying) {
-            playerVolume = 0f;
-            mp.setVolume(0f, 0f);
-        }
-    }
-
-    public void increaseVolume() {
-        if (isPlaying && playerVolume < PLAYER_MAX_VOLUME) {
-            playerVolume += VOLUME_STEP;
-            mp.setVolume(playerVolume, playerVolume);
-        }
-    }
-
-    public void decreaseVolume() {
-        if (isPlaying && playerVolume >= VOLUME_STEP) {
-            playerVolume -= VOLUME_STEP;
-            mp.setVolume(playerVolume, playerVolume);
-        }
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Logger.write(this, "RingingService::onDestroy");
         mp.release();
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, initialSystemVolume, 0);
         AlarmWakeLock.releaseLock(this);
     }
 
-    public void maximizeSystemVolume() {
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-            mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
-            0);
-    }
 }

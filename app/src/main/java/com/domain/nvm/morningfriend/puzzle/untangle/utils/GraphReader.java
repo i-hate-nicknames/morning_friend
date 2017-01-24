@@ -1,15 +1,14 @@
-package com.domain.nvm.morningfriend.ui.puzzle.untangle.utils;
+package com.domain.nvm.morningfriend.puzzle.untangle.utils;
 
 import android.content.Context;
 import android.graphics.PointF;
 import android.support.annotation.RawRes;
 import android.util.Log;
 
-import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Graph;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.untangle.data.Graph;
+import com.domain.nvm.morningfriend.puzzle.untangle.data.Vertex;
 
 import org.json.JSONArray;
 import org.json.JSONException;

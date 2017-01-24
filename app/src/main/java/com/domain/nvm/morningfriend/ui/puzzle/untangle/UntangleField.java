@@ -11,13 +11,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
-import com.domain.nvm.morningfriend.ui.puzzle.PuzzleHost;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Graph;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.utils.GraphReader;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.PuzzleHost;
+import com.domain.nvm.morningfriend.puzzle.untangle.data.Graph;
+import com.domain.nvm.morningfriend.puzzle.untangle.data.Vertex;
+import com.domain.nvm.morningfriend.puzzle.untangle.utils.GraphReader;
 
 public class UntangleField extends FrameLayout implements Puzzle, View.OnTouchListener {
 

@@ -16,6 +16,8 @@ import com.domain.nvm.morningfriend.Alarm;
 import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
 import com.domain.nvm.morningfriend.alert.RingtonePlayer;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.PuzzleHost;
 import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleField;
@@ -116,6 +118,18 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         else {
             AlarmWakeLock.releaseLock(this);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Logger.write(this, "PuzzleActivity::onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logger.write(this, "PuzzleActivity::onDestroy");
     }
 
     @Override

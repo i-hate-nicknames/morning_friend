@@ -1,6 +1,6 @@
 package com.domain.nvm.morningfriend;
 
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
 
 import java.io.Serializable;
 import java.util.ArrayList;

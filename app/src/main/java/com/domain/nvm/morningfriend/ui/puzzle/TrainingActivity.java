@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle.Difficulty;
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle.PuzzleType;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.Puzzle.Difficulty;
+import com.domain.nvm.morningfriend.puzzle.Puzzle.PuzzleType;
+import com.domain.nvm.morningfriend.puzzle.PuzzleHost;
 import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.ui.puzzle.untangle.UntangleField;
 

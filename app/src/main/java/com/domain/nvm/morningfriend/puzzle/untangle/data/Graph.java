@@ -1,8 +1,8 @@
-package com.domain.nvm.morningfriend.ui.puzzle.untangle.data;
+package com.domain.nvm.morningfriend.puzzle.untangle.data;
 
 import android.graphics.PointF;
 
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.utils.LineUtils;
+import com.domain.nvm.morningfriend.puzzle.untangle.utils.LineUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

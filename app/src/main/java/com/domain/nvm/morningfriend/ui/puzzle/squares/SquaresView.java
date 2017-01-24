@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
-import com.domain.nvm.morningfriend.ui.puzzle.PuzzleHost;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.PuzzleHost;
 
 public class SquaresView extends View implements Puzzle {
 

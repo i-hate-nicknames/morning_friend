@@ -1,4 +1,4 @@
-package com.domain.nvm.morningfriend.ui.puzzle;
+package com.domain.nvm.morningfriend.puzzle;
 
 public interface PuzzleHost {
     void onPuzzleSolved();

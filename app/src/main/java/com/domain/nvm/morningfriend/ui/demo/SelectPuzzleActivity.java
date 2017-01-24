@@ -1,6 +1,5 @@
 package com.domain.nvm.morningfriend.ui.demo;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.domain.nvm.morningfriend.R;
-import com.domain.nvm.morningfriend.ui.puzzle.Puzzle;
+import com.domain.nvm.morningfriend.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.ui.puzzle.TrainingActivity;
 
 public class SelectPuzzleActivity extends AppCompatActivity {

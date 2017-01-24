@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.view.View;
 
-import com.domain.nvm.morningfriend.ui.puzzle.untangle.data.Vertex;
+import com.domain.nvm.morningfriend.puzzle.untangle.data.Vertex;
 
 public class VertexView extends View {
 

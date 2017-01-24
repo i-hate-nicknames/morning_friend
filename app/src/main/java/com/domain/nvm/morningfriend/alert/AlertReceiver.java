@@ -20,9 +20,9 @@ public class AlertReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
-        Logger.write(context, "Alarm triggered!");
         AlarmWakeLock.acquireLock(context);
+        Logger.write(context, "Alarm triggered!");
+        Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
         Intent puzzleActivity = PuzzleActivity.makeIntent(context, alarm);
         puzzleActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(puzzleActivity);

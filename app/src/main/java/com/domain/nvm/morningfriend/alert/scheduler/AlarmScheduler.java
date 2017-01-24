@@ -95,7 +95,7 @@ public class AlarmScheduler {
         if (Build.VERSION.SDK_INT >= 19) {
             am.setExact(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }
-        if (Build.VERSION.SDK_INT >= 23) {
+        else if (Build.VERSION.SDK_INT >= 23) {
             am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.getTime(), pi);
         }
         else {

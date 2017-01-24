@@ -2,8 +2,10 @@ package com.domain.nvm.morningfriend.ui.puzzle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -112,6 +114,11 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
     @Override
     protected void onPause() {
         super.onPause();
+        Logger.write(this, "PuzzleActivity::onPause");
+        // there is "fake" onPause call when dismissing keyguard and turning screen on
+        if (!isScreenOn()) {
+            return;
+        }
         if (!mPuzzle.isSolved()) {
             repeatAlarm();
         }
@@ -120,17 +127,18 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Logger.write(this, "PuzzleActivity::onStop");
+    private boolean isScreenOn() {
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= 20) {
+            return powerManager.isInteractive();
+        }
+        else {
+            return powerManager.isScreenOn();
+        }
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Logger.write(this, "PuzzleActivity::onDestroy");
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

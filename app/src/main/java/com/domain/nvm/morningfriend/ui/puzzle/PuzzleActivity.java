@@ -1,14 +1,10 @@
 package com.domain.nvm.morningfriend.ui.puzzle;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,9 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.domain.nvm.morningfriend.Alarm;
-import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.alert.AlarmWakeLock;
-import com.domain.nvm.morningfriend.alert.RingingService;
+import com.domain.nvm.morningfriend.alert.RingtonePlayer;
 import com.domain.nvm.morningfriend.alert.scheduler.AlarmScheduler;
 import com.domain.nvm.morningfriend.ui.logs.Logger;
 import com.domain.nvm.morningfriend.ui.puzzle.squares.SquaresView;
@@ -33,25 +28,12 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     private final Handler handler = new Handler();
 
-    private RingingService mService;
+    private RingtonePlayer mPlayer;
     private boolean mBound = false;
     private boolean isSolved = false;
     private Puzzle mPuzzle;
     private Alarm mAlarm;
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            RingingService.RingingBinder binder = (RingingService.RingingBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-        }
-    };
 
     public static Intent makeIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, PuzzleActivity.class);
@@ -61,7 +43,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     @Override
     public void onPuzzleSolved() {
-        mService.stopPlaying();
+        mPlayer.stop();
         AlarmScheduler.setNextAlarm(this);
         finish();
     }
@@ -78,7 +60,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
 
     @Override
     public void snooze() {
-        mService.stopPlaying();
+        mPlayer.stop();
         AlarmScheduler.snooze(this, mAlarm);
         finish();
     }
@@ -97,11 +79,8 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         Intent serviceIntent;
-        serviceIntent = new Intent(this, RingingService.class);
-        bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
-        // this won't create another instance of service, but will call onStartCommand
-        startService(serviceIntent);
-
+        mPlayer = new RingtonePlayer(this);
+        mPlayer.play();
         final View puzzleView;
         switch (mAlarm.getPuzzleType()) {
             case GRAPH:
@@ -134,6 +113,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         if (!mPuzzle.isSolved()) {
             repeatAlarm();
         }
+        else {
+            AlarmWakeLock.releaseLock(this);
+        }
     }
 
     @Override
@@ -153,7 +135,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
      * Close current puzzle and register same alarm to be fired soon
      */
     private void repeatAlarm() {
-        mService.stopPlaying();
+        mPlayer.stop();
         AlarmScheduler.puzzleInterruptedSnooze(this, mAlarm);
         finish();
     }

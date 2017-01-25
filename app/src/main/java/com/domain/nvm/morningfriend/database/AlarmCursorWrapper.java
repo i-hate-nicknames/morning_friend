@@ -3,7 +3,7 @@ package com.domain.nvm.morningfriend.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.domain.nvm.morningfriend.Alarm;
+import com.domain.nvm.morningfriend.features.alarm.Alarm;
 import com.domain.nvm.morningfriend.database.AlarmContract.AlarmsTable;
 
 public class AlarmCursorWrapper extends CursorWrapper {

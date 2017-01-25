@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="UntangleField">
+    <declare-styleable name="UntangleView">
         <attr name="vertexColor" format="color" />
         <attr name="edgeColor" format="color" />
         <attr name="crossEdgeColor" format="color" />

@@ -11,39 +11,39 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.alarm_list.AlarmListActivity">
+        <activity android:name=".features.alarm.list.AlarmListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.alarm_detail.AlarmDetailActivity"/>
-        <activity android:name=".ui.logs.LogActivity"/>
+        <activity android:name=".features.alarm.detail.AlarmDetailActivity"/>
+        <activity android:name=".features.log.LogActivity"/>
         <activity
-            android:name=".ui.puzzle.PuzzleActivity"
+            android:name=".features.puzzle.PuzzleActivity"
             android:theme="@style/Theme.Fullscreen"/>
         <activity
-            android:name=".ui.puzzle.TrainingActivity"
+            android:name=".features.training.TrainingActivity"
             android:theme="@style/Theme.Fullscreen"/>
-        <activity android:name=".ui.settings.SettingsActivity">
+        <activity android:name=".features.settings.SettingsActivity">
         </activity>
-        <activity android:name=".ui.demo.SelectPuzzleActivity">
+        <activity android:name=".features.training.SelectPuzzleActivity">
         </activity>
         <service
             android:name=".alert.RingingService"
             android:enabled="true">
         </service>
 
-        <receiver android:name=".alert.scheduler.AlarmRegisterReceiver">
+        <receiver android:name=".features.alert.scheduler.AlarmRegisterReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".alert.AlertReceiver"/>
+        <receiver android:name=".features.alert.AlertReceiver"/>
 
         <service
-            android:name=".alert.scheduler.AlarmRegisterService"
+            android:name=".features.alert.scheduler.AlarmRegisterService"
             android:enabled="true"
             android:exported="false">
         </service>

@@ -1,6 +1,7 @@
 package com.domain.nvm.morningfriend;
 
-import com.domain.nvm.morningfriend.Alarm.Days.Names;
+import com.domain.nvm.morningfriend.features.alarm.Alarm;
+import com.domain.nvm.morningfriend.features.alarm.Alarm.Days.Names;
 
 import org.junit.Test;
 

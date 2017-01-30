@@ -2,12 +2,14 @@ package com.domain.nvm.morningfriend.features.puzzle.untangle.data;
 
 import android.graphics.PointF;
 
-public class Vertex {
+import com.domain.nvm.morningfriend.features.puzzle.data.Vertex;
+
+public class CartesianVertex implements Vertex {
 
     private PointF position;
     private int mNum;
 
-    public Vertex(int num, PointF position) {
+    public CartesianVertex(int num, PointF position) {
         mNum = num;
         this.position = position;
     }
@@ -36,13 +38,13 @@ public class Vertex {
         setPosition(new PointF(position.x, y));
     }
 
-    public void swapX(Vertex other) {
+    public void swapX(CartesianVertex other) {
         float tmp = getX();
         setX(other.getX());
         other.setX(tmp);
     }
 
-    public void swapY(Vertex other) {
+    public void swapY(CartesianVertex other) {
         float tmp = getY();
         setY(other.getY());
         other.setY(tmp);
@@ -52,6 +54,7 @@ public class Vertex {
         this.position = position;
     }
 
+    @Override
     public int getNum() {
         return mNum;
     }

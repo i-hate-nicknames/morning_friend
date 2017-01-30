@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.view.View;
 
-import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Vertex;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.CartesianVertex;
 
 public class VertexView extends View {
 
@@ -16,20 +16,20 @@ public class VertexView extends View {
 
     private Paint mPaint;
 
-    private Vertex mVertex;
+    private CartesianVertex mVertex;
 
-    public VertexView(Vertex v, Context context) {
+    public VertexView(CartesianVertex v, Context context) {
         super(context);
         mPaint = new Paint();
         mPaint.setColor(VERTEX_COLOR);
         this.mVertex = v;
     }
 
-    public Vertex getVertex() {
+    public CartesianVertex getVertex() {
         return mVertex;
     }
 
-    public void setVertex(Vertex vertex) {
+    public void setVertex(CartesianVertex vertex) {
         mVertex = vertex;
     }
 

@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle;
-import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Vertex;
-import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Graph;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.CartesianVertex;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Untangle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +32,9 @@ public class GraphReader {
     private static final String VER_X = "x";
     private static final String VER_Y = "y";
 
-    public static Graph getGraph(Context context, Puzzle.Difficulty difficulty) {
+    public static Untangle getGraph(Context context, Puzzle.Difficulty difficulty) {
         String graphString = null;
-        Graph graph = null;
+        Untangle untangle = null;
         @RawRes int graphRes;
         switch (difficulty) {
             case MEDIUM:
@@ -51,20 +51,20 @@ public class GraphReader {
             graphString = readGraph(context, graphRes);
         }
         catch (IOException ioe) {
-            Log.e(TAG, "Error while reading graph file", ioe);
+            Log.e(TAG, "Error while reading untangle file", ioe);
         }
         try {
-            graph = parseGraph(graphString);
+            untangle = parseGraph(graphString);
         }
         catch (JSONException je) {
-            Log.e(TAG, "Error while parsing graph string", je);
+            Log.e(TAG, "Error while parsing untangle string", je);
         }
-        return graph;
+        return untangle;
 
     }
 
-    private static Graph parseGraph(String jsonString) throws JSONException {
-        Graph g = new Graph();
+    private static Untangle parseGraph(String jsonString) throws JSONException {
+        Untangle g = new Untangle();
         JSONObject graphJson = new JSONObject(jsonString);
         JSONArray verticesJson = graphJson.getJSONArray(VERTICES);
         for (int i = 0; i < verticesJson.length(); i++) {
@@ -72,7 +72,7 @@ public class GraphReader {
             int num = vertexJson.getInt(VER_NUM);
             float x = (float) vertexJson.getDouble(VER_X);
             float y = (float) vertexJson.getDouble(VER_Y);
-            Vertex v = new Vertex(num, new PointF(x, y));
+            CartesianVertex v = new CartesianVertex(num, new PointF(x, y));
             g.addVertex(v);
         }
         JSONArray edgesJson = graphJson.getJSONArray(EDGES);

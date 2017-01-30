@@ -14,8 +14,9 @@ import android.widget.FrameLayout;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.features.puzzle.PuzzleHost;
-import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Graph;
-import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Vertex;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.CartesianVertex;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.IntersectingEdge;
+import com.domain.nvm.morningfriend.features.puzzle.untangle.data.Untangle;
 import com.domain.nvm.morningfriend.features.puzzle.untangle.utils.GraphReader;
 
 public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchListener {
@@ -28,7 +29,7 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
     private static final float VERTEX_SCALE_PERCENTAGE = 1 - MARGIN_PERCENTAGE;
     private static final float VERTEX_OFFSET = MARGIN_PERCENTAGE / 4;
 
-    private Graph mGraph;
+    private Untangle mUntangle;
     private Paint mLinePaint;
     private Paint mIntersectingLinePaint;
     private VertexView[] mVertexViews;
@@ -48,7 +49,7 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
 
     @Override
     public boolean isSolved() {
-        return mGraph != null && mGraph.isSolved();
+        return mUntangle != null && mUntangle.isSolved();
     }
 
     public UntangleView(Context context, AttributeSet attrs) {
@@ -62,7 +63,7 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
     }
 
     public void init(Context context, AttributeSet attrs) {
-        mVertexViews = new VertexView[Graph.MAX_ITEMS];
+        mVertexViews = new VertexView[Untangle.MAX_ITEMS];
         for (int i = 0; i < mVertexViews.length; i++) {
             mVertexViews[i] = null;
         }
@@ -90,12 +91,12 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
     }
 
     public void generateGraph(Difficulty difficulty) {
-        mGraph = GraphReader.getGraph(getContext(), difficulty);
-        mGraph.shufflePositions();
-        mGraph.scaleVertexPositions(getWidth()*VERTEX_SCALE_PERCENTAGE,
+        mUntangle = GraphReader.getGraph(getContext(), difficulty);
+        mUntangle.shufflePositions();
+        mUntangle.scaleVertexPositions(getWidth()*VERTEX_SCALE_PERCENTAGE,
                 getHeight()*VERTEX_SCALE_PERCENTAGE);
-        mGraph.moveVertexPositions(getWidth()*VERTEX_OFFSET, getHeight()*VERTEX_OFFSET);
-        for (Vertex v: mGraph.getVertices()) {
+        mUntangle.moveVertexPositions(getWidth()*VERTEX_OFFSET, getHeight()*VERTEX_OFFSET);
+        for (CartesianVertex v: mUntangle.getVertices()) {
             addVertex(v);
         }
     }
@@ -118,10 +119,10 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (Graph.Edge e: mGraph.getIntersectingEdges()) {
+        for (IntersectingEdge e: mUntangle.getIntersectingEdges()) {
             drawEdge(canvas, e, true);
         }
-        for (Graph.Edge e: mGraph.getNonIntersectingEdges()) {
+        for (IntersectingEdge e: mUntangle.getNonIntersectingEdges()) {
             drawEdge(canvas, e, false);
         }
     }
@@ -129,17 +130,17 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
     private void checkSolution() {
         if (mPuzzleHost == null)
             return;
-        if (!notificationSolvedSent && mGraph.isSolved()) {
+        if (!notificationSolvedSent && mUntangle.isSolved()) {
             mPuzzleHost.onPuzzleSolved();
             notificationSolvedSent = true;
         }
-        else if (notificationSolvedSent && !mGraph.isSolved()) {
+        else if (notificationSolvedSent && !mUntangle.isSolved()) {
             mPuzzleHost.onPuzzleSolutionBroken();
             notificationSolvedSent = false;
         }
     }
 
-    private void addVertex(Vertex v) {
+    private void addVertex(CartesianVertex v) {
         VertexView vView = new VertexView(v, getContext());
         vView.setColor(mVertexColor);
         vView.setOnTouchListener(this);
@@ -162,9 +163,9 @@ public class UntangleView extends FrameLayout implements Puzzle, View.OnTouchLis
         vView.getVertex().setPosition(x, y);
     }
 
-    private void drawEdge(Canvas c, Graph.Edge e, boolean intersect) {
-        Vertex u = e.getFirst();
-        Vertex v = e.getSecond();
+    private void drawEdge(Canvas c, IntersectingEdge e, boolean intersect) {
+        CartesianVertex u = e.getFirst();
+        CartesianVertex v = e.getSecond();
         VertexView uView = mVertexViews[u.getNum()];
         VertexView vView = mVertexViews[v.getNum()];
         Paint paint;

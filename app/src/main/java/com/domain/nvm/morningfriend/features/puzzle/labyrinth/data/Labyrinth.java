@@ -6,6 +6,9 @@ public class Labyrinth {
     private Passages passages;
     private int playerTile;
 
+    public Labyrinth(int size) {
+        this.size = size;
+    }
 
     public void setPassages(Passages passages) {
         this.passages = passages;

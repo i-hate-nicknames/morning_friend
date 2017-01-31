@@ -11,22 +11,43 @@ public class Passages {
 
     private UndirectedGraph<SimpleVertex, SimpleEdge> graph;
     private int size;
+    // unfortunate ugly consequence that we can't use Integer as a vertex
+    // and now have to store vertices separately to be able to map int to vertex
+    private SimpleVertex[] vertices;
 
     public Passages(int size) {
         this.size = size;
-        this.graph = new UndirectedGraph<>(size*size-1, new SimpleEdgeFactory());
+        this.graph = new UndirectedGraph<>(size*size, new SimpleEdgeFactory());
+        initGraph();
+    }
+
+    private void initGraph() {
+        vertices = new SimpleVertex[size*size];
+        for (int i = 0; i < size*size; i++) {
+            SimpleVertex v = new SimpleVertex(i);
+            graph.addVertex(v);
+            vertices[i] = v;
+        }
     }
 
     public void connect(int a, int b) {
-
+        SimpleVertex u = vertices[a];
+        SimpleVertex v = vertices[b];
+        graph.connect(u, v);
     }
 
     public boolean isPassable(int a, int b) {
-        return false;
+        SimpleVertex u = vertices[a];
+        SimpleVertex v = vertices[b];
+        return graph.areConnected(u, v);
     }
 
     private static class SimpleVertex implements Vertex {
         int n;
+
+        SimpleVertex(int n) {
+            this.n = n;
+        }
 
         @Override
         public int getNum() {

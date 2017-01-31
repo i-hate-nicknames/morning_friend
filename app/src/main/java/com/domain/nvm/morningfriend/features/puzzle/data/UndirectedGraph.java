@@ -51,6 +51,11 @@ public class UndirectedGraph<V extends Vertex, E extends Edge> implements Graph<
     }
 
     @Override
+    public boolean areConnected(V v1, V v2) {
+        return neighbors.containsKey(v1) && neighbors.get(v1).contains(v2);
+    }
+
+    @Override
     public V getVertex(int num) {
         if (num >= maxItems) {
             throw new IllegalArgumentException("Invalid vertex number: " + num);

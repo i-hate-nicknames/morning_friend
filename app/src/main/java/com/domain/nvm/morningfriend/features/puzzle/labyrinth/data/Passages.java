@@ -10,20 +10,20 @@ import com.domain.nvm.morningfriend.features.puzzle.data.Vertex;
 public class Passages {
 
     private UndirectedGraph<SimpleVertex, SimpleEdge> graph;
-    private int size;
+    private int vertexNum;
     // unfortunate ugly consequence that we can't use Integer as a vertex
     // and now have to store vertices separately to be able to map int to vertex
     private SimpleVertex[] vertices;
 
-    public Passages(int size) {
-        this.size = size;
-        this.graph = new UndirectedGraph<>(size*size, new SimpleEdgeFactory());
+    public Passages(int tilesNum) {
+        vertexNum = tilesNum;
+        this.graph = new UndirectedGraph<>(vertexNum, new SimpleEdgeFactory());
         initGraph();
     }
 
     private void initGraph() {
-        vertices = new SimpleVertex[size*size];
-        for (int i = 0; i < size*size; i++) {
+        vertices = new SimpleVertex[vertexNum];
+        for (int i = 0; i < vertexNum; i++) {
             SimpleVertex v = new SimpleVertex(i);
             graph.addVertex(v);
             vertices[i] = v;

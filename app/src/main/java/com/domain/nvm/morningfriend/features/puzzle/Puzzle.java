@@ -6,5 +6,5 @@ public interface Puzzle {
     boolean isSolved();
 
     enum Difficulty {EASY, MEDIUM, HARD}
-    enum PuzzleType {SQUARES, GRAPH}
+    enum PuzzleType {SQUARES, GRAPH, LABYRINTH}
 }

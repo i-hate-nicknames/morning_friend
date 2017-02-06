@@ -2,7 +2,6 @@ package com.domain.nvm.morningfriend.features.puzzle.labyrinth.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Labyrinth {
 
@@ -19,18 +18,7 @@ public class Labyrinth {
     public Labyrinth(int size) {
         this.size = size;
         tilesNum = size*size;
-    }
-
-    public void setPassages(Passages passages) {
-        this.passages = passages;
-    }
-
-    /**
-     * Generate random passages through this labyrinth
-     */
-    public void generatePassages() {
-        passages = new Passages(tilesNum);
-        //TODO: generate random passages
+        passages = PassagesGeneratorDFS.generatePassages(this);
     }
 
     public int getTilesNumber() {
@@ -95,11 +83,15 @@ public class Labyrinth {
 
     /**
      * True if player can move from start tile one tile in given direction
-     * @param tileIdx start tile index (from 0 to size*size-1)
+     * @param sourceIdx start tile index (from 0 to size*size-1)
      * @param direction direction to move in
      */
-    public boolean canMove(int tileIdx, Direction direction) {
-        return (new Random()).nextBoolean();
+    public boolean canMove(int sourceIdx, Direction direction) {
+        int targetIdx = getNextTile(sourceIdx, direction);
+        if (targetIdx == INVALID_TILE) {
+            return false;
+        }
+        return passages.isPassable(sourceIdx, targetIdx);
     }
 
     public boolean canMove(int tileX, int tileY, Direction direction) {

@@ -54,7 +54,7 @@ public class LabyrinthView extends View implements Puzzle {
     }
 
     private Labyrinth generateLabyrinth() {
-        return new Labyrinth(5);
+        return new Labyrinth(10);
     }
 
     private Bitmap generateImage(int width, Labyrinth lab) {

@@ -1,10 +1,14 @@
 package com.domain.nvm.morningfriend.features.puzzle.labyrinth.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Labyrinth {
 
     public enum Direction {LEFT, RIGHT, UP, DOWN}
+
+    public static final int INVALID_TILE = -1;
 
     private int size;
     private int tilesNum;
@@ -39,6 +43,54 @@ public class Labyrinth {
 
     public boolean isInGoalTile() {
         return false;
+    }
+
+    public List<Integer> getNeighborTiles(int tileIdx) {
+        List<Integer> neighbors = new ArrayList<>();
+        for (Direction dir: Direction.values()) {
+            int neighbor = getNextTile(tileIdx, dir);
+            if (neighbor != INVALID_TILE) {
+                neighbors.add(neighbor);
+            }
+        }
+        return neighbors;
+    }
+
+    /**
+     * Get index of the tile one step from source tile in specified direction
+     * Assume tileIdx is a valid index of tile in the labyrinth
+     * @param tileIdx source tile index
+     * @param direction direction to look for the neighbor
+     * @return
+     */
+    public int getNextTile(int tileIdx, Direction direction) {
+        int row = tileIdx / size;
+        int col = tileIdx % size;
+        switch (direction) {
+            case DOWN:
+                if (row < size-1)
+                    return (row+1)*size+col;
+                else
+                    return INVALID_TILE;
+            case UP:
+                if (row > 0)
+                    return (row-1)*size+col;
+                else
+                    return INVALID_TILE;
+            case LEFT:
+                if (col > 0)
+                    return tileIdx - 1;
+                else
+                    return INVALID_TILE;
+            case RIGHT:
+                if (col < size-1)
+                    return tileIdx + 1;
+                else
+                    return INVALID_TILE;
+            default:
+                return INVALID_TILE;
+        }
+
     }
 
     /**

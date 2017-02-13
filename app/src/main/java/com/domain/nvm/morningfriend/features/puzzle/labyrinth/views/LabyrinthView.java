@@ -5,13 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.features.puzzle.PuzzleHost;
 import com.domain.nvm.morningfriend.features.puzzle.labyrinth.data.Labyrinth;
 
-public class LabyrinthView extends View implements Puzzle {
+import static com.domain.nvm.morningfriend.features.puzzle.labyrinth.data.Labyrinth.*;
+
+public class LabyrinthView extends View implements Puzzle, View.OnTouchListener {
 
     private static final int PUZZLE_OFFSET = 50;
 
@@ -20,16 +23,19 @@ public class LabyrinthView extends View implements Puzzle {
     private PuzzleHost puzzleHost;
     private int puzzleX;
     private int puzzleY;
+    private float aspectRatio;
 
     @Override
     public void init(Difficulty difficulty) {
         int mainWidth = getWidth();
         int mainHeight = getHeight();
+        aspectRatio = (float) mainWidth / mainHeight;
         labyrinth = generateLabyrinth();
         int puzzleWidth = mainWidth - PUZZLE_OFFSET*2;
         puzzleX = PUZZLE_OFFSET;
         puzzleY = (mainHeight - puzzleWidth) / 2;
         labyrinthImg = generateImage(puzzleWidth, labyrinth);
+        setOnTouchListener(this);
     }
 
     @Override
@@ -84,14 +90,47 @@ public class LabyrinthView extends View implements Puzzle {
                 int y1 = originY + tileSize * j;
                 int x2 = x1 + tileSize;
                 int y2 = y1 + tileSize;
-                if (!labyrinth.canMove(i, j, Labyrinth.Direction.RIGHT)) {
+                if (!labyrinth.canMove(i, j, Direction.RIGHT)) {
                     c.drawRect(x2-wallWidth, y1-wallWidth, x2, y2, wallPaint);
                 }
-                if (!labyrinth.canMove(i, j, Labyrinth.Direction.DOWN)) {
+                if (!labyrinth.canMove(i, j, Direction.DOWN)) {
                     c.drawRect(x1-wallWidth, y2-wallWidth, x2, y2, wallPaint);
                 }
             }
         }
         return image;
     }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Direction move = getClickDirection(event.getX(), event.getY());
+        }
+        return false;
+    }
+
+    private Direction getClickDirection(float clickX, float clickY) {
+        // find Y coordinate of a point on the "main" diagonal with the same X coordinate as clicked
+        int mainY = (int) Math.floor(clickX / aspectRatio);
+        // same for the "anti" diagonal
+        int antiY = getHeight() - mainY;
+        if (clickY < mainY) {
+            if (clickY < antiY) {
+                return Direction.UP;
+            }
+            else {
+                return Direction.RIGHT;
+            }
+        }
+        else {
+            if (clickY < antiY) {
+                return Direction.LEFT;
+            }
+            else {
+                return Direction.DOWN;
+            }
+        }
+    }
+
 }

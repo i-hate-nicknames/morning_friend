@@ -51,7 +51,7 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
 
     @Override
     public boolean isSolved() {
-        return false;
+        return labyrinth.isInGoalTile();
     }
 
     public LabyrinthView(Context context) {
@@ -91,9 +91,10 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
 
         c.drawPaint(tilePaint);
         // draw top and left walls outside of tiles
-        // todo: draw the entrance to the labyrinth
         c.drawRect(0, 0, canvasWidth, wallWidth, wallPaint);
         c.drawRect(0, 0, wallWidth, canvasHeight, wallPaint);
+        int targetRow = labyrinth.getTileRow(labyrinth.getTargetTile());
+        int targetCol = labyrinth.getTileCol(labyrinth.getTargetTile());
         // draw all right and bottom walls so that they would occupy tiles' space
         for (int i = 0; i < labyrinth.getSize(); i++) {
             for (int j = 0; j < labyrinth.getSize(); j++) {
@@ -103,6 +104,11 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
                 int y2 = y1 + tileSize;
                 if (!labyrinth.canMove(i, j, Direction.RIGHT)) {
                     c.drawRect(x2-wallWidth, y1-wallWidth, x2, y2, wallPaint);
+                }
+                // do not draw target tile's bottom wall
+                // requires target tile to be in the bottom row to make sense
+                if (i == targetRow && j == targetCol) {
+                    continue;
                 }
                 if (!labyrinth.canMove(i, j, Direction.DOWN)) {
                     c.drawRect(x1-wallWidth, y2-wallWidth, x2, y2, wallPaint);
@@ -127,6 +133,9 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
             Direction direction = getClickDirection(event.getX(), event.getY());
             labyrinth.move(direction);
             invalidate();
+            if (labyrinth.isInGoalTile()) {
+                puzzleHost.onPuzzleSolved();
+            }
         }
         return false;
     }

@@ -21,8 +21,10 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
     private Bitmap labyrinthImg;
     private Labyrinth labyrinth;
     private PuzzleHost puzzleHost;
-    private int puzzleX;
-    private int puzzleY;
+    private Paint playerPaint;
+    // coordinates of labyrinth's origin
+    private int puzzleX, puzzleY;
+    private int tileSize;
     private float aspectRatio;
 
     @Override
@@ -35,6 +37,8 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
         puzzleX = PUZZLE_OFFSET;
         puzzleY = (mainHeight - puzzleWidth) / 2;
         labyrinthImg = generateImage(puzzleWidth, labyrinth);
+        playerPaint = new Paint();
+        playerPaint.setColor(Color.RED);
         setOnTouchListener(this);
     }
 
@@ -56,7 +60,7 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(labyrinthImg, puzzleX, puzzleY, null);
-        // draw player position
+        drawPlayer(canvas);
     }
 
     private Labyrinth generateLabyrinth() {
@@ -64,7 +68,7 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
     }
 
     private Bitmap generateImage(int width, Labyrinth lab) {
-        int tileSize = width / labyrinth.getSize();
+        tileSize = width / labyrinth.getSize();
         int wallWidth = (tileSize < 10) ? 1 : tileSize / 10;
         // coordinates of leftmost topmost tile
         int originX = wallWidth, originY = wallWidth;
@@ -99,6 +103,14 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
             }
         }
         return image;
+    }
+
+    private void drawPlayer(Canvas c) {
+        int tile = labyrinth.getPlayerTile();
+        int tileOriginX = puzzleX + labyrinth.getTileCol(tile) * tileSize;
+        int tileOriginY = puzzleY + labyrinth.getTileRow(tile) * tileSize;
+        int x = tileOriginX + tileSize/2, y = tileOriginY + tileSize/2;
+        c.drawCircle(x, y, tileSize/4, playerPaint);
     }
 
 

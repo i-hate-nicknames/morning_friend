@@ -19,6 +19,7 @@ public class Labyrinth {
         this.size = size;
         tilesNum = size*size;
         passages = PassagesGeneratorDFS.generatePassages(this);
+        playerTile = 0;
     }
 
     public int getTilesNumber() {
@@ -42,6 +43,18 @@ public class Labyrinth {
             }
         }
         return neighbors;
+    }
+
+    public int getPlayerTile() {
+        return playerTile;
+    }
+
+    public int getTileRow(int tileIdx) {
+        return tileIdx / size;
+    }
+
+    public int getTileCol(int tileIdx) {
+        return tileIdx % size;
     }
 
     /**

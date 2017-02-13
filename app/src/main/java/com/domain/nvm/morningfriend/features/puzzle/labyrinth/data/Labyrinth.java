@@ -111,4 +111,10 @@ public class Labyrinth {
         return canMove(tileX + tileY*size, direction);
     }
 
+    public void move(Direction direction) {
+        if (canMove(playerTile, direction)) {
+            playerTile = getNextTile(playerTile, direction);
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -36,6 +37,7 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
         int puzzleWidth = mainWidth - PUZZLE_OFFSET*2;
         puzzleX = PUZZLE_OFFSET;
         puzzleY = (mainHeight - puzzleWidth) / 2;
+        tileSize = puzzleWidth / labyrinth.getSize();
         labyrinthImg = generateImage(puzzleWidth, labyrinth);
         playerPaint = new Paint();
         playerPaint.setColor(Color.RED);
@@ -67,12 +69,17 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
         return new Labyrinth(10);
     }
 
-    private Bitmap generateImage(int width, Labyrinth lab) {
-        tileSize = width / labyrinth.getSize();
+    /**
+     * Generate image for given labyrinth that displays walls and paths through the labyrinth
+     * @param imgSize size in pixels of the side of resulting image
+     * @param lab labyrinth to be drawn
+     * @return image representation of given labyrinth's walls and paths
+     */
+    private Bitmap generateImage(int imgSize, Labyrinth lab) {
         int wallWidth = (tileSize < 10) ? 1 : tileSize / 10;
         // coordinates of leftmost topmost tile
         int originX = wallWidth, originY = wallWidth;
-        int canvasWidth = width+wallWidth, canvasHeight = width+wallWidth;
+        int canvasWidth = imgSize+wallWidth, canvasHeight = imgSize+wallWidth;
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap image = Bitmap.createBitmap(canvasWidth, canvasHeight, conf);
         Canvas c = new Canvas();
@@ -117,7 +124,9 @@ public class LabyrinthView extends View implements Puzzle, View.OnTouchListener 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Direction move = getClickDirection(event.getX(), event.getY());
+            Direction direction = getClickDirection(event.getX(), event.getY());
+            labyrinth.move(direction);
+            invalidate();
         }
         return false;
     }

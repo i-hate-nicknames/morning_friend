@@ -11,6 +11,7 @@ public class Labyrinth {
 
     private int size;
     private int tilesNum;
+    private int targetTile;
     private Passages passages;
 
     private int playerTile;
@@ -18,6 +19,7 @@ public class Labyrinth {
     public Labyrinth(int size) {
         this.size = size;
         tilesNum = size*size;
+        targetTile = tilesNum-1;
         passages = PassagesGeneratorDFS.generatePassages(this);
         playerTile = 0;
     }
@@ -31,7 +33,7 @@ public class Labyrinth {
     }
 
     public boolean isInGoalTile() {
-        return false;
+        return playerTile == targetTile;
     }
 
     public List<Integer> getNeighborTiles(int tileIdx) {
@@ -47,6 +49,10 @@ public class Labyrinth {
 
     public int getPlayerTile() {
         return playerTile;
+    }
+
+    public int getTargetTile() {
+        return targetTile;
     }
 
     public int getTileRow(int tileIdx) {

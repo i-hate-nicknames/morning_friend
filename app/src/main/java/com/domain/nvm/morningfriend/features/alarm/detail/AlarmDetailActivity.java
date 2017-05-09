@@ -4,18 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,7 +29,7 @@ public class AlarmDetailActivity extends AppCompatActivity
         implements TimePickerFragment.TimePickerResultListener {
 
     private TextView mTimeTextView;
-    private CheckBox mEnabledCheckBox;
+    private SwitchCompat mEnabledSwitch;
     private Spinner mDifficulty;
     private Spinner mPuzzle;
     private EditText mMessageEdit;
@@ -59,93 +54,12 @@ public class AlarmDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_alarm_detail);
         int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
         mAlarm = AlarmRepository.get(this).getAlarm(alarmId);
+        setContentView(R.layout.single_fragment_activity);
+        getFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, AlarmDetailFragment.makeFragment(mAlarm)).commit();
 
-        mTimeTextView = (TextView) findViewById(R.id.alarm_detail_alarm_time_caption);
-        mEnabledCheckBox = (CheckBox) findViewById(R.id.alarm_detail_enabled_check_box);
-        mMessageEdit = (EditText) findViewById(R.id.alarm_detail_alarm_message_edit_text);
-        mDifficulty = (Spinner) findViewById(R.id.alarm_detail_spinner_difficulty);
-        mPuzzle = (Spinner) findViewById(R.id.alarm_detail_spinner_puzzle);
-
-        mDayCheckBoxes = new CheckBox[7];
-        for (int i = 0; i < checkBoxIds.length; i++) {
-            mDayCheckBoxes[i] = (CheckBox) findViewById(checkBoxIds[i]);
-        }
-
-        String[] choices = getResources().getStringArray(R.array.pref_difficulty);
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices);
-        mDifficulty.setAdapter(adapter);
-
-        choices = getResources().getStringArray(R.array.pref_puzzle);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices);
-        mPuzzle.setAdapter(adapter);
-
-        mEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mAlarm.setEnabled(isChecked);
-                updateAlarmWithUI();
-            }
-        });
-
-        mTimeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager mgr = getSupportFragmentManager();
-                TimePickerFragment dialog =
-                        TimePickerFragment.newInstance(mAlarm.getHour(), mAlarm.getMinute());
-                dialog.show(mgr, TAG);
-            }
-        });
-
-        mDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mAlarm.setDifficulty(position);
-                updateAlarmWithUI();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        mPuzzle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mAlarm.setPuzzleType(position);
-                updateAlarmWithUI();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        mMessageEdit.setText(mAlarm.getMessage());
-        mMessageEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mAlarm.setMessage(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                updateAlarm();
-            }
-        });
-        updateUI();
     }
 
     @Override
@@ -242,7 +156,7 @@ public class AlarmDetailActivity extends AppCompatActivity
     }
 
     private void updateUI() {
-        mEnabledCheckBox.setChecked(mAlarm.isEnabled());
+        mEnabledSwitch.setChecked(mAlarm.isEnabled());
         mTimeTextView.setText(DateTimeUtils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
         mPuzzle.setSelection(mAlarm.getPuzzleType().ordinal());

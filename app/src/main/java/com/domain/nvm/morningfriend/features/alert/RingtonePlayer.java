@@ -9,14 +9,23 @@ import android.preference.PreferenceManager;
 
 import com.domain.nvm.morningfriend.R;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 
 public class RingtonePlayer {
 
     private static final float PLAYER_VOLUME = 0.35f;
 
+    final static int FOR_MEDIA = 1;
+    final static int FORCE_NONE = 0;
+    final static int FORCE_SPEAKER = 1;
+
     private Context mContext;
     private boolean isPlaying;
     private int initialSystemVolume;
+    private int initialAudioManagerMode;
+    private boolean initialSpeakerStateOn;
     private MediaPlayer mp;
     private AudioManager mAudioManager;
 
@@ -45,6 +54,45 @@ public class RingtonePlayer {
         mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mp.setLooping(true);
         mp.setVolume(PLAYER_VOLUME, PLAYER_VOLUME);
+        setForceAudioToSpeakers(true);
+    }
+
+    /**
+     * proudly stolen from
+     * http://stackoverflow.com/questions/12036221/how-to-turn-speaker-on-off-programatically-in-android-4-0
+     * Totally not an ugly hack
+     * @param force
+     */
+    private void setForceAudioToSpeakers(boolean force) {
+        try {
+            Class audioSystemClass = Class.forName("android.media.AudioSystem");
+            Method setForceUse = audioSystemClass.getMethod("setForceUse", int.class, int.class);
+            if (force) {
+                setForceUse.invoke(null, FOR_MEDIA, FORCE_SPEAKER);
+            }
+            else {
+                setForceUse.invoke(null, FOR_MEDIA, FORCE_NONE);
+            }
+        }
+        // if we can't do it for some reason then well this is life what can you do about it
+        catch (NoSuchMethodException ex) {
+
+        }
+        catch (ClassNotFoundException ex) {
+
+        }
+        catch (InvocationTargetException ex) {
+
+        }
+        catch (IllegalAccessException ex) {
+
+        }
+    }
+
+    private void cleanup() {
+        mp.release();
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, initialSystemVolume, 0);
+        setForceAudioToSpeakers(false);
     }
 
     public void play() {
@@ -59,8 +107,7 @@ public class RingtonePlayer {
         if (isPlaying) {
             isPlaying = false;
             mp.stop();
-            mp.release();
-            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, initialSystemVolume, 0);
+            cleanup();
         }
     }
 }

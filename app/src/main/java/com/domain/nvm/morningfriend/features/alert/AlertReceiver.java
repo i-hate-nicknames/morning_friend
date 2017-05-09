@@ -24,7 +24,8 @@ public class AlertReceiver extends BroadcastReceiver {
         Logger.write(context, "Alarm triggered!");
         Alarm alarm = (Alarm) intent.getSerializableExtra(EXTRA_ALARM);
         Intent puzzleActivity = PuzzleActivity.makeIntent(context, alarm);
-        puzzleActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        puzzleActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+            Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(puzzleActivity);
     }
 }

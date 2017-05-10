@@ -26,6 +26,8 @@
     <string name="prefs_difficulty_medium">Nightmare</string>
     <string name="prefs_difficulty_hard">Hell</string>
 
+    <string name="details_time_label">Time</string>
+
     <string name="details_repeating_days_workdays">Workdays</string>
     <string name="details_repeating_days_weekends">Weekends</string>
     <string name="details_repeating_days_everyday">Everyday</string>

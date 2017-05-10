@@ -57,7 +57,7 @@ public class AlarmDetailActivity extends AppCompatActivity
         int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
         mAlarm = AlarmRepository.get(this).getAlarm(alarmId);
         setContentView(R.layout.single_fragment_activity);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, AlarmDetailFragment.makeFragment(mAlarm)).commit();
 
     }

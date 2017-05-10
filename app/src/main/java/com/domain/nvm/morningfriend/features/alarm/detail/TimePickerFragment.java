@@ -1,8 +1,10 @@
 package com.domain.nvm.morningfriend.features.alarm.detail;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -70,9 +72,6 @@ public class TimePickerFragment extends DialogFragment {
     }
 
     public void sendResult() {
-        if (!(getActivity() instanceof TimePickerResultListener)) {
-            return;
-        }
         TimePickerResultListener activity = (TimePickerResultListener) getActivity();
         int hour, minute;
         if (Build.VERSION.SDK_INT < 23) {
@@ -85,7 +84,9 @@ public class TimePickerFragment extends DialogFragment {
         }
 
         Date resultTime = DateTimeUtils.getDateWithHourMinute(hour, minute);
-        activity.onTimePickerResult(resultTime);
+        Intent data = new Intent();
+        data.putExtra(AlarmDetailFragment.KEY_TIME, resultTime.getTime());
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
     }
 
     private void setTimePickerValue(Date time) {

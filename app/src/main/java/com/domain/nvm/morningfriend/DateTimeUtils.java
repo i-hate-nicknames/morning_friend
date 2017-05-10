@@ -94,6 +94,14 @@ public class DateTimeUtils {
         return repeatingDays.getClosestDayIndex(dayIdx);
     }
 
+    public static int getHour(long time) {
+        return getHour(new Date(time));
+    }
+
+    public static int getMinute(long time) {
+        return getMinute(new Date(time));
+    }
+
     public static int getHour(Date time) {
         Calendar c = Calendar.getInstance();
         c.setTime(time);

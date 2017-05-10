@@ -9,6 +9,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.XpPreferenceFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.features.alarm.Alarm;
 
+import net.xpece.android.support.preference.ListPreference;
 import net.xpece.android.support.preference.SwitchPreference;
 import net.xpece.android.support.preference.DialogPreference;
 
@@ -39,6 +41,8 @@ public class AlarmDetailFragment extends XpPreferenceFragment
     private Alarm alarm;
     private DialogPreference timePref;
     private SwitchPreference switchPref;
+    private ListPreference puzzlePref;
+    private ListPreference difficultyPref;
 
     public static AlarmDetailFragment makeFragment(Alarm alarm) {
         AlarmDetailFragment fragment = new AlarmDetailFragment();
@@ -76,6 +80,42 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         timePref.setKey(KEY_TIME);
         screen.addPreference(timePref);
 
+        puzzlePref = new ListPreference(getActivity());
+        puzzlePref.setKey(KEY_PUZZLE);
+        puzzlePref.setTitle(R.string.choose_puzzle_caption);
+        puzzlePref.setEntries(R.array.pref_puzzle);
+        puzzlePref.setEntryValues(R.array.pref_puzzle_values);
+        puzzlePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String puzzle = newValue.toString();
+                int index = puzzlePref.findIndexOfValue(puzzle);
+                alarm.setPuzzleType(index);
+                updateAlarm();
+                updatePrefsUI();
+                return true;
+            }
+        });
+        screen.addPreference(puzzlePref);
+
+        difficultyPref = new ListPreference(getActivity());
+        difficultyPref.setKey(KEY_DIFFICULTY);
+        difficultyPref.setTitle(R.string.choose_difficulty_caption);
+        difficultyPref.setEntries(R.array.pref_difficulty);
+        difficultyPref.setEntryValues(R.array.pref_difficulty);
+        difficultyPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String difficulty = newValue.toString();
+                int index = difficultyPref.findIndexOfValue(difficulty);
+                alarm.setDifficulty(index);
+                updateAlarm();
+                updatePrefsUI();
+                return true;
+            }
+        });
+        screen.addPreference(difficultyPref);
+
         setPreferenceScreen(screen);
         updatePrefsUI();
     }
@@ -87,7 +127,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
     @Override
     public boolean onPreferenceDisplayDialog(PreferenceFragmentCompat caller, Preference pref) {
-        if (pref.getKey().equals(KEY_TIME)) {
+        if (KEY_TIME.equals(pref.getKey())) {
             DialogFragment f = TimePickerFragment.newInstance(alarm.getHour(), alarm.getMinute());
             f.setTargetFragment(this, REQUEST_TIME);
             f.show(this.getFragmentManager(), DIALOG_FRAGMENT_TAG);
@@ -129,5 +169,13 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
     private void updatePrefsUI() {
         timePref.setSummary(DateTimeUtils.formatTime(alarm.getHour(), alarm.getMinute()));
+
+        String[] puzzleNames = getResources().getStringArray(R.array.pref_puzzle);
+        String puzzleName = puzzleNames[alarm.getPuzzleType().ordinal()];
+        puzzlePref.setSummary(puzzleName);
+
+        String[] difficultyNames = getResources().getStringArray(R.array.pref_difficulty);
+        String diffName = difficultyNames[alarm.getDifficulty().ordinal()];
+        difficultyPref.setSummary(diffName);
     }
 }

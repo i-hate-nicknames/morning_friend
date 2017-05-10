@@ -19,6 +19,7 @@ import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.features.alarm.Alarm;
 
+import net.xpece.android.support.preference.EditTextPreference;
 import net.xpece.android.support.preference.ListPreference;
 import net.xpece.android.support.preference.SwitchPreference;
 import net.xpece.android.support.preference.DialogPreference;
@@ -29,6 +30,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
     private static final String ARG_ALARM = "alarm";
 
     public static final String KEY_TIME = "alarm_time";
+    public static final String KEY_MESSAGE = "alarm_message";
     public static final String KEY_PUZZLE = "alarm_puzzle";
     public static final String KEY_DIFFICULTY = "alarm_difficulty";
     public static final String KEY_DAYS = "alarm_days";
@@ -43,6 +45,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
     private SwitchPreference switchPref;
     private ListPreference puzzlePref;
     private ListPreference difficultyPref;
+    private EditTextPreference messagePref;
 
     public static AlarmDetailFragment makeFragment(Alarm alarm) {
         AlarmDetailFragment fragment = new AlarmDetailFragment();
@@ -116,6 +119,21 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         });
         screen.addPreference(difficultyPref);
 
+        messagePref = new EditTextPreference(getActivity());
+        messagePref.setKey(KEY_MESSAGE);
+        messagePref.setDefaultValue(alarm.getMessage());
+        messagePref.setTitle(R.string.details_message_label);
+        messagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                alarm.setMessage(newValue.toString());
+                updateAlarm();
+                updatePrefsUI();
+                return true;
+            }
+        });
+        screen.addPreference(messagePref);
+
         setPreferenceScreen(screen);
         updatePrefsUI();
     }
@@ -177,5 +195,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         String[] difficultyNames = getResources().getStringArray(R.array.pref_difficulty);
         String diffName = difficultyNames[alarm.getDifficulty().ordinal()];
         difficultyPref.setSummary(diffName);
+
+        messagePref.setSummary(alarm.getMessage());
     }
 }

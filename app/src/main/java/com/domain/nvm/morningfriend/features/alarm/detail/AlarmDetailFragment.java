@@ -83,7 +83,6 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
         timePref = new DialogPreference(getActivity()) {};
         timePref.setTitle(R.string.details_time_label);
-//        timePref.setDialogLayoutResource(R.layout.dialog_time_picker);
         timePref.setKey(KEY_TIME);
         screen.addPreference(timePref);
 
@@ -136,7 +135,6 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
         daysPref = new DialogPreference(getActivity()) {};
         daysPref.setTitle("Repeat");
-//        daysPref.setDialogLayoutResource(R.layout.dialog_repeat_days_picker);
         daysPref.setKey(KEY_DAYS);
         screen.addPreference(daysPref);
 

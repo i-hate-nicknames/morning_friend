@@ -27,25 +27,14 @@ import com.domain.nvm.morningfriend.database.AlarmRepository;
 
 import java.util.Date;
 
-public class AlarmDetailActivity extends AppCompatActivity
-        implements TimePickerFragment.TimePickerResultListener {
+public class AlarmDetailActivity extends AppCompatActivity {
 
-    private TextView mTimeTextView;
-    private SwitchCompat mEnabledSwitch;
-    private Spinner mDifficulty;
-    private Spinner mPuzzle;
-    private EditText mMessageEdit;
-    private CheckBox[] mDayCheckBoxes;
 
     private Alarm mAlarm;
 
     private static final String TAG = "AlarmDetailActivity";
     private static final String EXTRA_ALARM_ID = "extraAlarmId";
 
-    private int[] checkBoxIds = new int[] {R.id.details_repeating_days_sun_check_box,
-            R.id.details_repeating_days_mon_check_box, R.id.details_repeating_days_tue_check_box,
-            R.id.details_repeating_days_wed_check_box, R.id.details_repeating_days_thu_check_box,
-            R.id.details_repeating_days_fri_check_box, R.id.details_repeating_days_sat_check_box};
 
     public static Intent makeIntent(Context context, Alarm alarm) {
         Intent i = new Intent(context, AlarmDetailActivity.class);
@@ -86,34 +75,4 @@ public class AlarmDetailActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
-
-
-    @Override
-    public void onTimePickerResult(Date time) {
-        mAlarm.setHour(DateTimeUtils.getHour(time));
-        mAlarm.setMinute(DateTimeUtils.getMinute(time));
-        updateAlarmWithUI();
-    }
-
-    private void updateAlarm() {
-        AlarmRepository.get(this).updateAlarm(mAlarm);
-    }
-
-    private void updateAlarmWithUI() {
-        updateAlarm();
-        updateUI();
-    }
-
-    private void updateUI() {
-        mEnabledSwitch.setChecked(mAlarm.isEnabled());
-        mTimeTextView.setText(DateTimeUtils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
-        mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
-        mPuzzle.setSelection(mAlarm.getPuzzleType().ordinal());
-    }
-
-
-
 }

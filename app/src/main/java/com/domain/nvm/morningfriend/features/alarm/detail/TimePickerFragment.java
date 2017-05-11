@@ -21,10 +21,6 @@ import java.util.Date;
 
 public class TimePickerFragment extends DialogFragment {
 
-    public interface TimePickerResultListener {
-        void onTimePickerResult(Date time);
-    }
-
     private TimePicker mTimePicker;
 
     private static final String ARG_TIME = "time";
@@ -72,7 +68,6 @@ public class TimePickerFragment extends DialogFragment {
     }
 
     public void sendResult() {
-        TimePickerResultListener activity = (TimePickerResultListener) getActivity();
         int hour, minute;
         if (Build.VERSION.SDK_INT < 23) {
             hour = mTimePicker.getCurrentHour();

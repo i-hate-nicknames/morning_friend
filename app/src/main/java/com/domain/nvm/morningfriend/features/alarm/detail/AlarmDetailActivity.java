@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
@@ -57,8 +59,12 @@ public class AlarmDetailActivity extends AppCompatActivity
         int alarmId = getIntent().getIntExtra(EXTRA_ALARM_ID, -1);
         mAlarm = AlarmRepository.get(this).getAlarm(alarmId);
         setContentView(R.layout.single_fragment_activity);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, AlarmDetailFragment.makeFragment(mAlarm)).commit();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        if (fragment == null) {
+            fragment = AlarmDetailFragment.makeFragment(mAlarm);
+            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        }
 
     }
 

@@ -2,11 +2,13 @@ package com.domain.nvm.morningfriend.features.alarm.detail;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.XpPreferenceFragment;
 import android.util.Log;
@@ -62,6 +64,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
             throw new IllegalArgumentException("Trying to instantiate " +
                     "alarm settings fragment without alarm object");
         }
+        updatePrefs();
         PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(getActivity());
         switchPref = new SwitchPreference(getActivity());
         switchPref.setShouldDisableView(true);
@@ -121,13 +124,13 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
         messagePref = new EditTextPreference(getActivity());
         messagePref.setKey(KEY_MESSAGE);
-        messagePref.setDefaultValue(alarm.getMessage());
         messagePref.setTitle(R.string.details_message_label);
         messagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 alarm.setMessage(newValue.toString());
                 updateAlarm();
+                updatePrefs();
                 updatePrefsUI();
                 return true;
             }
@@ -179,6 +182,20 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         View v = super.onCreateView(inflater, container, savedInstanceState);
 
         return v;
+    }
+
+    /**
+     * The values of the shared prefs aren't used anywhere in the program, so we technically
+     * don't even care what is set there.
+     * Unfortunately, these values are still shown when we edit our programmatically created
+     * preferences
+     * This method sets
+     */
+    private void updatePrefs() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit()
+                .putString(KEY_MESSAGE, alarm.getMessage())
+                .apply();
     }
 
     private void updateAlarm() {

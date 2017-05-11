@@ -44,7 +44,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
     public static final int REQUEST_DAYS = 3;
 
     private Alarm alarm;
-    private DialogPreference timePref;
+    private DialogPreference timePref, daysPref;
     private SwitchPreference switchPref;
     private ListPreference puzzlePref;
     private ListPreference difficultyPref;
@@ -83,7 +83,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
         timePref = new DialogPreference(getActivity()) {};
         timePref.setTitle(R.string.details_time_label);
-        timePref.setDialogLayoutResource(R.layout.dialog_time_picker);
+//        timePref.setDialogLayoutResource(R.layout.dialog_time_picker);
         timePref.setKey(KEY_TIME);
         screen.addPreference(timePref);
 
@@ -134,6 +134,12 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         });
         screen.addPreference(messagePref);
 
+        daysPref = new DialogPreference(getActivity()) {};
+        daysPref.setTitle("Repeat");
+//        daysPref.setDialogLayoutResource(R.layout.dialog_repeat_days_picker);
+        daysPref.setKey(KEY_DAYS);
+        screen.addPreference(daysPref);
+
         setPreferenceScreen(screen);
         updatePrefsUI();
     }
@@ -151,6 +157,12 @@ public class AlarmDetailFragment extends XpPreferenceFragment
             f.show(this.getFragmentManager(), DIALOG_FRAGMENT_TAG);
             return true;
         }
+        else if (KEY_DAYS.equals(pref.getKey())) {
+            DialogFragment f = RepeatDaysPickerFragment.newInstance(alarm.getRepeatDays());
+            f.setTargetFragment(this, REQUEST_DAYS);
+            f.show(this.getFragmentManager(), DIALOG_FRAGMENT_TAG);
+            return true;
+        }
         return false;
     }
 
@@ -163,6 +175,15 @@ public class AlarmDetailFragment extends XpPreferenceFragment
                     if (time != -1) {
                         alarm.setHour(DateTimeUtils.getHour(time));
                         alarm.setMinute(DateTimeUtils.getMinute(time));
+                        onFieldUpdated();
+                    }
+                }
+                return;
+            case REQUEST_DAYS:
+                if (resultCode == Activity.RESULT_OK) {
+                    Alarm.Days repeat = (Alarm.Days) data.getSerializableExtra(KEY_DAYS);
+                    if (repeat != null) {
+                        alarm.setRepeatDays(repeat);
                         onFieldUpdated();
                     }
                 }

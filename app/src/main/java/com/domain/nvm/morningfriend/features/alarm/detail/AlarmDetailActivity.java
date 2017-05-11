@@ -87,63 +87,9 @@ public class AlarmDetailActivity extends AppCompatActivity
         }
     }
 
-    public void onRadioButtonClicked(View view) {
 
-        boolean checked = ((RadioButton) view).isChecked();
-        if (!checked) {
-            return;
-        }
-        switch (view.getId()) {
-            case R.id.alarm_detail_days_workdays_radio_button:
-                mAlarm.getRepeatDays().setOnlyWorkDays();
-                updateAlarm();
-                updateDaysViews(false);
-                break;
-            case R.id.alarm_detail_days_weekends_radio_button:
-                mAlarm.getRepeatDays().setOnlyWeekends();
-                updateAlarm();
-                updateDaysViews(false);
-                break;
-            default:
-                updateDaysViews(true);
-        }
 
-    }
 
-    public void onCheckBoxClicked(View view) {
-
-        boolean checked = ((CheckBox) view).isChecked();
-
-        switch (view.getId()) {
-            case R.id.details_repeating_days_sun_check_box:
-                setAlarmRepeatDay(Names.SUN, checked);
-                break;
-            case R.id.details_repeating_days_mon_check_box:
-                setAlarmRepeatDay(Names.MON, checked);
-                break;
-            case R.id.details_repeating_days_tue_check_box:
-                setAlarmRepeatDay(Names.TUE, checked);
-                break;
-            case R.id.details_repeating_days_wed_check_box:
-                setAlarmRepeatDay(Names.WED, checked);
-                break;
-            case R.id.details_repeating_days_thu_check_box:
-                setAlarmRepeatDay(Names.THU, checked);
-                break;
-            case R.id.details_repeating_days_fri_check_box:
-                setAlarmRepeatDay(Names.FRI, checked);
-                break;
-            case R.id.details_repeating_days_sat_check_box:
-                setAlarmRepeatDay(Names.SAT, checked);
-                break;
-        }
-    }
-
-    private void setAlarmRepeatDay(Names dayName, boolean isOn) {
-        mAlarm.getRepeatDays().setDay(dayName, isOn);
-        updateAlarm();
-        updateDaysViews(true);
-    }
 
     @Override
     public void onTimePickerResult(Date time) {
@@ -166,34 +112,8 @@ public class AlarmDetailActivity extends AppCompatActivity
         mTimeTextView.setText(DateTimeUtils.formatTime(mAlarm.getHour(), mAlarm.getMinute()));
         mDifficulty.setSelection(mAlarm.getDifficulty().ordinal());
         mPuzzle.setSelection(mAlarm.getPuzzleType().ordinal());
-        updateDaysViews(false);
     }
 
-    private void updateDaysViews(boolean enableCheckBoxes) {
-        RadioGroup daysRadioGroup = (RadioGroup) findViewById(R.id.alarm_detail_days_radio_group);
-        if (mAlarm.getRepeatDays().isOnlyWorkDays()) {
-            daysRadioGroup.check(R.id.alarm_detail_days_workdays_radio_button);
-            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
-                mDayCheckBoxes[dayCode].setChecked(Alarm.Days.isDayWorkday(dayCode));
-                mDayCheckBoxes[dayCode].setEnabled(enableCheckBoxes);
-            }
 
-        }
-        else if (mAlarm.getRepeatDays().isOnlyWeekends()) {
-            daysRadioGroup.check(R.id.alarm_detail_days_weekends_radio_button);
-            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
-                mDayCheckBoxes[dayCode].setChecked(Alarm.Days.isDayWeekend(dayCode));
-                mDayCheckBoxes[dayCode].setEnabled(enableCheckBoxes);
-            }
-        }
-        else {
-            daysRadioGroup.check(R.id.alarm_detail_days_custom_radio_button);
-            for (int dayCode = 0; dayCode < mDayCheckBoxes.length; dayCode++) {
-                mDayCheckBoxes[dayCode]
-                        .setChecked(mAlarm.getRepeatDays().isDayActive(Names.values()[dayCode]));
-            }
-        }
-
-    }
 
 }

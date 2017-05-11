@@ -3,32 +3,34 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <RadioGroup
         android:id="@+id/alarm_detail_days_radio_group"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="10dp"
         >
         <RadioButton
             android:text="@string/details_repeating_days_workdays"
             android:id="@+id/alarm_detail_days_workdays_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginBottom="16dp"/>
         <RadioButton
             android:text="@string/details_repeating_days_weekends"
             android:id="@+id/alarm_detail_days_weekends_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginBottom="16dp"/>
         <RadioButton
             android:text="@string/details_repeating_days_custom"
             android:id="@+id/alarm_detail_days_custom_radio_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
     </RadioGroup>
 
     <LinearLayout

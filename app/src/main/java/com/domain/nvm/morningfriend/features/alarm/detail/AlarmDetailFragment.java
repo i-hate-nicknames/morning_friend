@@ -220,7 +220,6 @@ public class AlarmDetailFragment extends XpPreferenceFragment
                 .putString(KEY_DIFFICULTY, Utils.getAlarmDifficultyKey(getActivity(), alarm))
                 .putString(KEY_PUZZLE, Utils.getAlarmPuzzleKey(getActivity(), alarm))
                 .apply();
-
     }
 
     private void updateAlarm() {
@@ -232,5 +231,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         puzzlePref.setSummary(Utils.getAlarmPuzzleTitle(getActivity(), alarm));
         difficultyPref.setSummary(Utils.getAlarmDifficultyTitle(getActivity(), alarm));
         messagePref.setSummary(alarm.getMessage());
+        daysPref.setSummary(DateTimeUtils.formatRepeatingDays(getActivity(),
+                alarm.getRepeatDays()));
     }
 }

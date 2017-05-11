@@ -26,6 +26,10 @@
     <string name="prefs_difficulty_medium">Nightmare</string>
     <string name="prefs_difficulty_hard">Hell</string>
 
+    <string name="prefs_difficulty_easy_value">hatred</string>
+    <string name="prefs_difficulty_medium_value">nightmare</string>
+    <string name="prefs_difficulty_hard_value">hell</string>
+
     <string name="details_time_label">Time</string>
     <string name="details_message_label">Title</string>
 

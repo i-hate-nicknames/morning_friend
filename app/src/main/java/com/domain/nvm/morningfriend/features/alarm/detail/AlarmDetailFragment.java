@@ -20,6 +20,7 @@ import com.domain.nvm.morningfriend.DateTimeUtils;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.database.AlarmRepository;
 import com.domain.nvm.morningfriend.features.alarm.Alarm;
+import com.domain.nvm.morningfriend.features.alarm.Utils;
 
 import net.xpece.android.support.preference.EditTextPreference;
 import net.xpece.android.support.preference.ListPreference;
@@ -97,8 +98,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
                 String puzzle = newValue.toString();
                 int index = puzzlePref.findIndexOfValue(puzzle);
                 alarm.setPuzzleType(index);
-                updateAlarm();
-                updatePrefsUI();
+                onFieldUpdated();
                 return true;
             }
         });
@@ -108,15 +108,14 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         difficultyPref.setKey(KEY_DIFFICULTY);
         difficultyPref.setTitle(R.string.choose_difficulty_caption);
         difficultyPref.setEntries(R.array.pref_difficulty);
-        difficultyPref.setEntryValues(R.array.pref_difficulty);
+        difficultyPref.setEntryValues(R.array.pref_difficulty_values);
         difficultyPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String difficulty = newValue.toString();
                 int index = difficultyPref.findIndexOfValue(difficulty);
                 alarm.setDifficulty(index);
-                updateAlarm();
-                updatePrefsUI();
+                onFieldUpdated();
                 return true;
             }
         });
@@ -129,9 +128,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 alarm.setMessage(newValue.toString());
-                updateAlarm();
-                updatePrefs();
-                updatePrefsUI();
+                onFieldUpdated();
                 return true;
             }
         });
@@ -166,8 +163,7 @@ public class AlarmDetailFragment extends XpPreferenceFragment
                     if (time != -1) {
                         alarm.setHour(DateTimeUtils.getHour(time));
                         alarm.setMinute(DateTimeUtils.getMinute(time));
-                        updatePrefsUI();
-                        updateAlarm();
+                        onFieldUpdated();
                     }
                 }
                 return;
@@ -184,6 +180,12 @@ public class AlarmDetailFragment extends XpPreferenceFragment
         return v;
     }
 
+    private void onFieldUpdated() {
+        updatePrefs();
+        updateAlarm();
+        updatePrefsUI();
+    }
+
     /**
      * The values of the shared prefs aren't used anywhere in the program, so we technically
      * don't even care what is set there.
@@ -192,10 +194,14 @@ public class AlarmDetailFragment extends XpPreferenceFragment
      * This method sets
      */
     private void updatePrefs() {
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.edit()
                 .putString(KEY_MESSAGE, alarm.getMessage())
+                .putString(KEY_DIFFICULTY, Utils.getAlarmDifficultyKey(getActivity(), alarm))
+                .putString(KEY_PUZZLE, Utils.getAlarmPuzzleKey(getActivity(), alarm))
                 .apply();
+
     }
 
     private void updateAlarm() {
@@ -204,15 +210,8 @@ public class AlarmDetailFragment extends XpPreferenceFragment
 
     private void updatePrefsUI() {
         timePref.setSummary(DateTimeUtils.formatTime(alarm.getHour(), alarm.getMinute()));
-
-        String[] puzzleNames = getResources().getStringArray(R.array.pref_puzzle);
-        String puzzleName = puzzleNames[alarm.getPuzzleType().ordinal()];
-        puzzlePref.setSummary(puzzleName);
-
-        String[] difficultyNames = getResources().getStringArray(R.array.pref_difficulty);
-        String diffName = difficultyNames[alarm.getDifficulty().ordinal()];
-        difficultyPref.setSummary(diffName);
-
+        puzzlePref.setSummary(Utils.getAlarmPuzzleTitle(getActivity(), alarm));
+        difficultyPref.setSummary(Utils.getAlarmDifficultyTitle(getActivity(), alarm));
         messagePref.setSummary(alarm.getMessage());
     }
 }

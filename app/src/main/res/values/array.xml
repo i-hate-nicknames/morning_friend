@@ -17,6 +17,12 @@
         <item>@string/prefs_difficulty_hard</item>
     </string-array>
 
+    <string-array name="pref_difficulty_values">
+        <item>@string/prefs_difficulty_easy_value</item>
+        <item>@string/prefs_difficulty_medium_value</item>
+        <item>@string/prefs_difficulty_hard_value</item>
+    </string-array>
+
     <string-array name="repeat_days_names">
         <item>@string/details_repeating_days_sun</item>
         <item>@string/details_repeating_days_mon</item>

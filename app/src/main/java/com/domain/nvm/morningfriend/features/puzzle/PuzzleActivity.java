@@ -89,25 +89,20 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
         switch (mAlarm.getPuzzleType()) {
             case GRAPH:
                 puzzleView = new UntangleView(this);
-                mPuzzle = (UntangleView) puzzleView;
                 break;
             case LABYRINTH:
                 puzzleView = new LabyrinthView(this);
-                mPuzzle = (LabyrinthView) puzzleView;
                 break;
             case EQUATION:
                 puzzleView = new EquationPuzzleView(this);
-                mPuzzle = (Puzzle) puzzleView;
                 break;
             case SQUARES:
             default:
                 puzzleView = new SquaresView(this);
-                mPuzzle = (SquaresView) puzzleView;
-                break;
         }
-        // todo: mPuzzle = (Puzzle) puzzleView?
 
         setContentView(puzzleView);
+        mPuzzle = (Puzzle) puzzleView;
         mPuzzle.setPuzzleHost(this);
         puzzleView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {

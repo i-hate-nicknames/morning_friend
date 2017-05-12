@@ -61,24 +61,20 @@ public class TrainingActivity extends AppCompatActivity implements PuzzleHost {
         switch (type) {
             case GRAPH:
                 puzzleView = new UntangleView(this);
-                mPuzzle = (UntangleView) puzzleView;
                 break;
             case LABYRINTH:
                 puzzleView = new LabyrinthView(this);
-                mPuzzle = (LabyrinthView) puzzleView;
                 break;
             case EQUATION:
                 puzzleView = new EquationPuzzleView(this);
-                mPuzzle = (Puzzle) puzzleView;
                 break;
             case SQUARES:
             default:
                 puzzleView = new SquaresView(this);
-                mPuzzle = (SquaresView) puzzleView;
-                break;
         }
 
         setContentView(puzzleView);
+        mPuzzle = (Puzzle) puzzleView;
         mPuzzle.setPuzzleHost(this);
         puzzleView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {

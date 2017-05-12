@@ -15,4 +15,9 @@ public class Variable implements Expression {
     public boolean isCompound() {
         return false;
     }
+
+    public String getVariableName() {
+        throw new UnsupportedOperationException();
+    }
+
 }

@@ -77,4 +77,34 @@ public class ExpressionTest {
         assertEquals("x", x.getVariableName());
     }
 
+    @Test
+    public void toStringConst() {
+        Constant a = new Constant(1);
+        assertEquals("1", a.toString());
+    }
+
+    @Test
+    public void toStringVariable() {
+        Variable x = new Variable("x");
+        assertEquals("x", x.toString());
+    }
+
+    @Test
+    public void toStringSumSimple() {
+        Sum s = new Sum(new Constant(2), new Constant(3));
+        assertEquals("2 + 3", s.toString());
+    }
+
+    @Test
+    public void toStringSumWithVar() {
+        Sum s = new Sum(new Constant(2), new Variable("x"));
+        assertEquals("2 + x", s.toString());
+    }
+
+    @Test
+    public void toStringSumCompound() {
+        Sum s = new Sum(new Constant(2), new Variable("x"));
+        assertEquals("2 + x + 2 + x", new Sum(s, s).toString());
+    }
+
 }

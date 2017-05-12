@@ -17,4 +17,9 @@ public class Constant implements Expression {
     public boolean isCompound() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
 }

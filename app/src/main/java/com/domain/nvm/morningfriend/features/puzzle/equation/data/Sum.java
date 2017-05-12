@@ -18,4 +18,9 @@ public class Sum implements Expression {
     public boolean isCompound() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return a.toString() + " + " + b.toString();
+    }
 }

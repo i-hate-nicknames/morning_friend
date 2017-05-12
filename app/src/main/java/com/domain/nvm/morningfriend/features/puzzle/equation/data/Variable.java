@@ -22,4 +22,8 @@ public class Variable implements Expression {
         return varName;
     }
 
+    @Override
+    public String toString() {
+        return varName;
+    }
 }

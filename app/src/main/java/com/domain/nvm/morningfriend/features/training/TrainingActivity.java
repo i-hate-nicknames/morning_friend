@@ -12,6 +12,7 @@ import com.domain.nvm.morningfriend.features.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle.Difficulty;
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle.PuzzleType;
 import com.domain.nvm.morningfriend.features.puzzle.PuzzleHost;
+import com.domain.nvm.morningfriend.features.puzzle.equation.views.EquationPuzzleView;
 import com.domain.nvm.morningfriend.features.puzzle.labyrinth.views.LabyrinthView;
 import com.domain.nvm.morningfriend.features.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.features.puzzle.untangle.views.UntangleView;
@@ -65,6 +66,10 @@ public class TrainingActivity extends AppCompatActivity implements PuzzleHost {
             case LABYRINTH:
                 puzzleView = new LabyrinthView(this);
                 mPuzzle = (LabyrinthView) puzzleView;
+                break;
+            case EQUATION:
+                puzzleView = new EquationPuzzleView(this);
+                mPuzzle = (Puzzle) puzzleView;
                 break;
             case SQUARES:
             default:

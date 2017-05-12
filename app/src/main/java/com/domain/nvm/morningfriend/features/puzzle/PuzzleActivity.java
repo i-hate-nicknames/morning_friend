@@ -19,6 +19,7 @@ import com.domain.nvm.morningfriend.features.alert.AlarmWakeLock;
 import com.domain.nvm.morningfriend.features.alert.RingtonePlayer;
 import com.domain.nvm.morningfriend.features.alert.scheduler.AlarmScheduler;
 import com.domain.nvm.morningfriend.features.log.Logger;
+import com.domain.nvm.morningfriend.features.puzzle.equation.views.EquationPuzzleView;
 import com.domain.nvm.morningfriend.features.puzzle.labyrinth.views.LabyrinthView;
 import com.domain.nvm.morningfriend.features.puzzle.squares.SquaresView;
 import com.domain.nvm.morningfriend.features.puzzle.untangle.views.UntangleView;
@@ -94,12 +95,17 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleHost {
                 puzzleView = new LabyrinthView(this);
                 mPuzzle = (LabyrinthView) puzzleView;
                 break;
+            case EQUATION:
+                puzzleView = new EquationPuzzleView(this);
+                mPuzzle = (Puzzle) puzzleView;
+                break;
             case SQUARES:
             default:
                 puzzleView = new SquaresView(this);
                 mPuzzle = (SquaresView) puzzleView;
                 break;
         }
+        // todo: mPuzzle = (Puzzle) puzzleView?
 
         setContentView(puzzleView);
         mPuzzle.setPuzzleHost(this);

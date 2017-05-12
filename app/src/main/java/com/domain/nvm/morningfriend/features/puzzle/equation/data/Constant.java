@@ -2,13 +2,15 @@ package com.domain.nvm.morningfriend.features.puzzle.equation.data;
 
 public class Constant implements Expression {
 
-    public Constant(int value) {
+    private int value;
 
+    public Constant(int value) {
+        this.value = value;
     }
 
     @Override
     public int eval(Environment env) {
-        return 0;
+        return value;
     }
 
     @Override

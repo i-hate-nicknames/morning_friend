@@ -2,13 +2,15 @@ package com.domain.nvm.morningfriend.features.puzzle.equation.data;
 
 public class Variable implements Expression {
 
-    public Variable(String varName) {
+    private String varName;
 
+    public Variable(String varName) {
+        this.varName = varName;
     }
 
     @Override
-    public int eval(Environment env) {
-        return 0;
+    public int eval(Environment env) throws Environment.UndefinedVariableException {
+        return env.get(this);
     }
 
     @Override
@@ -17,7 +19,7 @@ public class Variable implements Expression {
     }
 
     public String getVariableName() {
-        throw new UnsupportedOperationException();
+        return varName;
     }
 
 }

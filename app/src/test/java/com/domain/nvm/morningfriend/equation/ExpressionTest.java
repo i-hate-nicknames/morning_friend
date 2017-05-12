@@ -19,6 +19,7 @@ public class ExpressionTest {
     public void setUp() {
         emptyEnv = new Environment();
         env = new Environment();
+        env.set(new Variable("x"), 5);
     }
 
     @Test
@@ -47,27 +48,27 @@ public class ExpressionTest {
 
 
     @Test(expected= Environment.UndefinedVariableException.class)
-    public void evalVariableNotFound() {
+    public void evalVariableNotFound() throws Environment.UndefinedVariableException{
         Variable x = new Variable("x");
         int v = x.eval(emptyEnv);
     }
 
     @Test
-    public void evalVariable() {
+    public void evalVariable() throws Environment.UndefinedVariableException {
         Variable x = new Variable("x");
         assertEquals(5, x.eval(env));
     }
 
     @Test
-    public void evalSumOfConsts() {
+    public void evalSumOfConsts() throws Environment.UndefinedVariableException {
         Sum s = new Sum(new Constant(2), new Constant(3));
         assertEquals(5, s.eval(emptyEnv));
     }
 
     @Test
-    public void evalSumOfVars() {
+    public void evalSumOfVars() throws Environment.UndefinedVariableException {
         Sum s = new Sum(new Variable("x"), new Variable("x"));
-        assertEquals(10, s.eval(emptyEnv));
+        assertEquals(10, s.eval(env));
     }
 
     @Test

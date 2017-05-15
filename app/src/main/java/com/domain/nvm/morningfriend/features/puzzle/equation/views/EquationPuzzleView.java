@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.domain.nvm.morningfriend.R;
 import com.domain.nvm.morningfriend.features.puzzle.Puzzle;
 import com.domain.nvm.morningfriend.features.puzzle.PuzzleHost;
+import com.domain.nvm.morningfriend.features.puzzle.equation.data.EquationGenerator;
 
 public class EquationPuzzleView extends LinearLayout implements Puzzle {
 
@@ -38,6 +39,6 @@ public class EquationPuzzleView extends LinearLayout implements Puzzle {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.puzzle_equation, this, true);
         TextView eqText = (TextView) findViewById(R.id.equation_body);
-        eqText.setText("Here be equation");
+        eqText.setText(new EquationGenerator().generate(Difficulty.EASY).toString());
     }
 }

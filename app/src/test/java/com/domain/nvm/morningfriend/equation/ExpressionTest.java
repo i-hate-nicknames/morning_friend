@@ -2,6 +2,7 @@ package com.domain.nvm.morningfriend.equation;
 
 import com.domain.nvm.morningfriend.features.puzzle.equation.data.Constant;
 import com.domain.nvm.morningfriend.features.puzzle.equation.data.Environment;
+import com.domain.nvm.morningfriend.features.puzzle.equation.data.Negation;
 import com.domain.nvm.morningfriend.features.puzzle.equation.data.Sum;
 import com.domain.nvm.morningfriend.features.puzzle.equation.data.Variable;
 
@@ -41,6 +42,12 @@ public class ExpressionTest {
     }
 
     @Test
+    public void isCompoundNegation() {
+        Negation n = new Negation(new Constant(2));
+        assertTrue(n.isCompound());
+    }
+
+    @Test
     public void evalConstant() {
         Constant x1 = new Constant(1);
         assertEquals(1, x1.eval(emptyEnv));
@@ -69,6 +76,18 @@ public class ExpressionTest {
     public void evalSumOfVars() throws Environment.UndefinedVariableException {
         Sum s = new Sum(new Variable("x"), new Variable("x"));
         assertEquals(10, s.eval(env));
+    }
+
+    @Test
+    public void evalSimpleNegation() throws Environment.UndefinedVariableException {
+        Negation n = new Negation(new Constant(3));
+        assertEquals(-3, n.eval(emptyEnv));
+    }
+
+    @Test
+    public void evalNegationOfSum() throws Environment.UndefinedVariableException {
+        Negation n = new Negation(new Sum(new Constant(2), new Constant(5)));
+        assertEquals(-7, n.eval(emptyEnv));
     }
 
     @Test
@@ -105,6 +124,24 @@ public class ExpressionTest {
     public void toStringSumCompound() {
         Sum s = new Sum(new Constant(2), new Variable("x"));
         assertEquals("2 + x + 2 + x", new Sum(s, s).toString());
+    }
+
+    @Test
+    public void toStringNegationOfConstant() {
+        Negation n = new Negation(new Constant(1));
+        assertEquals("-1", n.toString());
+    }
+
+    @Test
+    public void toStringNegationOfVariable() {
+        Negation n = new Negation(new Variable("x"));
+        assertEquals("-x", n.toString());
+    }
+
+    @Test
+    public void toStringNegationOfSum() {
+        Negation n = new Negation(new Sum(new Constant(2), new Constant(3)));
+        assertEquals("-(2 + 3)", n.toString());
     }
 
 }

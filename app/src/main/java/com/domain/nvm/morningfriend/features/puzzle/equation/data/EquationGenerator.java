@@ -39,7 +39,11 @@ public class EquationGenerator {
     private Expression extendWithAddends(Expression initial, int n) {
         Expression result = initial;
         for (int i = 0; i < n; i++) {
-            result = new Sum(result, new Constant(rand.nextInt(MAX_CONSTANT)+1));
+            Expression ext = new Constant(rand.nextInt(MAX_CONSTANT)+1);
+            if (rand.nextBoolean()) {
+                ext = new Negation(ext);
+            }
+            result = new Sum(result, ext);
         }
         return result;
     }

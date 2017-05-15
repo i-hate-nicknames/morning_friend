@@ -91,6 +91,12 @@ public class ExpressionTest {
     }
 
     @Test
+    public void evalSubtraction() throws Environment.UndefinedVariableException {
+        Sum s = Sum.makeSubtraction(new Constant(2), new Constant(5));
+        assertEquals(-3, s.eval(emptyEnv));
+    }
+
+    @Test
     public void variableGetVarname() {
         Variable x = new Variable("x");
         assertEquals("x", x.getVariableName());

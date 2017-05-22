@@ -20,6 +20,7 @@ public class EquationPuzzleView extends LinearLayout implements Puzzle {
     private Context context;
     private Equation equation;
     private PuzzleHost puzzleHost;
+    private boolean isSolved;
 
     public EquationPuzzleView(Context context) {
         super(context, null);
@@ -40,7 +41,7 @@ public class EquationPuzzleView extends LinearLayout implements Puzzle {
 
     @Override
     public boolean isSolved() {
-        return false;
+        return isSolved;
     }
 
     public void initView() {
@@ -55,8 +56,12 @@ public class EquationPuzzleView extends LinearLayout implements Puzzle {
             public void onClick(View v) {
                 int userSolution = Integer.parseInt(solutionEditText.getText().toString());
                 if (equation.checkSolution(userSolution)) {
-                    Toast.makeText(context, "Very well done mon ami!", Toast.LENGTH_SHORT).show();
+                    isSolved = true;
                     puzzleHost.onPuzzleSolved();
+                }
+                else {
+                    isSolved = false;
+                    puzzleHost.onPuzzleSolutionBroken();
                 }
             }
         });
